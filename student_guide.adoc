@@ -17,7 +17,7 @@ The overwhelming majority of our time will be spent writing code directly!
 This can be accomplished as follows:
 
 ----
-$ git clone https://github.com/cax/MigratingAMonolithApplicationToCloudNative
+$ git clone https://github.com/caxqueiroz/MigratingAMonolithApplicationToCloudNative
 $ git fetch --all
 ----
 
