@@ -387,9 +387,9 @@ $ java -jar target/springbox-recommendations-0.0.1-SNAPSHOT.jar
 . Visit the Neo4J web admin console (http://localhost:7474/browser/). Run the following Cypher queries to load test data:
 +
 ----
-LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/mstine/CloudNativeArchitectureClass/citi/day_01/session_04/lab_13/movies.csv" AS row CREATE (movie:Movie:_Movie {mlId:row.mlId, title:row.title})
+LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/caxqueiroz/MigratingAMonolithApplicationToCloudNative/master/sessions/day_01/session_05/lab_13/movies.csv" AS row CREATE (movie:Movie:_Movie {mlId:row.mlId, title:row.title})
 
-LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/mstine/CloudNativeArchitectureClass/citi/day_01/session_04/lab_13/people.csv" AS row CREATE (:person:Person:_Person {userName:row.userName, firstName:row.firstName, lastName:row.lastName})
+LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/caxqueiroz/MigratingAMonolithApplicationToCloudNative/master/sessions/day_01/session_05/lab_13/people.csv" AS row CREATE (:person:Person:_Person {userName:row.userName, firstName:row.firstName, lastName:row.lastName})
 ----
 
 . Access the application using `curl` to make sure everything is working properly:
