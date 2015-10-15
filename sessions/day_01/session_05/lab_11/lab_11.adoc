@@ -401,7 +401,7 @@ OK
 requested state: started
 instances: 1/1
 usage: 512M x 1 instances
-urls: springbox-catalog-overwild-nonrevival.cfapps.io
+urls: springbox-catalog-overwild-nonrevival.pcf-on-aws.net
 last uploaded: Mon Feb 16 19:34:38 UTC 2015
 
      state     since                    cpu    memory           disk
@@ -411,7 +411,7 @@ last uploaded: Mon Feb 16 19:34:38 UTC 2015
 . Access the application using `curl` at the random route provided by CF:
 +
 ----
-$ curl -i springbox-catalog-overwild-nonrevival.cfapps.io/movies/1
+$ curl -i springbox-catalog-overwild-nonrevival.pcf-on-aws.net/movies/1
 HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8Date: Mon, 16 Feb 2015 03:38:42 GMTServer: Apache-Coyote/1.1
 Transfer-Encoding: chunked
