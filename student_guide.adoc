@@ -93,4 +93,3 @@ $ git fetch --all
 ** link:sessions/day_02/session_08/lab_22/lab_22.adoc[Lab 22 - Securing a Resource Server with Spring Cloud Security]
 
 * Session 9 (link:sessions/day_02/session_09/session_09.pdf[Slides])
-** link:sessions/day_02/session_09/lab_26/lab_26.adoc[Lab 26 - Icing on the Cake: Adding the User Interface]
