@@ -123,6 +123,16 @@ and import the project (via `pom.xml`) into your IDE of choice.
 +
 ----
 <dependency>
+   <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+</dependency>
+----
+
+. Add a dependency on `spring-cloud-config-server`:
++
+----
+<dependency>
   <groupId>org.springframework.cloud</groupId>
   <artifactId>spring-cloud-config-server</artifactId>
 </dependency>
