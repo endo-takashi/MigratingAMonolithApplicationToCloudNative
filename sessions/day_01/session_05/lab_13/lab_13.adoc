@@ -479,7 +479,7 @@ last uploaded: Tue Feb 17 05:40:41 UTC 2015
 #0   running   2015-02-16 09:41:31 PM   0.0%   366.7M of 512M   146.9M of 1G
 ----
 
-.  Use what you've learned so far to insert a couple people, movies, and relationships into the neo4j instance throught he REST service you just deployed (hint:  inspect the controller) 
+.  Use what you've learned so far to insert a couple people, movies, and relationships into the neo4j instance through the REST service you just deployed (hint:  inspect the controller) 
 
 . Access the application using `curl` to make sure everything is working properly:
 +
