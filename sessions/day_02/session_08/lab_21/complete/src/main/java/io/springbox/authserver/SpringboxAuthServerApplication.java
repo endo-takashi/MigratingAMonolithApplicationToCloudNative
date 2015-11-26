@@ -52,6 +52,7 @@ public class SpringboxAuthServerApplication extends WebMvcConfigurerAdapter {
 
         @Override
         public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+
             clients.inMemory()
                     .withClient("acme")
                     .secret("acmesecret")

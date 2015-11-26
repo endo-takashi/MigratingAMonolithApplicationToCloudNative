@@ -12,9 +12,9 @@
 	<description>SpringBox Authentication Server</description>
 
        <parent>
-          <groupId>org.springframework.cloud</groupId>
-          <artifactId>spring-cloud-starter-parent</artifactId>
-          <version>1.0.1.RELEASE</version>
+		   <groupId>org.springframework.cloud</groupId>
+		   <artifactId>spring-cloud-starter-parent</artifactId>
+		   <version>Angel.SR3</version>
        </parent>
 
 	<properties>
