@@ -167,7 +167,7 @@ Next we'll import some data.
 
 == Importing Data
 
-. Add this https://github.com/caxqueiroz/quotes/blob/master/src/main/resources/import.sql[import.sql file] to +src/main/resources+. This is a rather large dataset containing all of the companies and their symbol codes in the NASDAQ and NSYE exchanges. This file will automatically be picked up by Hibernate and imported into the in-memory database.
+. Add this https://raw.githubusercontent.com/caxqueiroz/MigratingAMonolithApplicationToCloudNative/springtrader/sessions/data/session_03/lab_09/import.sql[import.sql file] to +src/main/resources+. This is a rather large dataset containing all of the companies and their symbol codes in the NASDAQ and NSYE exchanges. This file will automatically be picked up by Hibernate and imported into the in-memory database.
 
 . Build the application:
 +
