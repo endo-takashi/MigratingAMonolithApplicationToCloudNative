@@ -7,5 +7,5 @@ In this lab we'll identify the bounded contexts so that they can be easily extra
 
 . Look at the domain model and identify it can be split up. 
 +
-image::../../../Common/images/domain_model.png[] 
+image::../../../Common/images/data_model_st.png[]
 +
