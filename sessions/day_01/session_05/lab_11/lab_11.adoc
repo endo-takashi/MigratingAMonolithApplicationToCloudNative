@@ -3,13 +3,13 @@
 
 [abstract]
 --
-In this lab we'll begin the first subproject of our complete cloud-native application architecture: _SpringBox_, which implements the movie browsing portion of a ``Redbox-like'' website.
-This microservice will provide the _Movie Catalog Service_, which will allow us to browse movies by genre, browse an individual movie's details, and search for movies.
+In this lab we'll begin the first subproject of our complete cloud-native application architecture: _SpringTrader_, which implements the quotes fetching portion of a ``Trading-like'' application.
+This microservice will provide the _Quotes Service_, which will allow us to search for companies and symbols in order to make transactions.
 
-We'll be using the http://grouplens.org/datasets/movielens/[MovieLens] dataset, and we'll model it's `Movie` and `Genre` concepts in this microservice.
+We'll be using the http://dev.markitondemand.com[MarketItOnDemad] API, and we'll model it's `Quote` and `Company` concepts in this microservice.
 --
 
-NOTE: The completed code for this lab can be found at `$COURSE_HOME/day_01/session_05/lab_11/complete/springbox-catalog`.
+NOTE: The completed code for this lab can be found at `$COURSE_HOME/day_01/session_05/lab_11/complete/springtrader-quotes`.
 
 
 == Developing the Service
@@ -17,140 +17,216 @@ NOTE: The completed code for this lab can be found at `$COURSE_HOME/day_01/sessi
 . Change to the lab directory:
 +
 ----
-$ cd $COURSE_HOME/day_01/session_05/lab_11/initial/springbox-catalog
+$ cd $COURSE_HOME/day_01/session_05/lab_11/initial/springtrader-quotes
 ----
 +
 and import the project (via `pom.xml`) into your IDE of choice.
 
-. Start by adding a dependency on the http://hsqldb.org/[HyperSQL in-memory database] to `pom.xml`:
+
+. Create the package `io.pivotal.springtrader.quotes.domain` and in that package create the class `CompanyInfo`. Into that file you can paste the following source code, which models the MarketItOnDemand `CompanyInfo` concept:
 +
 ----
-<dependency>
-  <groupId>org.hsqldb</groupId>
-  <artifactId>hsqldb</artifactId>
-</dependency>
-----
 
-. Create the package `io.springbox.catalog.domain` and in that package create the class `Genre`. Into that file you can paste the following source code, which models the MovieLens `Genre` concept:
-+
-----
-@Entity
-@Table(name = "genres")
-public class Genre {
+public class CompanyInfo {
 
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    @Column(nullable = false)
-    private String mlId;
-
-    @Column(nullable = false)
-    private String name;
-
-    @ManyToMany(mappedBy = "genres")
-    @JsonIgnore
-    private List<Movie> movies;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getMlId() {
-        return mlId;
-    }
-
-    public void setMlId(String mlId) {
-        this.mlId = mlId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Movie> getMovies() {
-        return movies;
-    }
-
-    public void setMovies(List<Movie> movies) {
-        this.movies = movies;
-    }
+	@JsonProperty("Symbol")
+	private String symbol;
+	
+	@JsonProperty("Name")
+	private String name;
+	
+	@JsonProperty("Exchange")
+	private String exchange;
+	
+	public String getSymbol() {
+		return symbol;
+	}
+	public void setSymbol(String symbol) {
+		this.symbol = symbol;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getExchange() {
+		return exchange;
+	}
+	public void setExchange(String exchange) {
+		this.exchange = exchange;
+	}
+	
 }
 ----
 +
-Notice that we're using JPA annotations on the class and its fields. You'll need to use your IDE's features to add the appropriate import statements.
+Notice that we're using Json annotations on the class and its fields. You'll need to use your IDE's features to add the appropriate import statements.
 This class won't compile just yet, and we'll fix that in the next step.
 
-. Also in the `io.springbox.catalog.domain` package,  create the class `Movie`. Into that file you can paste the following source code, which models the MovieLens `Movie` concept:
+. Also in the `iio.pivotal.springtrader.quotes.domain` package,  create the class `Quote`. Into that file you can paste the following source code, which models the MarketItOnDemand `Quote` concept:
 +
 ----
-@Entity
-@Table(name = "movies")
-public class Movie {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Quote {
 
-    @Id
-    @GeneratedValue
-    private Long id;
+	@JsonProperty("Status")
+	private String status;
+	
+	@JsonProperty("Name")
+	private String name;
+	
+	@JsonProperty("Symbol")
+	private String symbol;
+	
+	@JsonProperty("LastPrice")
+	private Double lastPrice;
+	
+	@JsonProperty("Change")
+	private Double change;
+	
+	@JsonProperty("ChangePercent")
+	private Double changePercent;
+	
+	@JsonProperty("Timestamp")
+	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="EEE MMM dd HH:mm:ss zzzXXX yyyy", locale="ENGLISH")
+	private Date timestamp;
+	
+	@JsonProperty("MSDate")
+	private Double mSDate;
+	
+	@JsonProperty("MarketCap")
+	private Double marketCap;
+	
+	@JsonProperty("Volume")
+	private Integer volume;
+	
+	@JsonProperty("ChangeYTD")
+	private Double changeYTD;
+	
+	@JsonProperty("ChangePercentYTD")
+	private Double changePercentYTD;
+	
+	@JsonProperty("High")
+	private Double high;
+	
+	@JsonProperty("Low")
+	private Double low;
+	
+	@JsonProperty("Open")
+	private Double open;
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getSymbol() {
+		return symbol;
+	}
+	
+	public void setSymbol(String symbol) {
+		this.symbol = symbol;
+	}
+	public Double getLastPrice() {
+		return lastPrice;
+	}
+	
+	public void setLastPrice(Double lastPrice) {
+		this.lastPrice = lastPrice;
+	}
+	public Double getChangePercent() {
+		return changePercent;
+	}
+	
+	public void setChangePercent(Double changePercent) {
+		this.changePercent = changePercent;
+	}
+	public Date getTimestamp() {
+		return timestamp;
+	}
+	
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
+	}
+	public Double getmSDate() {
+		return mSDate;
+	}
+	
+	public void setmSDate(Double mSDate) {
+		this.mSDate = mSDate;
+	}
+	public Double getMarketCap() {
+		return marketCap;
+	}
+	
+	public void setMarketCap(Double marketCap) {
+		this.marketCap = marketCap;
+	}
+	public Integer getVolume() {
+		return volume;
+	}
+	
+	public void setVolume(Integer volume) {
+		this.volume = volume;
+	}
+	public Double getChangeYTD() {
+		return changeYTD;
+	}
+	
+	public void setChangeYTD(Double changeYTD) {
+		this.changeYTD = changeYTD;
+	}
+	public Double getChangePercentYTD() {
+		return changePercentYTD;
+	}
+	
+	public void setChangePercentYTD(Double changePercentYTD) {
+		this.changePercentYTD = changePercentYTD;
+	}
+	public Double getHigh() {
+		return high;
+	}
+	
+	public void setHigh(Double high) {
+		this.high = high;
+	}
+	public Double getLow() {
+		return low;
+	}
+	
+	public void setLow(Double low) {
+		this.low = low;
+	}
+	public Double getOpen() {
+		return open;
+	}
+	
+	public void setOpen(Double open) {
+		this.open = open;
+	}
 
-    @Column(nullable = false)
-    private String title;
+	public Double getChange() {
+		return change;
+	}
+	
+	public void setChange(Double change) {
+		this.change = change;
+	}
 
-    @Column(nullable = false)
-    private String mlId;
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "movies_genres",
-            joinColumns = {@JoinColumn(name = "movie_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "genre_id", referencedColumnName = "id")})
-    private List<Genre> genres;
-
-    @Column(nullable = false)
-    private int numberInStock;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public List<Genre> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(List<Genre> genres) {
-        this.genres = genres;
-    }
-
-    public String getMlId() {
-        return mlId;
-    }
-
-    public void setMlId(String mlId) {
-        this.mlId = mlId;
-    }
+	public String getStatus() {
+		return status;
+	}
+	
+	public void setStatus(String status) {
+		this.status = status;
+	}
 }
 ----
 +
 Once again, use the IDE to add the appropriate import statements.
-At this point, both `Movie` and `Genre` should compile.
+At this point, both `Quote` and `CompanyInfo` should compile.
 
 . Create the package `io.springbox.catalog.repositories` and in that package create the interface `GenreRepository`. Paste the following code and add appropriate imports:
 +
