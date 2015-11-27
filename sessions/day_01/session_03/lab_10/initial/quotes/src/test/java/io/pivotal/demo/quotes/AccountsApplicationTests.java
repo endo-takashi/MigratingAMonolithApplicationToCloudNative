@@ -1,4 +1,4 @@
-package org.example.cities;
+package io.pivotal.demo.quotes;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,9 +7,9 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = CitiesApplication.class)
+@SpringApplicationConfiguration(classes = QuotesApplication.class)
 @WebAppConfiguration
-public class CitiesApplicationTests {
+public class AccountsApplicationTests {
 
 	@Test
 	public void contextLoads() {
