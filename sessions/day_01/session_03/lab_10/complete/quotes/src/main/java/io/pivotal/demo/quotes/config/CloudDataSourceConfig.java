@@ -1,4 +1,4 @@
-package org.example.cities.config;
+package io.pivotal.demo.quotes.config;
 
 import org.springframework.cloud.config.java.AbstractCloudConfig;
 import org.springframework.cloud.service.PooledServiceConnectorConfig;
@@ -9,9 +9,13 @@ import org.springframework.context.annotation.Profile;
 
 import javax.sql.DataSource;
 
+/**
+ * Created by cq on 27/11/15.
+ */
 @Profile("cloud")
 @Configuration
 public class CloudDataSourceConfig extends AbstractCloudConfig {
+
     @Bean
     public DataSource dataSource() {
         PooledServiceConnectorConfig.PoolConfig poolConfig =
@@ -21,6 +25,6 @@ public class CloudDataSourceConfig extends AbstractCloudConfig {
                 new DataSourceConfig.ConnectionConfig("characterEncoding=UTF-8");
         DataSourceConfig serviceConfig = new DataSourceConfig(poolConfig, connectionConfig);
 
-        return connectionFactory().dataSource("cities-db", serviceConfig);
+        return connectionFactory().dataSource("quotes-db", serviceConfig);
     }
 }

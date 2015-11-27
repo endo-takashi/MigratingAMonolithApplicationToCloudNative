@@ -106,7 +106,7 @@ spring.jpa.hibernate.ddl-auto=create
 +
 [source,bash]
 ----
-$ ./gradlew assemble
+$ mvn clean package
 ----
 
 . Re-push the application:
@@ -120,14 +120,45 @@ $ cf push
 +
 [source,bash]
 ----
-$ curl http://cities-colorado-contemplator.nyc.fe.gopivotal.com/env
+$ curl -i http://companies.app.apj.cloud.fe.pivotal.io/env
 ...
-"VCAP_SERVICES":"{\"p-mysql\":[{\"name\":\"cities-db\",\"label\":\"p-mysql\",\"tags\":[\"mysql\",\"relational\"],\"plan\":\"100mb-dev\",\"credentials\":{\"hostname\":\"10.68.106.85\",\"port\":3306,\"name\":\"cf_7a5601f9_32e3_41e1_b523_ed5ca96418f5\",\"username\":\"Vm2Z9D848eagt4rq\",\"password\":\"JgstkF06p2SOTlZg\",\"uri\":\"mysql://Vm2Z9D848eagt4rq:JgstkF06p2SOTlZg@10.68.106.85:3306/cf_7a5601f9_32e3_41e1_b523_ed5ca96418f5?reconnect=true\",\"jdbcUrl\":\"jdbc:mysql://10.68.106.85:3306/cf_7a5601f9_32e3_41e1_b523_ed5ca96418f5?user=Vm2Z9D848eagt4rq&password=JgstkF06p2SOTlZg\"}}]}",
+"vcap" : {
+    "vcap.services.quotes-db.name" : "quotes-db",
+    "vcap.application.limits.mem" : "1024",
+    "vcap.services.quotes-db.label" : "p-mysql",
+    "vcap.services.quotes-db.credentials.hostname" : "******",
+    "vcap.services.quotes-db.tags[1]" : "relational",
+    "vcap.services.quotes-db.plan" : "100mb-dev",
+    "vcap.application.application_uris" : "companies.app.apj.cloud.fe.pivotal.io",
+    "vcap.application.uris" : "companies.app.apj.cloud.fe.pivotal.io",
+    "vcap.application.application_version" : "a5ba43ec-f6c3-4861-9a9e-648cfbbfa0cd",
+    "vcap.application.space_name" : "development",
+    "vcap.application.application_name" : "companies",
+    "vcap.application.name" : "companies",
+    "vcap.application.version" : "a5ba43ec-f6c3-4861-9a9e-648cfbbfa0cd",
+    "vcap.services.quotes-db.credentials.name" : "******",
+    "vcap.services.quotes-db.credentials.jdbcUrl" : "******",
+    "vcap.application.application_uris[0]" : "companies.app.apj.cloud.fe.pivotal.io",
+    "vcap.application.instance_id" : "fa18db7a-8fb8-4bc0-6b0d-f99973ec3b69",
+    "vcap.application.space_id" : "5c67f234-4ccb-4890-943a-9151c2cec1b1",
+    "vcap.services.quotes-db.tags" : "mysql,relational",
+    "vcap.services.quotes-db.credentials.password" : "******",
+    "vcap.application.limits.fds" : "16384",
+    "vcap.application.application_id" : "526662d6-a7ff-4bef-9f57-42293f5e6ceb",
+    "vcap.services.quotes-db.tags[0]" : "mysql",
+    "vcap.application.uris[0]" : "companies.app.apj.cloud.fe.pivotal.io",
+    "vcap.services.quotes-db.credentials.username" : "******",
+    "vcap.application.port" : "8080",
+    "vcap.application.instance_index" : "0",
+    "vcap.services.quotes-db.credentials.port" : "******",
+    "vcap.application.host" : "0.0.0.0",
+    "vcap.services.quotes-db.credentials.uri" : "******",
+    "vcap.application.limits.disk" : "1024",
 ...
 ----
 The application is now running against a MySQL database.
 
-== Customizing the +DataSource+
+== Customising the +DataSource+
 
 . You can customize the database connection that Spring Cloud creates with a few lines of code. Change the +dataSource+ method in +CloudDataSourceConfig+ to add some pooling and connection configuration:
 +
@@ -142,7 +173,7 @@ public DataSource dataSource() {
             new DataSourceConfig.ConnectionConfig("characterEncoding=UTF-8");
     DataSourceConfig serviceConfig = new DataSourceConfig(poolConfig, connectionConfig);
 
-    return connectionFactory().dataSource("cities-db", serviceConfig);
+    return connectionFactory().dataSource("quotes-db", serviceConfig);
 }
 ----
 
@@ -150,7 +181,7 @@ public DataSource dataSource() {
 +
 [source,bash]
 ----
-$ ./gradlew assemble
+$ mvn clean package
 ----
 
 . Re-push the application:
