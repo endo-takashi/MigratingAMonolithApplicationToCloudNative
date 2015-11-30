@@ -1,12 +1,12 @@
 :compat-mode:
-= Lab 11 - Build a Product Search/Details Service using MySQL
+= Lab 11 - Build a Quotes services using MongoDB
 
 [abstract]
 --
 In this lab we'll begin the first subproject of our complete cloud-native application architecture: _SpringTrader_, which implements the quotes fetching portion of a ``Trading-like'' application.
 This microservice will provide the _Quotes Service_, which will allow us to search for companies and symbols in order to make transactions.
 
-We'll be using the http://dev.markitondemand.com[MarketItOnDemad] API, and we'll model it's `Quote` and `Company` concepts in this microservice.
+We'll be using the http://dev.markitondemand.com[MarketItOnDemad] API, and we'll model it's `Quote` and `Company` as a Stock concept in this microservice.
 --
 
 NOTE: The completed code for this lab can be found at `$COURSE_HOME/day_01/session_05/lab_11/complete/springtrader-quotes`.
@@ -23,365 +23,388 @@ $ cd $COURSE_HOME/day_01/session_05/lab_11/initial/springtrader-quotes
 and import the project (via `pom.xml`) into your IDE of choice.
 
 
-. Create the package `io.pivotal.springtrader.quotes.domain` and in that package create the class `CompanyInfo`. Into that file you can paste the following source code, which models the MarketItOnDemand `CompanyInfo` concept:
+. Create the package `io.pivotal.springtrader.quotes.domain` and in that package create the class `Stock`. Into that file you can paste the following source code, which models the MarketItOnDemand `Company` and `Quote` concepts:
 +
 ----
 
-public class CompanyInfo {
+@Document(collection="LocalStocks")
+public class Stock {
 
-	@JsonProperty("Symbol")
-	private String symbol;
-	
-	@JsonProperty("Name")
-	private String name;
-	
-	@JsonProperty("Exchange")
-	private String exchange;
-	
-	public String getSymbol() {
-		return symbol;
-	}
-	public void setSymbol(String symbol) {
-		this.symbol = symbol;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getExchange() {
-		return exchange;
-	}
-	public void setExchange(String exchange) {
-		this.exchange = exchange;
-	}
-	
+    @Id
+    @JsonProperty("Symbol")
+    private String symbol;
+
+    @Indexed(expireAfterSeconds = 60)
+    @LastModifiedDate
+    @JsonIgnore
+    private DateTime lastModifiedDate;
+
+    @Indexed()
+    @JsonProperty("Name")
+    private String companyName;
+
+    @JsonProperty("Exchange")
+    private String exchange;
+
+    @JsonProperty("Status")
+    private String status;
+
+    @JsonProperty("LastPrice")
+    private Double lastPrice;
+
+    @JsonProperty("Change")
+    private Double change;
+
+    @JsonProperty("ChangePercent")
+    private Double changePercent;
+
+    @JsonProperty("Timestamp")
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="EEE MMM dd HH:mm:ss zzzXXX yyyy", locale="ENGLISH")
+    private Date timestamp;
+
+    @JsonProperty("MSDate")
+    private Double mSDate;
+
+    @JsonProperty("MarketCap")
+    private Double marketCap;
+
+    @JsonProperty("Volume")
+    private Integer volume;
+
+    @JsonProperty("ChangeYTD")
+    private Double changeYTD;
+
+    @JsonProperty("ChangePercentYTD")
+    private Double changePercentYTD;
+
+    @JsonProperty("High")
+    private Double high;
+
+    @JsonProperty("Low")
+    private Double low;
+
+    @JsonProperty("Open")
+    private Double open;
+
+    public DateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(DateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getExchange() {
+        return exchange;
+    }
+
+    public void setExchange(String exchange) {
+        this.exchange = exchange;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Double getLastPrice() {
+        return lastPrice;
+    }
+
+    public void setLastPrice(Double lastPrice) {
+        this.lastPrice = lastPrice;
+    }
+
+    public Double getChange() {
+        return change;
+    }
+
+    public void setChange(Double change) {
+        this.change = change;
+    }
+
+    public Double getChangePercent() {
+        return changePercent;
+    }
+
+    public void setChangePercent(Double changePercent) {
+        this.changePercent = changePercent;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public Double getmSDate() {
+        return mSDate;
+    }
+
+    public void setmSDate(Double mSDate) {
+        this.mSDate = mSDate;
+    }
+
+    public Double getMarketCap() {
+        return marketCap;
+    }
+
+    public void setMarketCap(Double marketCap) {
+        this.marketCap = marketCap;
+    }
+
+    public Integer getVolume() {
+        return volume;
+    }
+
+    public void setVolume(Integer volume) {
+        this.volume = volume;
+    }
+
+    public Double getChangeYTD() {
+        return changeYTD;
+    }
+
+    public void setChangeYTD(Double changeYTD) {
+        this.changeYTD = changeYTD;
+    }
+
+    public Double getChangePercentYTD() {
+        return changePercentYTD;
+    }
+
+    public void setChangePercentYTD(Double changePercentYTD) {
+        this.changePercentYTD = changePercentYTD;
+    }
+
+    public Double getHigh() {
+        return high;
+    }
+
+    public void setHigh(Double high) {
+        this.high = high;
+    }
+
+    public Double getLow() {
+        return low;
+    }
+
+    public void setLow(Double low) {
+        this.low = low;
+    }
+
+    public Double getOpen() {
+        return open;
+    }
+
+    public void setOpen(Double open) {
+        this.open = open;
+    }
+
+    @Override
+    public String toString() {
+        return "Stock{" +
+                "symbol='" + symbol + '\'' +
+                ", companyName='" + companyName + '\'' +
+                ", exchange='" + exchange + '\'' +
+                ", status='" + status + '\'' +
+                ", lastPrice=" + lastPrice +
+                ", change=" + change +
+                ", changePercent=" + changePercent +
+                ", timestamp=" + timestamp +
+                ", mSDate=" + mSDate +
+                ", marketCap=" + marketCap +
+                ", volume=" + volume +
+                ", changeYTD=" + changeYTD +
+                ", changePercentYTD=" + changePercentYTD +
+                ", high=" + high +
+                ", low=" + low +
+                ", open=" + open +
+                '}';
+    }
 }
 ----
 +
 Notice that we're using Json annotations on the class and its fields. You'll need to use your IDE's features to add the appropriate import statements.
 This class won't compile just yet, and we'll fix that in the next step.
 
-. Also in the `iio.pivotal.springtrader.quotes.domain` package,  create the class `Quote`. Into that file you can paste the following source code, which models the MarketItOnDemand `Quote` concept:
-+
-----
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Quote {
-
-	@JsonProperty("Status")
-	private String status;
-	
-	@JsonProperty("Name")
-	private String name;
-	
-	@JsonProperty("Symbol")
-	private String symbol;
-	
-	@JsonProperty("LastPrice")
-	private Double lastPrice;
-	
-	@JsonProperty("Change")
-	private Double change;
-	
-	@JsonProperty("ChangePercent")
-	private Double changePercent;
-	
-	@JsonProperty("Timestamp")
-	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="EEE MMM dd HH:mm:ss zzzXXX yyyy", locale="ENGLISH")
-	private Date timestamp;
-	
-	@JsonProperty("MSDate")
-	private Double mSDate;
-	
-	@JsonProperty("MarketCap")
-	private Double marketCap;
-	
-	@JsonProperty("Volume")
-	private Integer volume;
-	
-	@JsonProperty("ChangeYTD")
-	private Double changeYTD;
-	
-	@JsonProperty("ChangePercentYTD")
-	private Double changePercentYTD;
-	
-	@JsonProperty("High")
-	private Double high;
-	
-	@JsonProperty("Low")
-	private Double low;
-	
-	@JsonProperty("Open")
-	private Double open;
-	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getSymbol() {
-		return symbol;
-	}
-	
-	public void setSymbol(String symbol) {
-		this.symbol = symbol;
-	}
-	public Double getLastPrice() {
-		return lastPrice;
-	}
-	
-	public void setLastPrice(Double lastPrice) {
-		this.lastPrice = lastPrice;
-	}
-	public Double getChangePercent() {
-		return changePercent;
-	}
-	
-	public void setChangePercent(Double changePercent) {
-		this.changePercent = changePercent;
-	}
-	public Date getTimestamp() {
-		return timestamp;
-	}
-	
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
-	}
-	public Double getmSDate() {
-		return mSDate;
-	}
-	
-	public void setmSDate(Double mSDate) {
-		this.mSDate = mSDate;
-	}
-	public Double getMarketCap() {
-		return marketCap;
-	}
-	
-	public void setMarketCap(Double marketCap) {
-		this.marketCap = marketCap;
-	}
-	public Integer getVolume() {
-		return volume;
-	}
-	
-	public void setVolume(Integer volume) {
-		this.volume = volume;
-	}
-	public Double getChangeYTD() {
-		return changeYTD;
-	}
-	
-	public void setChangeYTD(Double changeYTD) {
-		this.changeYTD = changeYTD;
-	}
-	public Double getChangePercentYTD() {
-		return changePercentYTD;
-	}
-	
-	public void setChangePercentYTD(Double changePercentYTD) {
-		this.changePercentYTD = changePercentYTD;
-	}
-	public Double getHigh() {
-		return high;
-	}
-	
-	public void setHigh(Double high) {
-		this.high = high;
-	}
-	public Double getLow() {
-		return low;
-	}
-	
-	public void setLow(Double low) {
-		this.low = low;
-	}
-	public Double getOpen() {
-		return open;
-	}
-	
-	public void setOpen(Double open) {
-		this.open = open;
-	}
-
-	public Double getChange() {
-		return change;
-	}
-	
-	public void setChange(Double change) {
-		this.change = change;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-	
-	public void setStatus(String status) {
-		this.status = status;
-	}
-}
-----
 +
 Once again, use the IDE to add the appropriate import statements.
-At this point, both `Quote` and `CompanyInfo` should compile.
+At this point, `Stock` should compile.
 
-. Create the package `io.springbox.catalog.repositories` and in that package create the interface `GenreRepository`. Paste the following code and add appropriate imports:
+. Create the package `io.springtrader.quotes.repositories` and in that package create the interface `StockRepository`. Paste the following code and add appropriate imports:
 +
 ----
-public interface GenreRepository extends CrudRepository<Genre, Long> {
-    Genre findByMlId(String mlId);
+@Repository
+public interface StockRepository extends MongoRepository<Stock, String>{
+
+    List<Stock> findByCompanyNameLike(String companyName);
 }
 ----
 
-. Also in the `io.springbox.catalog.repositories` package,  create the interface `MovieRepository`. Paste the following code and add appropriate imports:
-+
-----
-public interface MovieRepository extends CrudRepository<Movie, Long> {
-    public Movie findByMlId(String mlId);
-}
-----
-
-. Create the package `io.springbox.catalog.controllers` and in that package create the class `GenreController`. Paste the following code and add appropriate imports:
+. Create the package `io.springtrader.quotes.controllers` and in that package create the class `QuoteController`. Paste the following code and add appropriate imports:
 +
 ----
 @RestController
-public class GenreController {
+public class QuoteController {
 
-    @Autowired
-    GenreRepository genreRepository;
+	private static final Logger logger = LoggerFactory.getLogger(QuoteController.class);
 
-    @RequestMapping(value = "/genres", method = RequestMethod.GET)
-    public Iterable<Genre> genres() {
-        return genreRepository.findAll();
+	/**
+	 * The quoteService to delegate calls to.
+	 */
+	@Autowired
+	private QuoteService quoteService;
+
+	/**
+	 * Retrives the current quote for the given symbol.
+	 *
+	 * @param symbol The symbol to retrieve the quote for.
+	 * @return The Stock
+	 * @throws SymbolNotFoundException if the symbol is not valid.
+	 */
+	@RequestMapping(value = "/quote/{symbol}", method = RequestMethod.GET)
+	public ResponseEntity<Stock> getQuote(@PathVariable("symbol") final String symbol) throws Exception {
+		logger.debug("QuoteController.getQuote: retrieving quote for: " + symbol);
+		Stock stock = quoteService.getQuote(symbol);
+		logger.info(String.format("Retrieved symbol: %s with quote %s", symbol, stock));
+		return new ResponseEntity<>(stock, getNoCacheHeaders(), HttpStatus.OK);
+	}
+
+	/**
+	 * Searches for companies that have a name or symbol matching the parameter.
+	 *
+	 * @param name The name or symbol to search for.
+	 * @return The list of companies that match the search parameter.
+	 */
+	@RequestMapping(value = "/company/{name}", method = RequestMethod.GET)
+	public ResponseEntity<List<Stock>> getCompanies(@PathVariable("name") final String name) {
+		logger.debug("QuoteController.getCompanies: retrieving companies for: " + name);
+		List<Stock> companies = quoteService.companiesByNameOrSymbol(name);
+		logger.info(String.format("Retrieved companies with search parameter: %s - list: {}", name), companies);
+		return new ResponseEntity<>(companies, HttpStatus.OK);
+	}
+
+	/**
+	 * Generates HttpHeaders that have the no-cache set.
+	 * @return HttpHeaders.
+	 */
+	private HttpHeaders getNoCacheHeaders() {
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.set("Cache-Control", "no-cache");
+		return responseHeaders;
+	}
+
+	/**
+	 * Handles the response to the client if there is any exception during the processing of HTTP requests.
+	 *
+	 * @param e The exception thrown during the processing of the request.
+	 * @param response The HttpResponse object.
+	 * @throws IOException
+	 */
+	@ExceptionHandler({Exception.class})
+	public void handleException(Exception e, HttpServletResponse response) throws IOException {
+		logger.error("Handle Error: " + e.getMessage());
+		response.sendError(HttpStatus.BAD_REQUEST.value(), "ERROR: " + e.getMessage());
+	}
+}
+----
+
+. Create the package `io.springtrader.quotes.config`, in it create the class `MongoLocalConfig`. This class represents the local configuration for MongoDB access. In this case, we will use an in-memory mongodb-like database (fongo).
+Paste the following code and add appropriate imports:
++
+----
+@Configuration
+@Profile("local")
+@EnableMongoAuditing
+@EnableMongoRepositories(basePackages = {"io.pivotal.springtrader.quotes"})
+public class MongoLocalConfig extends AbstractMongoConfiguration{
+
+    @Bean
+    public MongoTemplate mongoTemplate(MongoDbFactory mongoDbFactory) {
+        return new MongoTemplate(mongoDbFactory);
     }
 
-    @RequestMapping(value = "/genres/{mlId}", method = RequestMethod.GET)
-    public Genre genre(@PathVariable String mlId) {
-        return genreRepository.findByMlId(mlId);
+    @Override
+    protected String getDatabaseName() {
+        return "STOCKS";
+    }
+
+    @Override
+    public Mongo mongo() throws Exception {
+        Fongo fongo = new Fongo("mongo server 1");
+        return fongo.getMongo();
+//        return new MongoClient("localhost", 27017);
+    }
+
+    @Override
+    protected String getMappingBasePackage() {
+        return "io.pivotal.springtrader.quotes.domain";
     }
 }
 ----
 
-. Also in the `io.springbox.catalog.controllers` package,  create the class `MovieController`. Paste the following code and add appropriate imports:
+. Take a look at `src/main/resources/data.json`, which has already been provided in your project.
+It contains a stocks dataset to be imported that we'll be using (excerpt here):
 +
 ----
-@RestController
-public class MovieController {
-
-    @Autowired
-    MovieRepository movieRepository;
-
-    @RequestMapping(value = "/movies", method = RequestMethod.GET)
-    public Iterable<Movie> movies() {
-        return movieRepository.findAll();
-    }
-
-    @RequestMapping(value = "/movies/{mlId}", method = RequestMethod.GET)
-    public Movie movie(@PathVariable String mlId) {
-        return movieRepository.findByMlId(mlId);
-    }
-}
-----
-
-. Add the `@EnableJpaRepositories` annotation to `io.springbox.catalog.SpringboxCatalogApplication`:
-+
-----
-@SpringBootApplication
-@EnableJpaRepositories // <--- Add this!
-public class SpringboxCatalogApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(SpringboxCatalogApplication.class, args);
-    }
-}
-----
-
-. Take a look at `src/main/resources/import.sql`, which has already been provided in your project.
-It contains the MovieLens dataset imports that we'll be using (excerpt here):
-+
-----
-insert into genres (name,ml_id,id) values ('unknown',0,1000);
-insert into genres (name,ml_id,id) values ('Action',1,1001);
-insert into genres (name,ml_id,id) values ('Adventure',2,1002);
-insert into genres (name,ml_id,id) values ('Animation',3,1003);
-insert into genres (name,ml_id,id) values ('Children''s',4,1004);
-insert into genres (name,ml_id,id) values ('Comedy',5,1005);
-insert into genres (name,ml_id,id) values ('Crime',6,1006);
-insert into genres (name,ml_id,id) values ('Documentary',7,1007);
-insert into genres (name,ml_id,id) values ('Drama',8,1008);
-insert into genres (name,ml_id,id) values ('Fantasy',9,1009);
-insert into genres (name,ml_id,id) values ('Film-Noir',10,1010);
-insert into genres (name,ml_id,id) values ('Horror',11,1011);
-insert into genres (name,ml_id,id) values ('Musical',12,1012);
-insert into genres (name,ml_id,id) values ('Mystery',13,1013);
-insert into genres (name,ml_id,id) values ('Romance',14,1014);
-insert into genres (name,ml_id,id) values ('Sci-Fi',15,1015);
-insert into genres (name,ml_id,id) values ('Thriller',16,1016);
-insert into genres (name,ml_id,id) values ('War',17,1017);
-insert into genres (name,ml_id,id) values ('Western',18,1018);
-
-insert into movies(id,title,ml_id,number_in_stock) values (1000,'Toy Story (1995)','1',10);
-insert into movies_genres(movie_id, genre_id) values (1000,1003);
-insert into movies_genres(movie_id, genre_id) values (1000,1004);
-insert into movies_genres(movie_id, genre_id) values (1000,1005);
-insert into movies(id,title,ml_id,number_in_stock) values (1001,'GoldenEye (1995)','2',10);
-insert into movies_genres(movie_id, genre_id) values (1001,1001);
-insert into movies_genres(movie_id, genre_id) values (1001,1002);
-insert into movies_genres(movie_id, genre_id) values (1001,1016);
-insert into movies(id,title,ml_id,number_in_stock) values (1002,'Four Rooms (1995)','3',10);
-insert into movies_genres(movie_id, genre_id) values (1002,1016);
-insert into movies(id,title,ml_id,number_in_stock) values (1003,'Get Shorty (1995)','4',10);
-insert into movies_genres(movie_id, genre_id) values (1003,1001);
-insert into movies_genres(movie_id, genre_id) values (1003,1005);
-insert into movies_genres(movie_id, genre_id) values (1003,1008);
+{"LastPrice": 9.77, "Volume": 2000, "MSDate": 42312, "Low": 9.77, "Timestamp": "Wed Nov 4 00:00:00 UTC-05:00 2015",
+ "Open": 9.77, "Change": -0.0500000000000007, "ChangePercent": -0.509164969450109, "Exchange": "NASDAQ", "ChangeYTD": 9.4,
+  "Status": "SUCCESS", "CompanyName": "1347 Capital Corp.", "MarketCap": 58111960,
+  "Symbol": "TFSC", "ChangePercentYTD": 3.93617021276595, "High": 9.77}
 ----
 
 . Build the JAR:
 +
 ----
-$ mvn package
+$ mvn clean package
 ----
 
 . Run the application:
 +
 ----
-$ java -jar target/springbox-catalog-0.0.1-SNAPSHOT.jar
+$ java -jar target/quotes-1.0.0-SNAPSHOT.jar
 ----
 
 . Access the application using `curl` to make sure everything is working properly:
 +
 ----
-$ curl -i localhost:8080/movies/1
+$ curl -i localhost:8086/quotes/msft
 HTTP/1.1 200 OK
-Content-Type: application/json;charset=UTF-8Date: Mon, 16 Feb 2015 03:38:42 GMTServer: Apache-Coyote/1.1
-Transfer-Encoding: chunked
-X-Application-Context: application
+Cache-Control: no-cache
+Content-Type: application/json;charset=UTF-8
+Date: Mon, 30 Nov 2015 10:51:36 GMT
+Server: Apache-Coyote/1.1
+X-Application-Context: quotes:cloud:0
+X-Cf-Requestid: a5fc51f7-de23-47e1-5459-d56508826bb8
+Content-Length: 365
+Connection: close
 
-{
-    "genres": [
-        {
-            "id": 1003,
-            "mlId": "3",
-            "name": "Animation"
-        },
-        {
-            "id": 1004,
-            "mlId": "4",
-            "name": "Children's"
-        },
-        {
-            "id": 1005,
-            "mlId": "5",
-            "name": "Comedy"
-        }
-    ],
-    "id": 1000,
-    "mlId": "1",
-    "title": "Toy Story (1995)"
-}
+{"Symbol":"MSFT","Name":"Microsoft Corp","Exchange":"NASDAQ","Status":"SUCCESS","LastPrice":53.95,
+"Change":0.260000000000005,"ChangePercent":0.484261501210663,"Timestamp":"Fri Nov 27 17:59:00 GMTZ 2015",
+"MSDate":42335.5409722222,"MarketCap":4.3094790635E11,"Volume":716782,"ChangeYTD":46.45,
+"ChangePercentYTD":16.1463939720129,"High":54.08,"Low":53.81,"Open":53.94}
 ----
 
 == Preparing for Cloud Foundry
