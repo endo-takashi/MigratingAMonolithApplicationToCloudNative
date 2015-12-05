@@ -1,139 +1,573 @@
 :compat-mode:
-= Lab 12 - Build a Product Review Service with MongoDB
+= Lab 12 - Build Accounts Service with Mysql/H2
 
 [abstract]
 --
-In this lab we'll begin the second subproject of our complete cloud-native application architecture: _SpringBox_, which implements the movie browsing portion of a ``Redbox-like'' website.
-This microservice will provide the _Movie Review Service_, which will allow us to create and browse reviews for movies.
-
-We're still using the http://grouplens.org/datasets/movielens/[MovieLens] dataset, and here we'll link back to movies in the dataset by their `mlId` or ``MovieLens ID.''
+In this lab we'll begin the second subproject of our complete cloud-native application architecture: _SpringTrader_, which implements the quotes fetching portion of a ``Trading-like'' application.
+This microservice will provide the _Accounts Service_, which will allow us to create and browse user accounts.
+We'll be using a relational model to represent the user accounts.
 --
 
-NOTE: The completed code for this lab can be found at `$COURSE_HOME/day_01/session_05/lab_12/complete/springbox-reviews`.
+NOTE: The completed code for this lab can be found at `$COURSE_HOME/day_01/session_05/lab_12/complete/springtrader-accounts`.
 
 == Developing the Service
 
 . Change to the lab directory:
 +
 ----
-$ cd $COURSE_HOME/day_01/session_05/lab_12/initial/springbox-reviews
+$ cd $COURSE_HOME/day_01/session_05/lab_13/initial/springtrader-accounts
 ----
 +
 and import the project (via `pom.xml`) into your IDE of choice.
 
-. Create the package `io.springbox.reviews.domain` and in that package create the class `Review`. Into that file you can paste the following source code:
+. Create the package `io.springtrader.accounts.domain` and in that package create the class `Account`. Into that file you can paste the following source code:
 +
 ----
-public class Review {
-    @Id
-    private String id;
+@Entity
+@Table(name = "ACCOUNT")
+public class Account implements Serializable {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -3057275461420965784L;
 
-    @Indexed
-    private String mlId;
+	@Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    @Column(name = "id")
+	private Integer id;
 
-    @Indexed
-    private String userName;
+	@Column(name = "address", length = 250)
+    private String address;
 
-    private String title;
+	@Column(name = "passwd", length = 250)
+    private String passwd;
 
-    private String review;
+	@Column(name = "userid", length = 250, unique = true)
+    @NotNull
+    private String userid;
 
-    private int rating;
+	@Column(name = "email", length = 250)
+    private String email;
 
-    public String getId() {
-        return id;
-    }
+	@Column(name = "creditcard", length = 250)
+    private String creditcard;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	@Column(name = "fullname", length = 250)
+    private String fullname;
 
-    public String getMlId() {
-        return mlId;
-    }
+	@Column(name = "authtoken", length = 100)
+    private String authtoken;
 
-    public void setMlId(String mlId) {
-        this.mlId = mlId;
-    }
+	@Column(name = "creationdate")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "LL")
+    private Date creationdate;
 
-    public String getUserName() {
-        return userName;
-    }
+	@Column(name = "openbalance", precision = 14, scale = 2)
+    private BigDecimal openbalance;
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+	@Column(name = "logoutcount")
+	@NotNull
+    private Integer logoutcount;
 
-    public String getTitle() {
-        return title;
-    }
+	@Column(name = "balance", precision = 14, scale = 2)
+    private BigDecimal balance;
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	@Column(name = "lastlogin")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "LL")
+    private Date lastlogin;
 
-    public String getReview() {
-        return review;
-    }
+	@Column(name = "logincount")
+	@NotNull
+    private Integer logincount;
 
-    public void setReview(String review) {
-        this.review = review;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public int getRating() {
-        return rating;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getPasswd() {
+		return passwd;
+	}
+
+	public void setPasswd(String passwd) {
+		this.passwd = passwd;
+	}
+
+	public String getUserid() {
+		return userid;
+	}
+
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getCreditcard() {
+		return creditcard;
+	}
+
+	public void setCreditcard(String creditcard) {
+		this.creditcard = creditcard;
+	}
+
+	public String getFullname() {
+		return fullname;
+	}
+
+	public void setFullname(String fullname) {
+		this.fullname = fullname;
+	}
+
+	public Date getCreationdate() {
+		return creationdate;
+	}
+
+	public void setCreationdate(Date creationdate) {
+		this.creationdate = creationdate;
+	}
+
+	public BigDecimal getOpenbalance() {
+		return openbalance;
+	}
+
+	public void setOpenbalance(BigDecimal openbalance) {
+		this.openbalance = openbalance;
+	}
+
+	public Integer getLogoutcount() {
+		return logoutcount;
+	}
+
+	public void setLogoutcount(Integer logoutcount) {
+		this.logoutcount = logoutcount;
+	}
+
+	public BigDecimal getBalance() {
+		return balance;
+	}
+
+	public void setBalance(BigDecimal balance) {
+		this.balance = balance;
+	}
+
+	public Date getLastlogin() {
+		return lastlogin;
+	}
+
+	public void setLastlogin(Date lastlogin) {
+		this.lastlogin = lastlogin;
+	}
+
+	public Integer getLogincount() {
+		return logincount;
+	}
+
+	public void setLogincount(Integer logincount) {
+		this.logincount = logincount;
+	}
+
+	public String getAuthtoken() {
+		return authtoken;
+	}
+
+	public void setAuthtoken(String authtoken) {
+		this.authtoken = authtoken;
+	}
 }
 ----
 
-. Create the package `io.springbox.reviews.repositories` and in that package create the interface `ReviewRepository`. Into that file you can paste the following source code:
+. Also in the package `io.springtrader.accounts.domain` create the class `AuthenticationRequest`. Into that file you can paste the following source code:
 +
 ----
-public interface ReviewRepository extends MongoRepository<Review, String> {
-    Iterable<Review> findByMlId(String mlId);
+public class AuthenticationRequest {
+	private String username;
+	private String password;
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+}
+
+----
+
+. Create the package `io.springtrader.accounts.repositories` and in that package create the interface `AccountRepository`. Into that file you can paste the following source code:
++
+----
+public interface AccountRepository extends CrudRepository<Account,Integer> {
+
+	Account findByUseridAndPasswd(String userId, String passwd);
+
+	Account findByUserid(String userId);
+
+	Account findByAuthtoken(String authtoken);
 }
 ----
 
-. Create the package `io.springbox.reviews.controllers` and in that package create the interface `ReviewController`. Into that file you can paste the following source code:
+. Create the package `io.springtrader.accounts.controllers` and in that package create the class `AccountController`. Into that file you can paste the following source code:
 +
 ----
 @RestController
-public class ReviewController {
+public class AccountController {
 
-    @Autowired
-    ReviewRepository reviewRepository;
+	private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
-    @RequestMapping(value = "/reviews", method = RequestMethod.GET)
-    public Iterable<Review> reviews() {
-        return reviewRepository.findAll();
-    }
+	@Autowired
+	private AccountService accountService;
 
-    @RequestMapping(value = "/reviews/{mlId}", method = RequestMethod.GET)
-    public Iterable<Review> reviews(@PathVariable String mlId) {
-        return reviewRepository.findByMlId(mlId);
-    }
+	@RequestMapping(value = "/account/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Account> find(@PathVariable("id") final int id) {
 
-    @RequestMapping(value = "/reviews", method = RequestMethod.POST)
-    public ResponseEntity<Review> createReview(@RequestBody Review review) {
-        reviewRepository.save(review);
-        return new ResponseEntity<>(review, HttpStatus.CREATED);
-    }
+		logger.info("AccountController.find: id=" + id);
+
+		Account accountResponse = accountService.getAccount(id);
+		return new ResponseEntity<>(accountResponse,getNoCacheHeaders(), HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/account/", method = RequestMethod.GET)
+	public ResponseEntity<Account> findAccount(@RequestParam(value="name") final String id) {
+
+		logger.info("AccountController.getAccount: id=" + id);
+
+		Account accountResponse = accountService.getAccount(id);
+		return new ResponseEntity<>(accountResponse,getNoCacheHeaders(), HttpStatus.OK);
+
+	}
+
+
+	@RequestMapping(value = "/account", method = RequestMethod.POST)
+	public ResponseEntity<String> save(@RequestBody Account accountRequest, UriComponentsBuilder builder) {
+
+		logger.debug("AccountController.save: userId=" + accountRequest.getUserid());
+
+		Integer accountProfileId = accountService.saveAccount(accountRequest);
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.setLocation(builder.path("/account/{id}").buildAndExpand(accountProfileId).toUri());
+
+		return new ResponseEntity<>(responseHeaders, HttpStatus.CREATED);
+	}
+
+	@RequestMapping(value = "/accounts/{userId}/decreaseBalance/{amount:.+}", method = RequestMethod.GET)
+	public ResponseEntity<Double> decreaseBalance(@PathVariable("userId") final String userId, @PathVariable("amount") final double amount) {
+
+		logger.debug("AccountController.decreaseBalance: id='" + userId + "', amount='"+amount+"'");
+
+		if (amount > 0.0) {
+
+            double currentBalance = accountService.getAccount(userId).getBalance().doubleValue();
+			double newBalance = accountService.decreaseBalance(amount,userId);
+
+            if(currentBalance != newBalance) return new ResponseEntity<>(newBalance,getNoCacheHeaders(), HttpStatus.OK);
+
+            else return new ResponseEntity<>(currentBalance,getNoCacheHeaders(), HttpStatus.EXPECTATION_FAILED);
+
+		} else {
+
+			return new ResponseEntity<>(getNoCacheHeaders(), HttpStatus.EXPECTATION_FAILED);
+		}
+
+	}
+
+	@RequestMapping(value = "/accounts/{userId}/increaseBalance/{amount:.+}", method = RequestMethod.GET)
+	public ResponseEntity<Double> increaseBalance(@PathVariable("userId") final String userId, @PathVariable("amount") final double amount) {
+
+        logger.debug("AccountController.increaseBalance: id='" + userId + "', amount='"+amount+"'");
+
+        if (amount > 0.0) {
+
+            double currentBalance = accountService.increaseBalance(amount, userId);
+            logger.debug("AccountController.increaseBalance: current balance='" + currentBalance + "'.");
+            return new ResponseEntity<>(currentBalance, getNoCacheHeaders(),HttpStatus.OK);
+
+        } else {
+
+            //amount can not be negative for increaseBalance, please use decreaseBalance
+            return new ResponseEntity<>(accountService.getAccount(userId).getBalance().doubleValue(), getNoCacheHeaders(),
+                    HttpStatus.EXPECTATION_FAILED);
+        }
+
+	}
+
+	private HttpHeaders getNoCacheHeaders() {
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.set("Cache-Control", "no-cache");
+		return responseHeaders;
+	}
 }
 ----
 
-. Add the `@EnableMongoRepositories` annotation to `io.springbox.reviews.SpringboxReviewsApplication`:
+. Also in the package `io.springtrader.accounts.controllers` create the class `AuthenticationController`. Into that file you can paste the following source code:
++
+----
+@RestController
+public class AuthenticationController {
+
+	private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
+	/**
+	 * the service to delegate to.
+	 */
+	@Autowired
+	private AccountService service;
+
+	/**
+	 * Logins in the user from the authentication request passed in body.
+	 *
+	 * @param authenticationRequest The request with username and password.
+	 * @return HTTP status CREATED if successful.
+	 */
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@ResponseStatus( HttpStatus.CREATED )
+	@ResponseBody
+	public Map<String, Object> login(@RequestBody AuthenticationRequest authenticationRequest) {
+		logger.debug("AuthenticationController.login: login request for username: " + authenticationRequest.getUsername());
+		Map<String, Object> authenticationResponse = this.service.login(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+		return authenticationResponse;// authToken and accountId;
+	}
+
+	/**
+	 * Logs out the user.
+	 *
+	 * @param userId The user id to log out.
+	 */
+	@RequestMapping(value = "/logout/{user}", method = RequestMethod.GET)
+	@ResponseStatus( HttpStatus.OK )
+	@ResponseBody
+	public void logout(@PathVariable("user") final String userId) {
+		logger.debug("AuthenticationController.logout: logout request for userid: " + userId);
+		this.service.logout(userId);
+	}
+
+	/**
+	 * To ensure no one does login through HTTP GET.
+	 * returns METHOD_NOT_ALLOWED.
+	 */
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	@ResponseStatus( HttpStatus.METHOD_NOT_ALLOWED )
+	public void get() {
+
+	}
+}
+----
+
+.  Create the package `io.springtrader.accounts.services` create the class `AccountService`. Into that file you can paste the following source code:
++
+----
+@Service
+public class AccountService {
+
+	private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
+
+	@Autowired
+	AccountRepository accountRepository;
+
+	public Account getAccount(Integer id) {
+
+		logger.debug("AccountService.getAccount: id=" + id);
+
+		Account account = accountRepository.findOne(id);
+		if (account == null) {
+			logger.warn("AccountService.getAccount: could not find account with id: " + id);
+			throw new NoRecordsFoundException();
+		}
+
+		logger.info(String.format("AccountService.getAccount - retrieved account with id: %s. Payload is: %s", id, account));
+
+		return account;
+	}
+
+	public Account getAccount(String id) {
+
+		logger.debug("AccountService.getAccount: id=" + id);
+
+		Account account = accountRepository.findByUserid(id);
+		if (account == null) {
+			logger.warn("AccountService.getAccount: could not find account with id: " + id);
+			throw new NoRecordsFoundException();
+		}
+
+		logger.info(String.format("AccountService.getAccount - retrieved account with id: %s. Payload is: %s", id, account));
+
+		return account;
+	}
+
+	@Cacheable(value = "authorizationCache")
+	public Account findAccountProfileByAuthToken(String token) {
+		logger.debug("AccountService.findAccountProfileByAuthToken looking for authToken: " + token);
+		if (token == null) {
+			//TODO: no point in checking database. throw exception here.
+			logger.error("AccountService.findAccountProfileByAuthToken(): token is null");
+			throw new AuthenticationException("Authorization Token is null");
+		}
+		Account accountProfile = null;
+		accountProfile = accountRepository.findByAuthtoken(token);
+		if (accountProfile == null) {
+			logger.error("AccountService.findAccountProfileByAuthToken(): accountProfile is null for token="
+					+ token);
+			throw new AuthenticationException("Authorization Token not found");
+		}
+
+		return accountProfile;
+	}
+
+	public Integer saveAccount(Account accountRequest) {
+
+		logger.debug("AccountService.saveAccount:" + accountRequest.toString());
+		// need to set some stuff that cannot be null!
+		if (accountRequest.getLogincount() == null) accountRequest.setLogincount(0);
+		if (accountRequest.getLogoutcount() == null) accountRequest.setLogoutcount(0);
+		if(accountRequest.getCreationdate() == null) accountRequest.setCreationdate(new Date());
+
+
+		Account account = accountRepository.save(accountRequest);
+		logger.info("AccountService.saveAccount: account saved: " + account);
+		return account.getId();
+	}
+
+	public Map<String, Object> login(String username, String password) {
+		logger.debug("login in user: " + username);
+		Map<String, Object> loginResponse;
+		Account account = accountRepository.findByUseridAndPasswd(username, password);
+		if (account != null) {
+			logger.debug("Found Account for user: " + username);
+			account.setAuthtoken(UUID.randomUUID().toString());
+			account.setLogincount(account.getLogincount() + 1);
+			account.setLastlogin(new Date());
+			account = accountRepository.save(account); // persist new auth token and last
+												// login
+			loginResponse = new HashMap<>();
+
+			loginResponse.put("authToken", account.getAuthtoken());
+			loginResponse.put("accountid", account.getId());
+
+			logger.info("AccountService.login success for " + username
+					+ " username::token=" + loginResponse.get("authToken"));
+
+		} else {
+			logger.warn("AccountService.login failed to find username="
+					+ username + " password=" + password);
+			throw new AuthenticationException("Login failed for user: "
+					+ username);
+		}
+		return loginResponse;
+	}
+
+	public Account logout(String userId) {
+		logger.debug("AccountService.logout: Logging out account with userId: " + userId);
+		Account account = accountRepository.findByUserid(userId);
+		if (account != null) {
+			account.setAuthtoken(null); // remove token
+			account.setLogoutcount(account.getLogoutcount() + 1);
+			accountRepository.save(account);
+			logger.info("AccountService.logout: Account logged out: " + account.getUserid());
+		} else {
+			logger.warn("AccountService.logout: Could not find account to logout with userId: " + userId);
+		}
+		return account;
+	}
+
+	public double increaseBalance(double amount, String userId) {
+
+		Account accountResponse = accountRepository.findByUserid(userId);
+
+		BigDecimal currentBalance = accountResponse.getBalance();
+
+		BigDecimal newBalance = currentBalance.add(new BigDecimal(amount));
+
+		if(amount > 0.0){
+			logger.debug("AccountController.increaseBalance: new balance='" + newBalance + "'.");
+			accountResponse.setBalance(newBalance);
+			saveAccount(accountResponse);
+		}
+
+		return accountResponse.getBalance().doubleValue();
+
+	}
+
+	public double decreaseBalance(double amount, String accountId) {
+
+		Account accountResponse = accountRepository.findByUserid(accountId);
+
+		BigDecimal currentBalance = accountResponse.getBalance();
+
+		if(currentBalance.doubleValue() >= amount){
+            BigDecimal newBalance = currentBalance.subtract(new BigDecimal(amount));
+			logger.debug("AccountController.decreaseBalance: new balance='" + newBalance + "'.");
+			accountResponse.setBalance(newBalance);
+			saveAccount(accountResponse);
+		}
+
+		return accountResponse.getBalance().doubleValue();
+
+	}
+}
+----
+
+. Create the package `io.pivotal.springtrader.accounts.config` and in that package create the class `WebConfig`. Into that file you can paste the following source code:
++
+----
+@Configuration
+@ComponentScan(basePackages = { "io.pivotal.springtrader.accounts" })
+public class WebConfig extends WebMvcConfigurationSupport {
+
+	/**
+	 * configure the message converters with the date formatter.
+	 */
+	@Override
+	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+
+		MappingJackson2HttpMessageConverter mappingJacksonHttpMessageConverter = new MappingJackson2HttpMessageConverter();
+		mappingJacksonHttpMessageConverter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON));
+
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
+		mappingJacksonHttpMessageConverter.getObjectMapper().setDateFormat(format);
+
+		converters.add(mappingJacksonHttpMessageConverter);
+	}
+
+}
+----
+
+. Add the `@EnableJpaRepositories` annotation to `io.springtrader.accounts.AccountsApplication`:
 +
 ----
 @SpringBootApplication
-@EnableMongoRepositories // <--- Add this!
-public class SpringboxReviewsApplication {
+@@EnableJpaRepositories// <--- Add this!
+public class AccountsApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringboxReviewsApplication.class, args);
+        SpringApplication.run(AccountsApplication.class, args);
     }
 }
 ----
@@ -141,80 +575,73 @@ public class SpringboxReviewsApplication {
 . Add the following to `application.properties` -- we'll eventually want to run multiple apps locally, so we need to change the port:
 +
 ----
-server.port=8081
+server.port=8082
 ----
 
-. To run the application locally, you'll need a local MongoDB install.  Your can skip ahead to the cloud foundry
-specific instructions to avoid installing and testing against a local MongoDB.
-You can download MongoDB for your platform http://www.mongodb.org/downloads[here].
-If run locally with the default setup, the application will automatically discover it and connect to it.
+. To run the application locally you have to add H2 dependency to your `pom.xml` file.
+----
+<dependency>
+	<groupId>com.h2database</groupId>
+  	<artifactId>h2</artifactId>
+    <scope>runtime</scope>
+ </dependency>
+----
 
 . Build the JAR:
 +
 ----
-$ mvn package
+$ mvn clean package
 ----
 
 . Run the application:
 +
 ----
-$ java -jar target/springbox-reviews-0.0.1-SNAPSHOT.jar
-----
-
-. Run the following script to insert data via the application's API:
-+
-----
-$ scripts/loadReviews.sh
+$ java -jar target/accounts-1.0.0-SNAPSHOT.jar
 ----
 
 . Access the application using `curl` to make sure everything is working properly:
 +
 ----
-$ curl -i localhost:8081/reviews/1
+$ curl -i localhost:8082/account/forMovie/1
 HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Date: Mon, 16 Feb 2015 22:53:26 GMT
+Date: Tue, 17 Feb 2015 06:02:10 GMT
 Server: Apache-Coyote/1.1
 Transfer-Encoding: chunked
-X-Application-Context: application:8081
+X-Application-Context: application:8082
 
 [
     {
-        "id": "54e26a97300487ae4fe4cf45",
-        "mlId": "1",
-        "rating": 5,
-        "review": "Great movie!",
-        "title": "Toy Story (1995)",
-        "userName": "mstine"
+        "id": 3079,
+        "mlId": "2",
+        "title": "GoldenEye (1995)"
     }
 ]
 ----
 
 == Preparing for Cloud Foundry
 
+. Create the MySQL service.
 
-. We want to bind to a MongoDB data source when running on Cloud Foundry, so let's create one:
++
+$ cf cs p-mysql 100mb-dev springtrader-accounts-db
+ 
+
+. In the package `io.springbox.recommendations.config` create the class `CloudConfig`. Into that file you can paste the following source code:
 +
 ----
-$ cf cs p-mongodb development springbox-reviews-db
-Creating service springbox-reviews-db in org oreilly-class / space instructor as mstine@pivotal.io...
-OK
+@Configuration
+@Profile("cloud")
+public class CloudConfig extends AbstractCloudConfig {
+
+    @Bean
+    GraphDatabaseService graphDatabaseService() {
+        return connectionFactory().service(GraphDatabaseService.class);
+    }
+}
 ----
 
-. Add the appropriate dependencies for the Spring Cloud Connectors:
-+
-----
-<dependency>
-  <groupId>org.springframework.cloud</groupId>
-  <artifactId>spring-cloud-cloudfoundry-connector</artifactId>
-</dependency>
-<dependency>
-  <groupId>org.springframework.cloud</groupId>
-  <artifactId>spring-cloud-spring-service-connector</artifactId>
-</dependency>
-----
-
-. Build the JAR:
+. Rebuild the JAR:
 +
 ----
 $ mvn package -DskipTests
@@ -228,13 +655,15 @@ $ mvn package -DskipTests
 ----
 ---
 applications:
-- name: springbox-reviews
-  host: springbox-reviews-${random-word}
+- name: springbox-recommendations
+  host: springbox-recommendations-${random-word}
   memory: 512M
   instances: 1
-  path: target/springbox-reviews-0.0.1-SNAPSHOT.jar
+  path: target/springbox-recommendations-0.0.1-SNAPSHOT.jar
+  env:
+    SPRING_PROFILES_ACTIVE: cloud
   services:
-    - springbox-reviews-db
+  - springbox-recommendations-db
 ----
 
 . Push to Cloud Foundry:
@@ -244,44 +673,40 @@ $ cf push
 
 ...
 
-Showing health and status for app springbox-reviews in org oreilly-class / space instructor as mstine@pivotal.io...
+Showing health and status for app springbox-recommendations in org oreilly-class / space instructor as mstine@pivotal.io...
 OK
 
 requested state: started
 instances: 1/1
 usage: 512M x 1 instances
-urls: springbox-reviews-understaffed-nickeltype.pcf-on-aws.net
-last uploaded: Mon Feb 16 23:04:42 UTC 2015
+urls: springbox-recommendations-preadherent-werewolf.cfapps.io
+last uploaded: Tue Feb 17 05:40:41 UTC 2015
 
      state     since                    cpu    memory           disk
-#0   running   2015-02-16 03:05:28 PM   0.0%   361.4M of 512M   115.7M of 1G
+#0   running   2015-02-16 09:41:31 PM   0.0%   366.7M of 512M   146.9M of 1G
 ----
 
-. Run the load script with the `ROUTE` environment variable set to the random route generated by CF to insert data via the application's API:
-+
-----
-$ ROUTE=springbox-reviews-understaffed-nickeltype.pcf-on-aws.net scripts/loadReviews.sh
-----
+.  Use what you've learned so far to insert a couple people, movies, and relationships into the neo4j instance through the REST service you just deployed (hint:  inspect the controller) 
 
 . Access the application using `curl` to make sure everything is working properly:
 +
 ----
-$ curl -i springbox-reviews-understaffed-nickeltype.pcf-on-aws.net/reviews/1
+$ curl -i springbox-recommendations-preadherent-werewolf.cfapps.io/recommendations/forMovie/1
 HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 48
 Content-Type: application/json;charset=UTF-8
-Date: Mon, 16 Feb 2015 22:53:26 GMT
+Date: Tue, 17 Feb 2015 05:46:40 GMT
 Server: Apache-Coyote/1.1
-Transfer-Encoding: chunked
-X-Application-Context: application:8081
+X-Application-Context: springbox-recommendations:cloud:63695
+X-Cache: MISS from access-gateway.hospitality.swisscom.com
+X-Cf-Requestid: 3e9bcafd-e4cc-4047-7355-bad9c84b3b4e
 
 [
     {
-        "id": "54e26a97300487ae4fe4cf45",
-        "mlId": "1",
-        "rating": 5,
-        "review": "Great movie!",
-        "title": "Toy Story (1995)",
-        "userName": "mstine"
+        "id": 4,
+        "mlId": "2",
+        "title": "GoldenEye (1995)"
     }
 ]
 ----

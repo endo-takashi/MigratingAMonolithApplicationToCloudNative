@@ -1,364 +1,567 @@
 :compat-mode:
-= Lab 13 - Build a Product Recommendation Service with Neo4J
+= Lab 12 - Build a Portfolio with MySQL
 
 [abstract]
 --
-In this lab we'll begin the second subproject of our complete cloud-native application architecture: _SpringBox_, which implements the movie browsing portion of a ``Redbox-like'' website.
-This microservice will provide the _Movie Recommendations Service_, which will allow us to create and browse reviews for movies.
-We'll be using Neo4J to model the relationship between people and the movies that they like.
-Neo4J provides a powerful graph query language called Cypher which will allow us to create a highly performant query that returns ``movies liked by people who liked the movie you're currently browsing.''
+In this lab we'll begin the second subproject of our complete cloud-native application architecture: _SpringTrader_, which implements the quotes fetching portion of a ``Trading-like'' application.
+This microservice will provide the _Portfolio Service_, which will allow us to see our trading transactions and assets.
 
-[graphviz, graph_diagram, png, align="center"]
-....
-digraph {
-  rankdir=LR;
-  node [shape = circle];
-  "Person A" -> "Movie A" [ label = "Likes" ];
-  "Person A" -> "Movie B" [ label = "Likes" ];
-  "Person A" -> "Movie C" [ label = "Likes" ];
-  "Person B" -> "Movie B" [ label = "Likes" ];
-  "Person C" -> "Movie A" [ label = "Likes" ];
-  "Person C" -> "Movie C" [ label = "Likes" ];
-}
-....
-
-We're still using the http://grouplens.org/datasets/movielens/[MovieLens] dataset, and here we'll link back to movies in the dataset by their `mlId` or ``MovieLens ID.''
-
-This project comes with vendored source for a Spring Cloud Connector for Neo4J, as that connector has not yet been released as part of the core project.
 --
 
-NOTE: The completed code for this lab can be found at `$COURSE_HOME/day_01/session_05/lab_13/complete/springbox-recommendations`.
+NOTE: The completed code for this lab can be found at `$COURSE_HOME/day_01/session_05/lab_12/complete/springtrader-portfolio`.
 
 == Developing the Service
 
 . Change to the lab directory:
 +
 ----
-$ cd $COURSE_HOME/day_01/session_05/lab_13/initial/springbox-recommendations
+$ cd $COURSE_HOME/day_01/session_05/lab_12/initial/springtrader-portfolio
 ----
 +
 and import the project (via `pom.xml`) into your IDE of choice.
 
-. Create the package `io.springbox.recommendations.domain` and in that package create the class `Movie`. Into that file you can paste the following source code:
+. Create the package `io.springtrader.portfolio.domain` and in that package create the class `Order`. Into that file you can paste the following source code:
 +
 ----
-@NodeEntity
-public class Movie {
+@Entity
+@Table(name = "ORDERS")
+public class Order {
 
-    @GraphId
-    private Long id;
+	@Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    @Column(name = "orderid")
+	private Integer orderId;
+
+	@Column(name = "accountid")
+	@NotNull
+	private String accountId;
+	
+	@Column(name = "symbol", length = 10)
+	@NotNull
+	private String symbol;
+
+	@Column(name = "orderfee", precision = 14, scale = 2)
+	private BigDecimal orderFee;
+
+	@Column(name = "completiondate")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "LL")
+	private Date completionDate;
+
+	@Column(name = "ordertype")
+	@NotNull
+	@Enumerated
+	private OrderType orderType;
+
+	@Column(name = "price", precision = 14, scale = 2)
+	@NotNull
+	private BigDecimal price;
+
+	@Column(name = "quantity")
+	@NotNull
+	private Integer quantity;
+
+	public Integer getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(Integer orderId) {
+		this.orderId = orderId;
+	}
+
+	public String getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(String accountId) {
+		this.accountId = accountId;
+	}
+
+	public String getSymbol() {
+		return symbol;
+	}
+
+	public void setSymbol(String symbol) {
+		this.symbol = symbol;
+	}
+
+	public BigDecimal getOrderFee() {
+		return orderFee;
+	}
+
+	public void setOrderFee(BigDecimal orderFee) {
+		this.orderFee = orderFee;
+	}
+
+	public Date getCompletionDate() {
+		return completionDate;
+	}
+
+	public void setCompletionDate(Date completionDate) {
+		this.completionDate = completionDate;
+	}
+
+	public OrderType getOrderType() {
+		return orderType;
+	}
+
+	public void setOrderType(OrderType orderType) {
+		this.orderType = orderType;
+	}
+
+	public BigDecimal getPrice() {
+		return price;
+	}
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Order [orderId=").append(orderId)
+				.append(", accountId=").append(accountId).append(", symbol=")
+				.append(symbol).append(", orderFee=").append(orderFee)
+				.append(", completionDate=").append(completionDate)
+				.append(", orderType=").append(orderType).append(", price=")
+				.append(price).append(", quantity=").append(quantity)
+				.append("]");
+		return builder.toString();
+	}
+}
+----
+
+. In the same package create the class `Quote`. Into that file you can paste the following source code:
+
++
+----
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Quote {
+
+	@JsonProperty("Status")
+	private String status;
+	@JsonProperty("Name")
+	private String name;
+	@JsonProperty("Symbol")
+	private String symbol;
+	@JsonProperty("LastPrice")
+	private Double lastPrice;
+	@JsonProperty("Change")
+	private Double change;
+	@JsonProperty("ChangePercent")
+	private Double changePercent;
+	@JsonProperty("Timestamp")
+	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="EEE MMM dd HH:mm:ss zzzXXX yyyy")
+	private Date timestamp;
+	@JsonProperty("MSDate")
+	private Double mSDate;
+	@JsonProperty("MarketCap")
+	private Double marketCap;
+	@JsonProperty("Volume")
+	private Integer volume;
+	@JsonProperty("ChangeYTD")
+	private Double changeYTD;
+	@JsonProperty("ChangePercentYTD")
+	private Double changePercentYTD;
+	@JsonProperty("High")
+	private Double high;
+	@JsonProperty("Low")
+	private Double low;
+	@JsonProperty("Open")
+	private Double open;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getSymbol() {
+		return symbol;
+	}
+
+	public void setSymbol(String symbol) {
+		this.symbol = symbol;
+	}
+	public Double getLastPrice() {
+		return lastPrice;
+	}
+
+	public void setLastPrice(Double lastPrice) {
+		this.lastPrice = lastPrice;
+	}
+	public Double getChangePercent() {
+		return changePercent;
+	}
+
+	public void setChangePercent(Double changePercent) {
+		this.changePercent = changePercent;
+	}
+	public Date getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
+	}
+	public Double getmSDate() {
+		return mSDate;
+	}
+
+	public void setmSDate(Double mSDate) {
+		this.mSDate = mSDate;
+	}
+	public Double getMarketCap() {
+		return marketCap;
+	}
+
+	public void setMarketCap(Double marketCap) {
+		this.marketCap = marketCap;
+	}
+	public Integer getVolume() {
+		return volume;
+	}
+
+	public void setVolume(Integer volume) {
+		this.volume = volume;
+	}
+	public Double getChangeYTD() {
+		return changeYTD;
+	}
+
+	public void setChangeYTD(Double changeYTD) {
+		this.changeYTD = changeYTD;
+	}
+	public Double getChangePercentYTD() {
+		return changePercentYTD;
+	}
+
+	public void setChangePercentYTD(Double changePercentYTD) {
+		this.changePercentYTD = changePercentYTD;
+	}
+	public Double getHigh() {
+		return high;
+	}
+
+	public void setHigh(Double high) {
+		this.high = high;
+	}
+	public Double getLow() {
+		return low;
+	}
+
+	public void setLow(Double low) {
+		this.low = low;
+	}
+	public Double getOpen() {
+		return open;
+	}
+
+	public void setOpen(Double open) {
+		this.open = open;
+	}
+
+	public Double getChange() {
+		return change;
+	}
+
+	public void setChange(Double change) {
+		this.change = change;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+}
+----
+. Create the class `Holding`. It represents a holding, a set of orders related to a particular stock. Into that file you can paste the following source code:
++
+----
+public class Holding {
+
+	private Integer id;
+
+	private String symbol;
+
+	private Integer quantity = 0;
+
+	private BigDecimal purchaseValue = BigDecimal.ZERO;
+
+	private BigDecimal sellValue = BigDecimal.ZERO;
+
+	private Set<Order> orders = new HashSet<>();
+
+	private BigDecimal currentValue = BigDecimal.ZERO;
+
+    public Integer getId() {
+		return id;
+	}
+
+    public void setId(Integer id) {
+		this.id = id;
+	}
+    public String getSymbol() {
+		return symbol;
+	}
+	public void setSymbol(String symbol) {
+		this.symbol = symbol;
+	}
+	public Integer getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+	public BigDecimal getPurchaseValue() {
+		return purchaseValue;
+	}
+	public void setPurchaseValue(BigDecimal purchaseValue) {
+		this.purchaseValue = purchaseValue;
+	}
+	public Set<Order> getOrders() {
+		return orders;
+	}
+	public void setOrders(Set<Order> orders) {
+		this.orders = orders;
+	}
+	public BigDecimal getCurrentValue() {
+		return currentValue;
+	}
+	public void setCurrentValue(BigDecimal currentValue) {
+		this.currentValue = currentValue;
+	}
+
+	public void addOrder(Order order) {
+		//check order is not already in.
+		if (!orders.contains(order)) {
+			orders.add(order);
+			//update stats
+			if (order.getOrderType().equals(OrderType.BUY)) {
+
+				setQuantity(getQuantity() + order.getQuantity());
+				setPurchaseValue(getPurchaseValue().add(order.getPrice().multiply(new BigDecimal(order.getQuantity()))));
+
+			} else if (order.getOrderType().equals(OrderType.SELL)) {
+
+				setQuantity(getQuantity() - order.getQuantity());
+				setSellValue(getSellValue().add(order.getPrice().multiply(new BigDecimal(order.getQuantity()))));
+
+			}
+		}
+	}
+
+	public BigDecimal getSellValue() {
+		return sellValue;
+	}
+	public void setSellValue(BigDecimal sellPrice) {
+		this.sellValue = sellPrice;
+	}
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Holding [id=").append(id).append(", symbol=")
+				.append(symbol).append(", quantity=").append(quantity)
+				.append(", purchasePrice=").append(purchaseValue)
+				.append(", sellPrice=").append(sellValue).append(", orders=")
+				.append(orders).append(", currentValue=").append(currentValue)
+				.append("]");
+		return builder.toString();
+	}
+}
+----
+
+. Create the class `Portfolio`. Portfolios are a collection of holdings. Into that file you can paste the following source code:
++
+----
+public class Portfolio {
+
+    private String accountId;
+
+    private String name;
+
+    private BigDecimal currentTotalValue = BigDecimal.ZERO;
+
+    private BigDecimal purchaseValue = BigDecimal.ZERO;
+
+    private BigDecimal sellValue = BigDecimal.ZERO;
+
+    private Map<String, Holding> holdings = new HashMap<>();
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Map<String, Holding> getHoldings() {
+        return holdings;
+    }
+
+    public void setHoldings(Map<String, Holding> holdings) {
+        this.holdings = holdings;
+    }
+
+    public void addHolding(Holding holding) {
+        holdings.put(holding.getSymbol(), holding);
+    }
+
+    public Holding getHolding(String symbol) {
+        return holdings.get(symbol);
+    }
+
+    public BigDecimal getCurrentTotalValue() {
+        return currentTotalValue;
+    }
+
+    public void setCurrentTotalValue(BigDecimal currentTotalValue) {
+        this.currentTotalValue = currentTotalValue;
+    }
+
+    /**
+     * Iterates through each of the holdings aggregating the values.
+     */
+    public void refreshTotalValue() {
+        this.currentTotalValue = BigDecimal.ZERO;
+        this.purchaseValue = BigDecimal.ZERO;
+        this.sellValue = BigDecimal.ZERO;
+        holdings.values().forEach(holding -> {
+            this.currentTotalValue = this.currentTotalValue.add(holding.getCurrentValue().multiply(new BigDecimal(holding.getQuantity())));
+            this.purchaseValue = this.purchaseValue.add(holding.getPurchaseValue());
+            this.sellValue = this.sellValue.add(holding.getSellValue());
+        });
+    }
+
+    public BigDecimal getSellValue() {
+        return sellValue;
+    }
+
+    public void setSellValue(BigDecimal sellValue) {
+        this.sellValue = sellValue;
+    }
 
     @Override
     public String toString() {
-        return "Movie{" +
-                "id=" + id +
-                ", mlId='" + mlId + '\'' +
-                ", title='" + title + '\'' +
-                '}';
+        StringBuilder builder = new StringBuilder();
+        builder.append("Portfolio [accountId=").append(accountId)
+                .append(", name=").append(name).append(", currentTotalValue=")
+                .append(currentTotalValue).append(", purchaseValue=")
+                .append(purchaseValue).append(", sellValue=").append(sellValue)
+                .append(", holdings=").append(holdings).append("]");
+        return builder.toString();
     }
 
-    @Indexed(unique = true)
-    private String mlId;
-    private String title;
-
-    public Long getId() {
-        return id;
+    public BigDecimal getPurchaseValue() {
+        return purchaseValue;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPurchaseValue(BigDecimal purchaseValue) {
+        this.purchaseValue = purchaseValue;
     }
 
-    public String getMlId() {
-        return mlId;
-    }
-
-    public void setMlId(String mlId) {
-        this.mlId = mlId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 }
 ----
 
-. Also in the package `io.springbox.recommendations.domain` create the class `Person`. Into that file you can paste the following source code:
+. Create the package `io.springtrader.portfolio.repositories` and in that package create the interface `OrderRepository`. Into that file you can paste the following source code:
 +
 ----
-@NodeEntity
-public class Person {
-
-    @GraphId
-    private Long id;
-    private String userName;
-    private String firstName;
-    private String lastName;
-
-    @Override
-    public String toString() {
-        return "Person{" +
-                "id=" + id +
-                ", userName='" + userName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                '}';
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+public interface OrderRepository extends CrudRepository<Order,Integer> {
+	List<Order> findByAccountId(String accountId);
 }
 ----
 
-. Also in the package `io.springbox.recommendations.domain` create the class `Likes`. Into that file you can paste the following source code:
-+
-----
-@RelationshipEntity(type = "LIKES")
-public class Likes {
-
-    @GraphId
-    private Long id;
-
-    @StartNode
-    private Person person;
-
-    @EndNode
-    private Movie movie;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
-
-    public Movie getMovie() {
-        return movie;
-    }
-
-    public void setMovie(Movie movie) {
-        this.movie = movie;
-    }
-
-    @Override
-    public String toString() {
-        return "Likes{" +
-                "id=" + id +
-                ", person=" + person +
-                ", movie=" + movie +
-                '}';
-    }
-}
-----
-
-. Create the package `io.springbox.recommendations.repositories` and in that package create the interface `MovieRepository`. Into that file you can paste the following source code:
-+
-----
-public interface MovieRepository extends GraphRepository<Movie> {
-    Movie findByMlId(String mlId);
-
-    @Query("MATCH (p:Person) WHERE p.userName = {0} MATCH p-[:LIKES]->movie<-[:LIKES]-slm-[:LIKES]->recommendations " +
-    "WHERE not(p = slm) and not (p--recommendations) return recommendations")
-    Iterable<Movie> recommendedMoviesFor(String userName);
-
-    @Query("MATCH (movie:Movie) WHERE movie.mlId = {0} MATCH movie<-[:LIKES]-slm-[:LIKES]->recommendations " +
-    "RETURN distinct recommendations")
-    Iterable<Movie> moviesLikedByPeopleWhoLiked(String mlId);
-}
-----
-
-. Also in the package `io.springbox.recommendations.repositories` create the interface `PersonRepository`. Into that file you can paste the following source code:
-+
-----
-public interface PersonRepository extends GraphRepository<Person> {
-    Person findByUserName(String userName);
-}
-----
-
-. Also in the package `io.springbox.recommendations.repositories` create the interface `LikesRepository`. Into that file you can paste the following source code:
-+
-----
-public interface LikesRepository extends GraphRepository<Likes> {
-}
-----
-
-. Create the package `io.springbox.recommendations.controllers` and in that package create the class `MovieController`. Into that file you can paste the following source code:
+. Create the package `io.springtrader.portfolio.controllers` and in that package create the interface `PortfolioController`. Into that file you can paste the following source code:
 +
 ----
 @RestController
-public class MovieController {
+public class PortfolioController {
 
-    @Autowired
-    MovieRepository movieRepository;
+	private static final Logger logger = LoggerFactory.getLogger(PortfolioController.class);
 
-    @RequestMapping(value = "/movies", method = RequestMethod.GET)
-    public Iterable<Movie> movies() {
-        return movieRepository.findAll();
-    }
+	/**
+	 * the service to delegate to.
+	 */
+	@Autowired
+	private PortfolioService service;
 
-    @RequestMapping(value = "/movies", method = RequestMethod.POST)
-    public ResponseEntity<Movie> createMovie(@RequestBody Movie movie) {
-        movieRepository.save(movie);
-        return new ResponseEntity<>(movie, HttpStatus.CREATED);
-    }
+	/**
+	 * Retrieves the portfolio for the given account.
+	 * @param accountId the account to retrieve the portfolio for.
+	 * @return The portfolio with HTTP OK.
+	 */
+	@RequestMapping(value = "/portfolio/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Portfolio> getPortfolio(@PathVariable("id") final String accountId) {
+		logger.debug("PortfolioController: Retrieving portfolio with user id:" + accountId);
+		Portfolio folio = service.getPortfolio(accountId);
+		logger.debug("PortfolioController: Retrieved portfolio:" + folio);
+		return new ResponseEntity<>(folio, getNoCacheHeaders(), HttpStatus.OK);
+	}
+
+	private HttpHeaders getNoCacheHeaders() {
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.set("Cache-Control", "no-cache");
+		return responseHeaders;
+	}
+	/**
+	 * Adds an order to the portfolio of the given account.
+	 *
+	 * @param accountId the account to add the order to.
+	 * @param order The order to add.
+	 * @param builder
+	 * @return The order with HTTP CREATED or BAD REQUEST if it couldn't save.
+	 */
+	@RequestMapping(value = "/portfolio/{id}", method = RequestMethod.POST)
+	public ResponseEntity<Order> addOrder(@PathVariable("id") final String accountId, @RequestBody final Order order, UriComponentsBuilder builder) {
+		logger.debug("Adding Order: " + order);
+
+		//TODO: can do a test to ensure accountId == order.getAccountId();
+
+		Order savedOrder = service.addOrder(order);
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.setLocation(builder.path("/portfolio/{id}")
+				.buildAndExpand(accountId).toUri());
+		logger.debug("Order added: " + savedOrder);
+		if (savedOrder != null && savedOrder.getOrderId() != null) {
+			return new ResponseEntity<Order>(savedOrder, responseHeaders, HttpStatus.CREATED);
+		} else {
+			logger.warn("Order not saved: " + order);
+			return new ResponseEntity<Order>(savedOrder, responseHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }
 ----
 
-. Also in the package `io.springbox.recommendations.controllers` create the class `PersonController`. Into that file you can paste the following source code:
-+
-----
-@RestController
-public class PersonController {
-
-    @Autowired
-    PersonRepository personRepository;
-
-    @RequestMapping(value = "/people", method = RequestMethod.GET)
-    public Iterable<Person> people() {
-        return personRepository.findAll();
-    }
-
-    @RequestMapping(value = "/people", method = RequestMethod.POST)
-    public ResponseEntity<Person> createPerson(@RequestBody Person person) {
-        personRepository.save(person);
-        return new ResponseEntity<>(person, HttpStatus.CREATED);
-    }
-
-}
-----
-
-. Also in the package `io.springbox.recommendations.controllers` create the class `LikesController`. Into that file you can paste the following source code:
-+
-----
-@RestController
-public class LikesController {
-
-    @Autowired
-    LikesRepository likesRepository;
-
-    @RequestMapping(value = "/likes", method = RequestMethod.GET)
-    public Iterable<Likes> likes() {
-        return likesRepository.findAll();
-    }
-}
-----
-
-. Also in the package `io.springbox.recommendations.controllers` create the class `RecommendationsController`. Into that file you can paste the following source code:
-+
-----
-@RestController
-public class RecommendationsController {
-
-    @Autowired
-    MovieRepository movieRepository;
-    @Autowired
-    PersonRepository personRepository;
-    @Autowired
-    LikesRepository likesRepository;
-
-    @RequestMapping(value = "/recommendations/{userName}/likes/{mlId}", method = RequestMethod.POST)
-    public ResponseEntity<Likes> createPersonMovieLink(@PathVariable String userName,
-                                                       @PathVariable String mlId) {
-        Person person = personRepository.findByUserName(userName);
-        Movie movie = movieRepository.findByMlId(mlId);
-
-        Likes likes = new Likes();
-        likes.setPerson(person);
-        likes.setMovie(movie);
-        likesRepository.save(likes);
-
-        return new ResponseEntity<>(likes, HttpStatus.CREATED);
-    }
-
-    @RequestMapping(value = "/recommendations/forUser/{userName}", method = RequestMethod.GET)
-    public Iterable<Movie> recommendedMoviesForUser(@PathVariable String userName) {
-        return movieRepository.recommendedMoviesFor(userName);
-    }
-
-    @RequestMapping(value = "/recommendations/forMovie/{mlId}", method = RequestMethod.GET)
-    public Iterable<Movie> recommendedMoviesForMovie(@PathVariable String mlId) {
-        return movieRepository.moviesLikedByPeopleWhoLiked(mlId);
-    }
-}
-----
-
-. Create the package `io.springbox.recommendations.config` and in that package create the class `Neo4jConfig`. Into that file you can paste the following source code:
-+
-----
-@Configuration
-public class Neo4jConfig extends Neo4jConfiguration {
-    public Neo4jConfig() {
-        setBasePackage("io.springbox.recommendations.domain");
-    }
-}
-----
-
-. Also in the package `io.springbox.recommendations.config` create the class `LocalConfig`. Into that file you can paste the following source code:
-+
-----
-@Configuration
-@Profile("default")
-public class LocalConfig {
-
-    @Bean
-    public GraphDatabaseService graphDatabaseService() {
-        return new SpringRestGraphDatabase("http://localhost:7474/db/data/");
-    }
-
-}
-----
-
-. Add the `@EnableNeo4jRepositories` annotation to `io.springbox.recommendations.SpringboxRecommendationsApplication`:
+. Add the `@EnableJpaRepositories` annotation to `io.springtrader.portfolio.PortfolioApplication`:
 +
 ----
 @SpringBootApplication
-@EnableNeo4jRepositories(basePackages = "io.springbox.recommendations.repositories") // <--- Add this!
-public class SpringboxRecommendationsApplication {
+@EnableJpaRepositories <--- Add this!!
+public class PortfolioApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringboxRecommendationsApplication.class, args);
+        SpringApplication.run(PortfolioApplication.class, args);
     }
 }
 ----
@@ -366,75 +569,87 @@ public class SpringboxRecommendationsApplication {
 . Add the following to `application.properties` -- we'll eventually want to run multiple apps locally, so we need to change the port:
 +
 ----
-server.port=8082
+server.port=8081
 ----
 
-. To run the application locally, you'll need a local Neo4J install.  You can alternatively skip running locally and avoid 
-installing Neo4J on your machine.  If you choose to not run locally, skip to the Cloud Foundry section.  Otherwise, you need to download the Neo4J Community Edition (you must use version 2.1.x) http://neo4j.com/download/[here].  Also, turn off authentication in Neo4J in neo4j-server.properties (dbms.security.auth_enabled=false).
+. To run the application locally, you'll need either in-memory H2 database or a local installation MySQL/Postgres. To run against in-memory H2 locally add
+the following to your `pom.xml` file. If run locally with the default setup, the application will automatically discover it and connect to it.
+
++
+----
+ <dependency>
+	<groupId>com.h2database</groupId>
+  	<artifactId>h2</artifactId>
+    <scope>runtime</scope>
+ </dependency>
+----
 
 . Build the JAR:
 +
 ----
-$ mvn package
+$ mvn clean package
 ----
 
 . Run the application:
 +
 ----
-$ java -jar target/springbox-recommendations-0.0.1-SNAPSHOT.jar
+$ java -jar target/portfolio-1.0.0-SNAPSHOT.jar
 ----
 
-. Visit the Neo4J web admin console (http://localhost:7474/browser/). Run the following Cypher queries to load test data:
+. Run the following script to insert data via the application's API:
 +
 ----
-LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/caxqueiroz/MigratingAMonolithApplicationToCloudNative/master/sessions/day_01/session_05/lab_13/movies.csv" AS row CREATE (movie:Movie:_Movie {mlId:row.mlId, title:row.title})
-
-LOAD CSV WITH HEADERS FROM "https://raw.githubusercontent.com/caxqueiroz/MigratingAMonolithApplicationToCloudNative/master/sessions/day_01/session_05/lab_13/people.csv" AS row CREATE (:person:Person:_Person {userName:row.userName, firstName:row.firstName, lastName:row.lastName})
+$ scripts/loadReviews.sh
 ----
 
 . Access the application using `curl` to make sure everything is working properly:
 +
 ----
-$ curl -i localhost:8082/recommendations/forMovie/1
+$ curl -i localhost:8081/reviews/1
 HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Date: Tue, 17 Feb 2015 06:02:10 GMT
+Date: Mon, 16 Feb 2015 22:53:26 GMT
 Server: Apache-Coyote/1.1
 Transfer-Encoding: chunked
-X-Application-Context: application:8082
+X-Application-Context: application:8081
 
 [
     {
-        "id": 3079,
-        "mlId": "2",
-        "title": "GoldenEye (1995)"
+        "id": "54e26a97300487ae4fe4cf45",
+        "mlId": "1",
+        "rating": 5,
+        "review": "Great movie!",
+        "title": "Toy Story (1995)",
+        "userName": "mstine"
     }
 ]
 ----
 
 == Preparing for Cloud Foundry
 
-. Create the neo4J service.
 
-+
-$ cf cs p-neo4j development springbox-recommendations-db
- 
-
-. In the package `io.springbox.recommendations.config` create the class `CloudConfig`. Into that file you can paste the following source code:
+. We want to bind to a MongoDB data source when running on Cloud Foundry, so let's create one:
 +
 ----
-@Configuration
-@Profile("cloud")
-public class CloudConfig extends AbstractCloudConfig {
-
-    @Bean
-    GraphDatabaseService graphDatabaseService() {
-        return connectionFactory().service(GraphDatabaseService.class);
-    }
-}
+$ cf cs p-mongodb development springbox-reviews-db
+Creating service springbox-reviews-db in org oreilly-class / space instructor as mstine@pivotal.io...
+OK
 ----
 
-. Rebuild the JAR:
+. Add the appropriate dependencies for the Spring Cloud Connectors:
++
+----
+<dependency>
+  <groupId>org.springframework.cloud</groupId>
+  <artifactId>spring-cloud-cloudfoundry-connector</artifactId>
+</dependency>
+<dependency>
+  <groupId>org.springframework.cloud</groupId>
+  <artifactId>spring-cloud-spring-service-connector</artifactId>
+</dependency>
+----
+
+. Build the JAR:
 +
 ----
 $ mvn package -DskipTests
@@ -448,15 +663,13 @@ $ mvn package -DskipTests
 ----
 ---
 applications:
-- name: springbox-recommendations
-  host: springbox-recommendations-${random-word}
+- name: springbox-reviews
+  host: springbox-reviews-${random-word}
   memory: 512M
   instances: 1
-  path: target/springbox-recommendations-0.0.1-SNAPSHOT.jar
-  env:
-    SPRING_PROFILES_ACTIVE: cloud
+  path: target/springbox-reviews-0.0.1-SNAPSHOT.jar
   services:
-  - springbox-recommendations-db
+    - springbox-reviews-db
 ----
 
 . Push to Cloud Foundry:
@@ -466,40 +679,44 @@ $ cf push
 
 ...
 
-Showing health and status for app springbox-recommendations in org oreilly-class / space instructor as mstine@pivotal.io...
+Showing health and status for app springbox-reviews in org oreilly-class / space instructor as mstine@pivotal.io...
 OK
 
 requested state: started
 instances: 1/1
 usage: 512M x 1 instances
-urls: springbox-recommendations-preadherent-werewolf.cfapps.io
-last uploaded: Tue Feb 17 05:40:41 UTC 2015
+urls: springbox-reviews-understaffed-nickeltype.pcf-on-aws.net
+last uploaded: Mon Feb 16 23:04:42 UTC 2015
 
      state     since                    cpu    memory           disk
-#0   running   2015-02-16 09:41:31 PM   0.0%   366.7M of 512M   146.9M of 1G
+#0   running   2015-02-16 03:05:28 PM   0.0%   361.4M of 512M   115.7M of 1G
 ----
 
-.  Use what you've learned so far to insert a couple people, movies, and relationships into the neo4j instance through the REST service you just deployed (hint:  inspect the controller) 
+. Run the load script with the `ROUTE` environment variable set to the random route generated by CF to insert data via the application's API:
++
+----
+$ ROUTE=springbox-reviews-understaffed-nickeltype.pcf-on-aws.net scripts/loadReviews.sh
+----
 
 . Access the application using `curl` to make sure everything is working properly:
 +
 ----
-$ curl -i springbox-recommendations-preadherent-werewolf.cfapps.io/recommendations/forMovie/1
+$ curl -i springbox-reviews-understaffed-nickeltype.pcf-on-aws.net/reviews/1
 HTTP/1.1 200 OK
-Connection: keep-alive
-Content-Length: 48
 Content-Type: application/json;charset=UTF-8
-Date: Tue, 17 Feb 2015 05:46:40 GMT
+Date: Mon, 16 Feb 2015 22:53:26 GMT
 Server: Apache-Coyote/1.1
-X-Application-Context: springbox-recommendations:cloud:63695
-X-Cache: MISS from access-gateway.hospitality.swisscom.com
-X-Cf-Requestid: 3e9bcafd-e4cc-4047-7355-bad9c84b3b4e
+Transfer-Encoding: chunked
+X-Application-Context: application:8081
 
 [
     {
-        "id": 4,
-        "mlId": "2",
-        "title": "GoldenEye (1995)"
+        "id": "54e26a97300487ae4fe4cf45",
+        "mlId": "1",
+        "rating": 5,
+        "review": "Great movie!",
+        "title": "Toy Story (1995)",
+        "userName": "mstine"
     }
 ]
 ----

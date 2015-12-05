@@ -27,7 +27,7 @@ and import the project (via `pom.xml`) into your IDE of choice.
 +
 ----
 
-@Document(collection="LocalStocks")
+@Document(collection="Stocks")
 public class Stock {
 
     @Id
@@ -336,8 +336,8 @@ Paste the following code and add appropriate imports:
 +
 ----
 @Configuration
-@Profile("local")
-@EnableMongoAuditing
+@Profile("local") // <-- local profile. To run on local laptop
+@EnableMongoAuditing // <-- Used to update lastmodifieddate field every time a document changes. 
 @EnableMongoRepositories(basePackages = {"io.pivotal.springtrader.quotes"})
 public class MongoLocalConfig extends AbstractMongoConfiguration{
 
@@ -348,14 +348,14 @@ public class MongoLocalConfig extends AbstractMongoConfiguration{
 
     @Override
     protected String getDatabaseName() {
-        return "STOCKS";
+        return "Stocks";
     }
 
     @Override
     public Mongo mongo() throws Exception {
         Fongo fongo = new Fongo("mongo server 1");
         return fongo.getMongo();
-//        return new MongoClient("localhost", 27017);
+//        return new MongoClient("localhost", 27017); <-- If you want to connect to a local mongodb. 
     }
 
     @Override
@@ -409,63 +409,63 @@ Connection: close
 
 == Preparing for Cloud Foundry
 
-. We want to bind to a MySQL data source when running on Cloud Foundry, so let's create one:
+. We want to bind to a MongoDB data source when running on Cloud Foundry, so let's create one:
 +
 ----
-$ cf cs p-mysql 100mb-dev springbox-catalog-db
-Creating service springbox-catalog-db in org oreilly-class / space instructor as mstine@pivotal.io...
+$ cf cs p-mongodb development springtrader-quotes-db
+Creating service pringtrader-quotes-db in org cqueiroz-pivot / space development as cqueiroz@pivotal.io...
 OK
 ----
 
-. Add the appropriate dependencies for MySQL's JDBC driver and the Spring Cloud Connectors:
+. Add the appropriate dependencies for MongoDB's driver and the Spring Cloud Connectors:
 +
 ----
 <dependency>
-  <groupId>org.mariadb.jdbc</groupId>
-  <artifactId>mariadb-java-client</artifactId>
-  <version>1.1.7</version>
+   <groupId>org.springframework.boot</groupId>
+   <artifactId>spring-boot-starter-data-mongodb</artifactId>
 </dependency>
 <dependency>
-  <groupId>org.springframework.cloud</groupId>
-  <artifactId>spring-cloud-cloudfoundry-connector</artifactId>
+   <groupId>org.springframework.cloud</groupId>
+   <artifactId>spring-cloud-spring-service-connector</artifactId>
+   <version>1.2.0.RELEASE</version>
 </dependency>
 <dependency>
-  <groupId>org.springframework.cloud</groupId>
-  <artifactId>spring-cloud-spring-service-connector</artifactId>
-</dependency>
+   <groupId>org.springframework.cloud</groupId>
+   <artifactId>spring-cloud-cloudfoundry-connector</artifactId>
+   <version>1.2.0.RELEASE</version>
+</dependency>		
 ----
 
 .  Rename `src/main/resources/application.properties` file to `src/main/resources/application.yml` file.
 YAML files make it much easier to represent multiple Spring profiles.
-This will allow us to run locally with HSQLDB and on PWS with PostgreSQL.
+This will allow us to run locally with MongoDB locally and on CloudFoundry and when doing tests run Fongo (a java version of MongoDB).
 
 . Paste the following into `application.yml`:
 +
 ----
 spring:
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
-
+  profiles.active: local
+  application:
+     name: quotes
 ---
 
 spring:
-  profiles: default
-  jpa:
-    database: HSQL
-
+  profiles: local
+server:
+  port: 8086
 ---
+security:
+  basic:
+    enabled: false
 
-spring:
-  profiles: cloud
-  jpa:
-    database: MYSQL
+expiration:
+  time: -1 # enable offline mode. no expiration.
 ----
 
 . Rebuild the JAR:
 +
 ----
-$ mvn package
+$ mvn clean package
 ----
 
 == Deploying to Cloud Foundry
@@ -475,16 +475,19 @@ $ mvn package
 [source,yml]
 ----
 ---
-applications:
-- name: springbox-catalog
-  host: springbox-catalog-${random-word}
-  memory: 512M
-  instances: 1
-  path: target/springbox-catalog-0.0.1-SNAPSHOT.jar
-  env:
+---
+timeout: 180
+instances: 1
+memory: 512M
+env:
     SPRING_PROFILES_ACTIVE: cloud
-  services:
-    - springbox-catalog-db
+    JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
+    CF_TARGET: https://api.run.pez.pivotal.io <----- Replace this domain with the one you are targeted to. 
+applications:
+- name: quotes
+  random-route: true
+  path: target/quotes-1.0.0-SNAPSHOT.jar
+  services: [ springtrader-quotes-db ]
 ----
 
 . Push to Cloud Foundry:
