@@ -16,13 +16,13 @@ import java.util.List;
  * Created by cq on 1/12/15.
  */
 @Service
-public class DatabaseLoader {
-    private static final Logger logger = LoggerFactory.getLogger(DatabaseLoader.class);
+public class DataLoader {
+    private static final Logger logger = LoggerFactory.getLogger(DataLoader.class);
 
     private final StockRepository stockRepository;
 
     @Autowired
-    public DatabaseLoader(StockRepository repository) {
+    public DataLoader(StockRepository repository) {
         this.stockRepository = repository;
     }
 
@@ -32,7 +32,7 @@ public class DatabaseLoader {
 
         try {
             logger.info("DatabaseLoader:init - Loading data into mongodb");
-            Stock[] arrayOfStocks = mapper.readValue(DatabaseLoader.class.getResource("/data.json"),Stock[].class);
+            Stock[] arrayOfStocks = mapper.readValue(DataLoader.class.getResource("/data.json"),Stock[].class);
             List<Stock> stocks = Arrays.asList(arrayOfStocks);
             stockRepository.save(stocks);
             logger.info(stockRepository.count() + " stocks loaded into the Quotes collection");

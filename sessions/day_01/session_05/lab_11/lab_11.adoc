@@ -263,6 +263,128 @@ public interface StockRepository extends MongoRepository<Stock, String>{
 }
 ----
 
+. Create the package `io.springtrader.quotes.services` and in that package create the interface `QuoteService`. Paste the following code and add appropriate imports:
++
+----
+@Service
+public class QuoteService {
+
+
+    private static final Logger logger = LoggerFactory.getLogger(QuoteService.class);
+
+    @Value("${api.url.company}")
+    private String companyUrl = "http://dev.markitondemand.com/MODApis/Api/v2/Lookup/json?input={name}";
+
+    @Value("${api.url.quote}")
+    private String quoteUrl = "http://dev.markitondemand.com/MODApis/Api/v2/Quote/json?symbol={symbol}";
+
+
+    private RestOperations restOperations = new RestTemplate();
+
+    private StockRepository stockRepository;
+
+
+    @Autowired
+    public void setStockRepository(StockRepository stockRepository) {
+        this.stockRepository = stockRepository;
+    }
+
+    /**
+     * Retrieves an up to date quote for the given symbol.
+     *
+     * @param symbol The symbol to retrieve the quote for.
+     * @return The quote object or null if not found.
+     * @throws SymbolNotFoundException
+     */
+
+    public Stock getQuote(String symbol) throws Exception {
+        logger.debug("QuoteService.getQuote: retrieving quote for: " + symbol);
+
+        symbol = symbol.toUpperCase();
+        Stock stock = stockRepository.findOne(symbol);
+
+        //what's happen if a stock has no info about its quotes?
+        if (stock == null || stock.getStatus() == null) {
+            stock = createStock(symbol);
+            stock = stockRepository.save(stock);
+        }
+
+
+        return stock;
+
+    }
+
+    private Stock createStock(String symbol) throws SymbolNotFoundException {
+
+        Stock returnedStock;
+
+        try {
+
+            Map<String, String> params = new HashMap<>();
+            params.put("symbol", symbol);
+            returnedStock = restOperations.getForObject(quoteUrl, Stock.class, params);
+            logger.debug("QuoteService.getQuote: retrieved quote: " + returnedStock);
+
+            Stock stock = companiesByNameOrSymbol(symbol)
+                    .stream()
+                    .filter(s -> s.getSymbol()
+                            .equalsIgnoreCase(symbol))
+                    .findFirst().orElse(new Stock());
+
+            if (stock.getSymbol() == null) throw new SymbolNotFoundException("Symbol not found: " + symbol);
+            returnedStock.setName(stock.getName());
+            returnedStock.setExchange(stock.getExchange());
+
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw e;
+        }
+        return returnedStock;
+    }
+
+
+    /**
+     * Retrieves a list of CompanyInfo objects.
+     * Given the name parameters, the return list will contain objects that match the search both
+     * on company name as well as symbol.
+     *
+     * @param name The search parameter for company name or symbol.
+     * @return The list of company information.
+     */
+    public List<Stock> companiesByNameOrSymbol(String name) {
+        logger.debug("QuoteService.companiesByNameOrSymbol: retrieving info for: " + name);
+        List<Stock> stockList = new ArrayList<>();
+        try {
+
+            //only search for name.
+            stockList = stockRepository.findByNameLike(name);
+            if (stockList.size() > 0) return stockList;
+
+            Map<String, String> params = new HashMap<>();
+            params.put("name", name);
+            Map[] companies = restOperations.getForObject(companyUrl, Map[].class, params);
+
+
+            for (Map<String, String> company : companies) {
+                Stock stock = new Stock();
+                stock.setName(company.get("Name"));
+                stock.setExchange(company.get("Exchange"));
+                stock.setSymbol(company.get("Symbol"));
+                stockList.add(stock);
+            }
+
+            logger.debug("QuoteService.companiesByNameOrSymbol: retrieved info: " + stockList);
+
+
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+
+        return stockList;
+    }
+}
+----
+
 . Create the package `io.springtrader.quotes.controllers` and in that package create the class `QuoteController`. Paste the following code and add appropriate imports:
 +
 ----
@@ -390,7 +512,7 @@ $ java -jar target/quotes-1.0.0-SNAPSHOT.jar
 . Access the application using `curl` to make sure everything is working properly:
 +
 ----
-$ curl -i localhost:8086/quotes/msft
+$ curl -i localhost:8086/quote/msft
 HTTP/1.1 200 OK
 Cache-Control: no-cache
 Content-Type: application/json;charset=UTF-8
@@ -447,19 +569,27 @@ spring:
   profiles.active: local
   application:
      name: quotes
----
 
-spring:
-  profiles: local
-server:
-  port: 8086
----
 security:
   basic:
     enabled: false
 
 expiration:
   time: -1 # enable offline mode. no expiration.
+
+---
+spring:
+  profiles: local
+server:
+  port: 8086
+---
+spring:
+  profiles: cloud
+---
+api:
+ url:
+   company: http://dev.markitondemand.com/MODApis/Api/v2/Lookup/json?input={name}
+   quote: http://dev.markitondemand.com/MODApis/Api/v2/Quote/json?symbol={symbol}
 ----
 
 . Rebuild the JAR:
@@ -474,15 +604,12 @@ $ mvn clean package
 +
 [source,yml]
 ----
----
----
 timeout: 180
 instances: 1
 memory: 512M
 env:
     SPRING_PROFILES_ACTIVE: cloud
     JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
-    CF_TARGET: https://api.run.pez.pivotal.io <----- Replace this domain with the one you are targeted to. 
 applications:
 - name: quotes
   random-route: true
@@ -497,48 +624,37 @@ $ cf push
 
 ...
 
-Showing health and status for app springbox-catalog in org oreilly-class / space instructor as mstine@pivotal.io...
+Showing health and status for app quotes in org pivot-cqueiroz / space development as cqueiroz@pivotal.io...
 OK
 
 requested state: started
 instances: 1/1
 usage: 512M x 1 instances
-urls: springbox-catalog-overwild-nonrevival.pcf-on-aws.net
-last uploaded: Mon Feb 16 19:34:38 UTC 2015
+urls: quotes-undespising-lenition.cfapps.pez.pivotal.io
+last uploaded: Mon Dec 7 22:17:58 UTC 2015
+stack: cflinuxfs2
+buildpack: java-buildpack=v3.3.1-offline-https://github.com/cloudfoundry/java-buildpack.git#063836b java-main java-opts open-jdk-like-jre=1.8.0_65 open-jdk-like-memory-calculator=2.0.0_RELEASE spring-auto-reconfiguration=1.10.0_RELEASE
 
-     state     since                    cpu    memory           disk
-#0   running   2015-02-16 11:36:05 AM   0.0%   401.5M of 512M   127.5M of 1G
+     state     since                    cpu    memory           disk           details
+#0   running   2015-12-07 07:18:48 PM   3.7%   367.2M of 512M   140.2M of 1G
 ----
 
 . Access the application using `curl` at the random route provided by CF:
 +
 ----
-$ curl -i springbox-catalog-overwild-nonrevival.pcf-on-aws.net/movies/1
+$ curl -i curl -i quotes-undespising-lenition.cfapps.pez.pivotal.io/quote/aapl
 HTTP/1.1 200 OK
-Content-Type: application/json;charset=UTF-8Date: Mon, 16 Feb 2015 03:38:42 GMTServer: Apache-Coyote/1.1
-Transfer-Encoding: chunked
-X-Application-Context: application
+Cache-Control: no-cache
+Content-Type: application/json;charset=UTF-8
+Date: Mon, 07 Dec 2015 22:20:11 GMT
+Server: Apache-Coyote/1.1
+X-Application-Context: quotes:cloud:0
+X-Cf-Requestid: 74a6092b-a1e4-4995-6a19-97398840309d
+Content-Length: 367
+Connection: close
 
-{
-    "genres": [
-        {
-            "id": 1003,
-            "mlId": "3",
-            "name": "Animation"
-        },
-        {
-            "id": 1004,
-            "mlId": "4",
-            "name": "Children's"
-        },
-        {
-            "id": 1005,
-            "mlId": "5",
-            "name": "Comedy"
-        }
-    ],
-    "id": 1000,
-    "mlId": "1",
-    "title": "Toy Story (1995)"
-}
+{"Symbol":"AAPL","Name":"Apple Inc.","Exchange":"NASDAQ","Status":"SUCCESS",
+"LastPrice":117.82,"Change":-0.210000000000008,"ChangePercent":-0.177920867576047,
+"Timestamp":"Fri Nov 27 17:59:00 GMTZ 2015","MSDate":42335.5409722222,"MarketCap":6.5688549842E11,
+"Volume":859197,"ChangeYTD":110.38,"ChangePercentYTD":6.74035151295524,"High":118.41,"Low":117.6,"Open":118.27}
 ----
