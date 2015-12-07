@@ -576,6 +576,7 @@ public class AccountsApplication {
 +
 ----
 server.port=8082
+security.basic.enabled=false
 ----
 
 . To run the application locally you have to add H2 dependency to your `pom.xml` file.
@@ -602,49 +603,42 @@ $ java -jar target/accounts-1.0.0-SNAPSHOT.jar
 . Access the application using `curl` to make sure everything is working properly:
 +
 ----
-$ curl -i localhost:8082/account/forMovie/1
-HTTP/1.1 200 OK
-Content-Type: application/json;charset=UTF-8
-Date: Tue, 17 Feb 2015 06:02:10 GMT
+$ curl -i ${ROUTE}/account -X POST -d '{"address":"45 Test Dr.","passwd":"123","userid":"johndoe3","email":"anon@springsource.com","creditcard":"999999999","fullname":"John Doe","openbalance":1200.50, "logincount": 0, "logoutcount":0}' -H "Content-Type: application/json"
+HTTP/1.1 201 Created
 Server: Apache-Coyote/1.1
-Transfer-Encoding: chunked
-X-Application-Context: application:8082
+X-Application-Context: accounts:local:8082
+Location: http://localhost:8082/account/4
+Content-Length: 0
+Date: Sat, 05 Dec 2015 13:45:25 GMT
 
-[
-    {
-        "id": 3079,
-        "mlId": "2",
-        "title": "GoldenEye (1995)"
-    }
-]
+
+$ curl -i http://localhost:8082/account/4
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Application-Context: accounts:local:8082
+Cache-Control: no-cache
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Sat, 05 Dec 2015 13:46:34 GMT
+
+{"id":4,"address":"45 Test Dr.","passwd":"123","userid":"johndoe3",
+"email":"anon@springsource.com","creditcard":"999999999","fullname":"John Doe",
+"authtoken":null,"creationdate":null,"openbalance":1200.50,"logoutcount":0,"balance":null,"lastlogin":null,"logincount":0}
+
 ----
 
 == Preparing for Cloud Foundry
 
 . Create the MySQL service.
-
 +
+----
 $ cf cs p-mysql 100mb-dev springtrader-accounts-db
- 
-
-. In the package `io.springbox.recommendations.config` create the class `CloudConfig`. Into that file you can paste the following source code:
+----
 +
-----
-@Configuration
-@Profile("cloud")
-public class CloudConfig extends AbstractCloudConfig {
-
-    @Bean
-    GraphDatabaseService graphDatabaseService() {
-        return connectionFactory().service(GraphDatabaseService.class);
-    }
-}
-----
-
 . Rebuild the JAR:
 +
 ----
-$ mvn package -DskipTests
+$ mvn clean package
 ----
 
 == Deploying to Cloud Foundry
@@ -654,16 +648,17 @@ $ mvn package -DskipTests
 [source,yml]
 ----
 ---
+timeout: 180
+instances: 1
+memory: 512M
+env:
+    SPRING_PROFILES_DEFAULT: cloud
+    JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
 applications:
-- name: springbox-recommendations
-  host: springbox-recommendations-${random-word}
-  memory: 512M
-  instances: 1
-  path: target/springbox-recommendations-0.0.1-SNAPSHOT.jar
-  env:
-    SPRING_PROFILES_ACTIVE: cloud
-  services:
-  - springbox-recommendations-db
+- name: accounts
+  random-route: true
+  path: target/accounts-1.0.0-SNAPSHOT.jar
+  services: [ springtrader-accounts-db ]
 ----
 
 . Push to Cloud Foundry:
@@ -673,40 +668,38 @@ $ cf push
 
 ...
 
-Showing health and status for app springbox-recommendations in org oreilly-class / space instructor as mstine@pivotal.io...
+Showing health and status for app accounts in org pivot-cqueiroz / space development as cqueiroz@pivotal.io...
 OK
 
 requested state: started
 instances: 1/1
 usage: 512M x 1 instances
-urls: springbox-recommendations-preadherent-werewolf.cfapps.io
-last uploaded: Tue Feb 17 05:40:41 UTC 2015
+urls: accounts-unexploited-boneset.cfapps.pez.pivotal.io
+last uploaded: Mon Dec 7 21:01:55 UTC 2015
+stack: cflinuxfs2
+buildpack: java-buildpack=v3.3.1-offline-https://github.com/cloudfoundry/java-buildpack.git#063836b java-main java-opts open-jdk-like-jre=1.8.0_65 open-jdk-like-memory-calculator=2.0.0_RELEASE spring-auto-reconfiguration=1.10.0_RELEASE
 
-     state     since                    cpu    memory           disk
-#0   running   2015-02-16 09:41:31 PM   0.0%   366.7M of 512M   146.9M of 1G
+     state     since                    cpu    memory           disk           details
+#0   running   2015-12-07 06:02:51 PM   0.9%   456.4M of 512M   163.4M of 1G
 ----
 
-.  Use what you've learned so far to insert a couple people, movies, and relationships into the neo4j instance through the REST service you just deployed (hint:  inspect the controller) 
+.  Use what you've learned so far to insert a couple accounts into the MySQL instance through the REST service you just deployed (hint:  inspect the controller)
 
 . Access the application using `curl` to make sure everything is working properly:
 +
 ----
-$ curl -i springbox-recommendations-preadherent-werewolf.cfapps.io/recommendations/forMovie/1
+$ curl -i http://accounts-recompensatory-assassinator.cfapps.pez.pivotal.io/account/1
 HTTP/1.1 200 OK
-Connection: keep-alive
-Content-Length: 48
+Cache-Control: no-cache
 Content-Type: application/json;charset=UTF-8
-Date: Tue, 17 Feb 2015 05:46:40 GMT
+Date: Mon, 07 Dec 2015 21:33:09 GMT
 Server: Apache-Coyote/1.1
-X-Application-Context: springbox-recommendations:cloud:63695
-X-Cache: MISS from access-gateway.hospitality.swisscom.com
-X-Cf-Requestid: 3e9bcafd-e4cc-4047-7355-bad9c84b3b4e
+X-Application-Context: accounts:cloud:0
+X-Cf-Requestid: 61792646-ccda-4538-4243-2f4e7e65b5bf
+Content-Length: 284
+Connection: close
 
-[
-    {
-        "id": 4,
-        "mlId": "2",
-        "title": "GoldenEye (1995)"
-    }
-]
+{"id":1,"address":"45 Test Dr.","passwd":"123","userid":"johndoe",
+"email":"anon@springsource.com","creditcard":"999999999","fullname":"John Doe",
+"authtoken":null,"creationdate":"2015-12-07 21:32:00","openbalance":1200.50,"logoutcount":0,"balance":null,"lastlogin":null,"logincount":0}
 ----
