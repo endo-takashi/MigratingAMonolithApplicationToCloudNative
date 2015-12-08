@@ -6,7 +6,7 @@ env:
     SPRING_PROFILES_ACTIVE: cloud
     JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
 applications:
-- name: portfolio2
-#  random-route: true
+- name: portfolio
+  random-route: true
   path: target/portfolio-1.0.0-SNAPSHOT.jar
   services: [ springtrader-portfolio-db ]
