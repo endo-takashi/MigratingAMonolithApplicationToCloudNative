@@ -492,6 +492,111 @@ public interface OrderRepository extends CrudRepository<Order,Integer> {
 }
 ----
 
+. Create the package `io.springtrader.portfolio.repositories` and in that package create the interface `OrderRepository`. Into that file you can paste the following source code:
++
+----
+public interface OrderRepository extends CrudRepository<Order,Integer> {
+	List<Order> findByAccountId(String accountId);
+}
+----
+
+. Create the package `io.springtrader.portfolio.services` and in that package create the interface `PortfolioService`. Into that file you can paste the following source code:
++
+----
+@Service
+public class PortfolioService {
+
+	private static final Logger logger = LoggerFactory.getLogger(PortfolioService.class);
+
+
+	@Autowired
+	OrderRepository repository;
+
+	@Autowired
+	private RestTemplate restTemplate;
+
+	public Portfolio getPortfolio(String accountId) {
+		/*
+		 * Retrieve all orders for accounts id and build portfolio.
+		 * - for each order create holding.
+		 * - for each holding find current price.
+		 */
+		logger.debug("Getting portfolio for accountId: " + accountId);
+		List<Order> orders = repository.findByAccountId(accountId);
+		return createPortfolio(new Portfolio(), orders);
+	}
+
+
+	private Portfolio createPortfolio(Portfolio portfolio, List<Order> orders) {
+		//TODO: change to forEach() and maybe in parallel?
+		for (Order order: orders) {
+			Holding holding = portfolio.getHolding(order.getSymbol());
+			if ( holding == null) {
+				holding = new Holding();
+				holding.setSymbol(order.getSymbol());
+				portfolio.addHolding(holding);
+			}
+			holding.addOrder(order);
+		}
+
+		// getLatestQuotes in parallel
+		portfolio.getHoldings().values().parallelStream().forEach(holding -> refreshHolding(holding));
+		portfolio.refreshTotalValue();
+		logger.debug("Portfolio: " + portfolio);
+		return portfolio;
+	}
+
+	/**
+	 * Calculates the current value of th holding.
+	 *
+	 * @param holding the holding to refresh.
+	 */
+	private void refreshHolding(Holding holding) {
+		Quote quote = getQuote(holding.getSymbol());
+		holding.setCurrentValue(new BigDecimal(quote.getLastPrice()));
+	}
+
+
+	private Quote getQuote(String symbol) {
+		logger.debug("Fetching quote: " + symbol);
+		Quote quote = restTemplate.getForObject("http://localhost:8086/quote/{symbol}", Quote.class, symbol);
+		return quote;
+	}
+
+
+	@Transactional
+	public Order addOrder(Order order) {
+		logger.debug("Adding order: " + order);
+		if (order.getOrderFee() == null) {
+			order.setOrderFee(new BigDecimal(10.50));
+			logger.debug("Adding Fee to order: " + order);
+		}
+		if (order.getOrderType() == OrderType.BUY) {
+			double amount = order.getQuantity()*order.getPrice().doubleValue()+order.getOrderFee().doubleValue();
+			ResponseEntity<Double> result= restTemplate.getForEntity("http://localhost:8081/accounts/{userid}/decreaseBalance/{amount}", Double.class, order.getAccountId(), amount);
+			return saveOrder(order, result);
+		} else {
+			double amount = order.getQuantity()*order.getPrice().doubleValue()-order.getOrderFee().doubleValue();
+			ResponseEntity<Double> result= restTemplate.getForEntity("http://localhost:8081/accounts/{userid}/increaseBalance/{amount}", Double.class, order.getAccountId(), amount);
+			return saveOrder(order,result);
+		}
+
+
+	}
+
+	private Order saveOrder(Order order, ResponseEntity<Double> result) {
+		if (result.getStatusCode() == HttpStatus.OK) {
+            logger.info(String.format("Account funds updated successfully for account: %s and new funds are: %s", order.getAccountId(), result.getBody()));
+            return repository.save(order);
+        } else {
+            //TODO: throw exception - not enough funds!
+            logger.warn("PortfolioService:addOrder - decresing balance HTTP not ok: ");
+            return null;
+        }
+	}
+}
+----
+
 . Create the package `io.springtrader.portfolio.controllers` and in that package create the interface `PortfolioController`. Into that file you can paste the following source code:
 +
 ----
@@ -500,17 +605,11 @@ public class PortfolioController {
 
 	private static final Logger logger = LoggerFactory.getLogger(PortfolioController.class);
 
-	/**
-	 * the service to delegate to.
-	 */
+
 	@Autowired
 	private PortfolioService service;
 
-	/**
-	 * Retrieves the portfolio for the given account.
-	 * @param accountId the account to retrieve the portfolio for.
-	 * @return The portfolio with HTTP OK.
-	 */
+
 	@RequestMapping(value = "/portfolio/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Portfolio> getPortfolio(@PathVariable("id") final String accountId) {
 		logger.debug("PortfolioController: Retrieving portfolio with user id:" + accountId);
@@ -524,14 +623,7 @@ public class PortfolioController {
 		responseHeaders.set("Cache-Control", "no-cache");
 		return responseHeaders;
 	}
-	/**
-	 * Adds an order to the portfolio of the given account.
-	 *
-	 * @param accountId the account to add the order to.
-	 * @param order The order to add.
-	 * @param builder
-	 * @return The order with HTTP CREATED or BAD REQUEST if it couldn't save.
-	 */
+
 	@RequestMapping(value = "/portfolio/{id}", method = RequestMethod.POST)
 	public ResponseEntity<Order> addOrder(@PathVariable("id") final String accountId, @RequestBody final Order order, UriComponentsBuilder builder) {
 		logger.debug("Adding Order: " + order);
@@ -566,10 +658,28 @@ public class PortfolioApplication {
 }
 ----
 
-. Add the following to `application.properties` -- we'll eventually want to run multiple apps locally, so we need to change the port:
+. Add the following to `application.yml` -- we'll eventually want to run multiple apps locally, so we need to change the port:
 +
 ----
-server.port=8081
+spring:
+  profiles.active: local
+  application:
+     name: portfolio
+
+---
+spring:
+  profiles: local
+  jpa:
+     hibernate:
+        ddl-auto: update
+server:
+  port: 8081
+---
+spring:
+  profiles: cloud
+  jpa:
+     hibernate:
+        ddl-auto: update
 ----
 
 . To run the application locally, you'll need either in-memory H2 database or a local installation MySQL/Postgres. To run against in-memory H2 locally add
@@ -596,33 +706,29 @@ $ mvn clean package
 $ java -jar target/portfolio-1.0.0-SNAPSHOT.jar
 ----
 
-. Run the following script to insert data via the application's API:
+. Run the following script to insert data via the application's API. Make sure you have the previous Account and Quotes services up and running.
 +
 ----
-$ scripts/loadReviews.sh
+$ scripts/loadAccounts.sh
+$ scripts/loadOrders.sh
 ----
 
 . Access the application using `curl` to make sure everything is working properly:
 +
 ----
-$ curl -i localhost:8081/reviews/1
+$ curl -i http://localhost:8081/portfolio/johndoe
 HTTP/1.1 200 OK
-Content-Type: application/json;charset=UTF-8
-Date: Mon, 16 Feb 2015 22:53:26 GMT
 Server: Apache-Coyote/1.1
+Cache-Control: no-cache
+Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-X-Application-Context: application:8081
+Date: Tue, 08 Dec 2015 09:21:52 GMT
 
-[
-    {
-        "id": "54e26a97300487ae4fe4cf45",
-        "mlId": "1",
-        "rating": 5,
-        "review": "Great movie!",
-        "title": "Toy Story (1995)",
-        "userName": "mstine"
-    }
-]
+{"accountId":null,"name":null,"currentTotalValue":255.4500000000000170530256582424044609069824218750,
+"purchaseValue":100.00,"sellValue":0,"holdings":{"EMC":{"id":null,"symbol":"EMC","quantity":10,
+"purchaseValue":100.00,"sellValue":0,"orders":[{"orderId":1,"accountId":"johndoe","symbol":"EMC",
+"orderFee":1.00,"completionDate":1329759342904,"orderType":"BUY","price":10.00,"quantity":10}],
+"currentValue":25.5450000000000017053025658242404460906982421875}}}
 ----
 
 == Preparing for Cloud Foundry
@@ -631,8 +737,8 @@ X-Application-Context: application:8081
 . We want to bind to a MongoDB data source when running on Cloud Foundry, so let's create one:
 +
 ----
-$ cf cs p-mongodb development springbox-reviews-db
-Creating service springbox-reviews-db in org oreilly-class / space instructor as mstine@pivotal.io...
+$ cf cs p-mysql 100mb-dev springtrader-portfolio-db
+Creating service instance springtrader-portfolio-db in org pivot-cqueiroz / space development as cqueiroz@pivotal.io...
 OK
 ----
 
@@ -652,7 +758,7 @@ OK
 . Build the JAR:
 +
 ----
-$ mvn package -DskipTests
+$ mvn clean package
 ----
 
 == Deploying to Cloud Foundry
@@ -661,15 +767,32 @@ $ mvn package -DskipTests
 +
 [source,yml]
 ----
----
+timeout: 180
+instances: 1
+memory: 512M
+env:
+    SPRING_PROFILES_ACTIVE: cloud
+    JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
 applications:
-- name: springbox-reviews
-  host: springbox-reviews-${random-word}
-  memory: 512M
-  instances: 1
-  path: target/springbox-reviews-0.0.1-SNAPSHOT.jar
-  services:
-    - springbox-reviews-db
+- name: portfolio
+  random-route: true
+  path: target/portfolio-1.0.0-SNAPSHOT.jar
+  services: [ springtrader-portfolio-db ]
+----
+. Before push to Cloud Foundry adjuste the application.yml (cloud profile) file with the URLs for the Accounts and Quotes services. Something like:
++
+----
+spring:
+  profiles: cloud
+  jpa:
+     hibernate:
+        ddl-auto: update
+
+quotes:
+  url: http://quotes-undespising-lenition.cfapps.pez.pivotal.io
+
+accounts:
+  url: http://accounts-recompensatory-assassinator.cfapps.pez.pivotal.io
 ----
 
 . Push to Cloud Foundry:
@@ -679,44 +802,29 @@ $ cf push
 
 ...
 
-Showing health and status for app springbox-reviews in org oreilly-class / space instructor as mstine@pivotal.io...
-OK
-
-requested state: started
-instances: 1/1
-usage: 512M x 1 instances
-urls: springbox-reviews-understaffed-nickeltype.pcf-on-aws.net
-last uploaded: Mon Feb 16 23:04:42 UTC 2015
-
-     state     since                    cpu    memory           disk
-#0   running   2015-02-16 03:05:28 PM   0.0%   361.4M of 512M   115.7M of 1G
 ----
 
 . Run the load script with the `ROUTE` environment variable set to the random route generated by CF to insert data via the application's API:
 +
 ----
-$ ROUTE=springbox-reviews-understaffed-nickeltype.pcf-on-aws.net scripts/loadReviews.sh
+$ ROUTE=portfolio.cfapps.pez.pivotal.io  loadAccounts.sh
+$ ROUTE=portfolio.cfapps.pez.pivotal.io  loadOrders.sh
 ----
 
 . Access the application using `curl` to make sure everything is working properly:
 +
 ----
-$ curl -i springbox-reviews-understaffed-nickeltype.pcf-on-aws.net/reviews/1
+$ curl -i portfolio.cfapps.pez.pivotal.io/portfolio/johndoe
 HTTP/1.1 200 OK
-Content-Type: application/json;charset=UTF-8
-Date: Mon, 16 Feb 2015 22:53:26 GMT
 Server: Apache-Coyote/1.1
+Cache-Control: no-cache
+Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
-X-Application-Context: application:8081
+Date: Tue, 08 Dec 2015 09:21:52 GMT
 
-[
-    {
-        "id": "54e26a97300487ae4fe4cf45",
-        "mlId": "1",
-        "rating": 5,
-        "review": "Great movie!",
-        "title": "Toy Story (1995)",
-        "userName": "mstine"
-    }
-]
+{"accountId":null,"name":null,"currentTotalValue":255.4500000000000170530256582424044609069824218750,
+"purchaseValue":100.00,"sellValue":0,"holdings":{"EMC":{"id":null,"symbol":"EMC","quantity":10,
+"purchaseValue":100.00,"sellValue":0,"orders":[{"orderId":1,"accountId":"johndoe","symbol":"EMC",
+"orderFee":1.00,"completionDate":1329759342904,"orderType":"BUY","price":10.00,"quantity":10}],
+"currentValue":25.5450000000000017053025658242404460906982421875}}}
 ----

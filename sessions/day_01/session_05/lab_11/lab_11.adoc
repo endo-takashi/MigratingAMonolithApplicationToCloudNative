@@ -289,14 +289,6 @@ public class QuoteService {
         this.stockRepository = stockRepository;
     }
 
-    /**
-     * Retrieves an up to date quote for the given symbol.
-     *
-     * @param symbol The symbol to retrieve the quote for.
-     * @return The quote object or null if not found.
-     * @throws SymbolNotFoundException
-     */
-
     public Stock getQuote(String symbol) throws Exception {
         logger.debug("QuoteService.getQuote: retrieving quote for: " + symbol);
 
@@ -342,15 +334,6 @@ public class QuoteService {
         return returnedStock;
     }
 
-
-    /**
-     * Retrieves a list of CompanyInfo objects.
-     * Given the name parameters, the return list will contain objects that match the search both
-     * on company name as well as symbol.
-     *
-     * @param name The search parameter for company name or symbol.
-     * @return The list of company information.
-     */
     public List<Stock> companiesByNameOrSymbol(String name) {
         logger.debug("QuoteService.companiesByNameOrSymbol: retrieving info for: " + name);
         List<Stock> stockList = new ArrayList<>();

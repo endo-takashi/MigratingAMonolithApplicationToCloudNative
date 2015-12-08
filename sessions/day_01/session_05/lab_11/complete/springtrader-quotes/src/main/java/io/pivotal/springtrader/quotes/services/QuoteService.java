@@ -101,14 +101,7 @@ public class QuoteService {
     }
 
 
-    /**
-     * Retrieves a list of CompanyInfo objects.
-     * Given the name parameters, the return list will contain objects that match the search both
-     * on company name as well as symbol.
-     *
-     * @param name The search parameter for company name or symbol.
-     * @return The list of company information.
-     */
+
     public List<Stock> companiesByNameOrSymbol(String name) {
         logger.debug("QuoteService.companiesByNameOrSymbol: retrieving info for: " + name);
         List<Stock> stockList = new ArrayList<>();
