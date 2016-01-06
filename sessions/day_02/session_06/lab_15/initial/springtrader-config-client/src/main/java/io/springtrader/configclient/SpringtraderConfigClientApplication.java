@@ -1,12 +1,12 @@
-package io.springbox.configserver;
+package io.springtrader.configclient;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringboxConfigServerApplication {
+public class SpringtraderConfigClientApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringboxConfigServerApplication.class, args);
+        SpringApplication.run(SpringtraderConfigClientApplication.class, args);
     }
 }
