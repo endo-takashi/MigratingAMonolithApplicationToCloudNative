@@ -12,7 +12,7 @@ The bus will be backed by a running instance of http://www.rabbitmq.com/[RabbitM
 . Change to the lab directory:
 +
 ----
-$ cd $COURSE_HOME/day_02/session_05/lab_15/initial/springbox-config-client
+$ cd $COURSE_HOME/day_02/session_06/lab_15/initial/springtrader-config-client
 ----
 +
 and import the project (via `pom.xml`) into your IDE of choice.
@@ -26,7 +26,7 @@ and import the project (via `pom.xml`) into your IDE of choice.
 </dependency>
 ----
 
-. In the package `io.springbox.configclient`, create the class `Greeter` and paste in the following source code:
+. In the package `io.springtrader.configclient`, create the class `Greeter` and paste in the following source code:
 +
 ----
 @Component
@@ -63,16 +63,16 @@ public class GreetingController {
 
 . To run the application now, you'll need a local install of RabbitMQ. You can obtain one for your platform http://www.rabbitmq.com/download.html[here].
 
-. A completed `springbox-config-server` project has been placed in `$COURSE_HOME/day_02/session_05/lab_15/initial/springbox-config-server` for your convenience.
+. A completed `springtrader-config-server` project has been placed in `$COURSE_HOME/day_02/session_06/lab_15/initial/springtrader-config-server` for your convenience.
 In a different terminal window, change to that directory, rebuild, and run the application:
 +
 ----
-$ cd $COURSE_HOME/day_02/session_05/lab_15/initial/springbox-config-server
+$ cd $COURSE_HOME/day_02/session_06/lab_15/initial/springtrader-config-server
 $ mvn packaage
-$ java -jar target/springbox-config-server-0.0.1-SNAPSHOT.jar
+$ java -jar target/springtrader-config-server-0.0.1-SNAPSHOT.jar
 ----
 
-. Build your new `springbox-config-client`:
+. Build your new `springtrader-config-client`:
 +
 ----
 $ mvn package
@@ -81,7 +81,7 @@ $ mvn package
 . Run the application:
 +
 ----
-$ java -jar target/springbox-config-client-0.0.1-SNAPSHOT.jar
+$ java -jar target/springtrader-config-client-0.0.1-SNAPSHOT.jar
 ----
 
 . Use `curl` to access the application and make sure that everything is still working as before:
@@ -101,7 +101,7 @@ Howdy World!
 . In a separate terminal window, run another copy of the client on a different port to create a system of apps connected by the bus:
 +
 ----
-$ SERVER_PORT=8081 java -jar target/springbox-config-client-0.0.1-SNAPSHOT.jar
+$ SERVER_PORT=8081 java -jar target/springtrader-config-client-0.0.1-SNAPSHOT.jar
 ----
 
 . Use `curl` to access the second instance running on port `8081`:
