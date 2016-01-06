@@ -1,4 +1,4 @@
-package io.springbox.configclient;
+package io.springtrader.configclient;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
