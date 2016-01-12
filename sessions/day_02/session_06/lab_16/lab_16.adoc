@@ -19,7 +19,7 @@ In this lab, we'll do the following:
 . Change to the lab directory:
 +
 ----
-$ cd $COURSE_HOME/day_02/session_05/lab_16/initial/springbox-eureka
+$ cd $COURSE_HOME/day_02/session_06/lab_16/initial/springtrader-eureka
 ----
 +
 and import the project (via `pom.xml`) into your IDE of choice.
@@ -81,15 +81,15 @@ and import the project (via `pom.xml`) into your IDE of choice.
 </plugin>
 ----
 
-. In `io.springbox.eureka.SpringboxEurekaApplication`, add the `@EnableEurekaServer` annotation:
+. In `io.springtrader.eureka.SpringboxEurekaApplication`, add the `@EnableEurekaServer` annotation:
 +
 ----
 @SpringBootApplication
 @EnableEurekaServer    // <-- ADD THIS!
-public class SpringboxEurekaApplication {
+public class SpringtraderEurekaApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringboxEurekaApplication.class, args);
+        SpringApplication.run(SpringtraderEurekaApplication.class, args);
     }
 }
 ----
@@ -119,7 +119,7 @@ $ mvn package
 . Run the application:
 +
 ----
-$ java -jar target/springbox-eureka-0.0.1-SNAPSHOT.jar
+$ java -jar target/springtrader-eureka-0.0.1-SNAPSHOT.jar
 ----
 
 . In a browser, visit http://localhost:8761 and verify that everything is working properly:
@@ -131,7 +131,7 @@ image::../../../Common/images/eureka_1.png[]
 . Change to the lab directory:
 +
 ----
-$ cd $COURSE_HOME/day_02/session_05/lab_16/initial/springbox-producer
+$ cd $COURSE_HOME/day_02/session_06/lab_16/initial/springtrader-producer
 ----
 +
 and import the project (via `pom.xml`) into your IDE of choice.
@@ -161,7 +161,7 @@ and import the project (via `pom.xml`) into your IDE of choice.
 </dependency>
 ----
 
-. In the package `io.springbox.producer`, create the class `ProducerController`.
+. In the package `io.springtrader.producer`, create the class `ProducerController`.
 Into that class paste the following code:
 +
 ----
@@ -182,15 +182,15 @@ public class ProducerController {
 }
 ----
 
-. Now open `io.springbox.producer.SpringboxProducerApplication` and add the `@EnableDiscoveryClient` annotation:
+. Now open `io.springtrader.producer.SpringtraderProducerApplication` and add the `@EnableDiscoveryClient` annotation:
 +
 ----
 @SpringBootApplication
 @EnableDiscoveryClient  // <--- ADD THIS!
-public class SpringboxProducerApplication {
+public class SpringtraderProducerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringboxProducerApplication.class, args);
+        SpringApplication.run(SpringtraderProducerApplication.class, args);
     }
 }
 ----
@@ -217,36 +217,36 @@ eureka:
 . Stage, commit, and push your changes:
 +
 ----
-git add . && git commit -m "swap greeting" && git push origin master
+git add . && git commit -m "adds eureka config client" && git push origin master
 ----
 
-. A completed `springbox-config-server` project has been placed in `$COURSE_HOME/day_02/session_05/lab_15/initial/springbox-config-server` for your convenience.
+. A completed `springtrader-config-server` project has been placed in `$COURSE_HOME/day_02/session_06/lab_15/complete/springtrader-config-server` for your convenience.
 In a different terminal window, change to that directory, rebuild, and run the application:
 +
 ----
-$ cd $COURSE_HOME/day_02/session_05/lab_16/initial/springbox-config-server
+$ cd $COURSE_HOME/day_02/session_06/lab_15/complete/springtrader-config-server
 $ mvn package
-$ java -jar target/springbox-config-server-0.0.1-SNAPSHOT.jar
+$ java -jar target/springtrader-config-server-0.0.1-SNAPSHOT.jar
 ----
 
-. Now build the producer application:
+. Go back to the previous terminal and now build the producer application:
 +
 ----
-$ mvn package
+$ mvn clean package
 ----
 
 . And run the producer application:
 +
 ----
-$ java -jar target/springbox-producer-0.0.1-SNAPSHOT.jar
+$ java -jar target/springtrader-producer-0.0.1-SNAPSHOT.jar
 ----
 
 . Ten seconds after the producer application finishes startup, you should see it log its registration with Eureka:
 +
 ----
-2015-02-18 22:56:00.226  INFO 42160 --- [pool-4-thread-1] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_PRODUCER/turkey:producer:8080 - Re-registering apps/PRODUCER
-2015-02-18 22:56:00.227  INFO 42160 --- [pool-4-thread-1] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_PRODUCER/turkey:producer:8080: registering service...
-2015-02-18 22:56:00.274  INFO 42160 --- [pool-4-thread-1] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_PRODUCER/turkey:producer:8080 - registration status: 204
+2016-01-12 16:45:27.148  INFO 2101 --- [pool-4-thread-1] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_PRODUCER/potiguar.local:producer:9009 - Re-registering apps/PRODUCER
+2016-01-12 16:45:27.148  INFO 2101 --- [pool-4-thread-1] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_PRODUCER/potiguar.local:producer:9009: registering service...
+2016-01-12 16:45:27.209  INFO 2101 --- [pool-4-thread-1] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_PRODUCER/potiguar.local:producer:9009 - registration status: 204
 ----
 +
 You should also be able to refresh http://localhost:8761 in the browser and see the producer registered:
@@ -258,7 +258,7 @@ image::../../../Common/images/eureka_2.png[]
 . Change to the lab directory:
 +
 ----
-$ cd $COURSE_HOME/day_02/session_05/lab_16/initial/springbox-consumer
+$ cd $COURSE_HOME/day_02/session_06/lab_16/initial/springtrader-consumer
 ----
 +
 and import the project (via `pom.xml`) into your IDE of choice.
@@ -288,7 +288,7 @@ and import the project (via `pom.xml`) into your IDE of choice.
 </dependency>
 ----
 
-. In the package `io.springbox.consumer`, create the class `ProducerResponse`, and into that class paste the following code:
+. In the package `io.springtrader.consumer`, create the class `ProducerResponse`, and into that class paste the following code:
 +
 ----
 public class ProducerResponse {
@@ -304,7 +304,7 @@ public class ProducerResponse {
 }
 ----
 
-. Also in the package `io.springbox.consumer`, create the class `ConsumerController`, and into that class paste the following code:
+. Also in the package `io.springtrader.consumer`, create the class `ConsumerController`, and into that class paste the following code:
 +
 ----
 @RestController
@@ -326,15 +326,15 @@ public class ConsumerController {
 }
 ----
 
-. Now open `io.springbox.producer.SpringboxConsumerrApplication` and add the `@EnableDiscoveryClient` annotation:
+. Now open `io.springtrader.producer.SpringtraderConsumerrApplication` and add the `@EnableDiscoveryClient` annotation:
 +
 ----
 @SpringBootApplication
 @EnableDiscoveryClient  // <--- ADD THIS!
-public class SpringboxConsumerApplication {
+public class SpringtraderConsumerrApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringboxConsumerApplication.class, args);
+        SpringApplication.run(SpringtraderConsumerrApplication.class, args);
     }
 }
 ----
@@ -342,7 +342,7 @@ public class SpringboxConsumerApplication {
 . In `src/main/resources/application.properties`, set the `server.port` property:
 +
 ----
-server.port=8081
+server.port=8091
 ----
 
 . Create the file `src/main/resources/bootstrap.yml` and paste in the following source:
@@ -362,15 +362,15 @@ $ mvn package
 . And run the consumer application:
 +
 ----
-$ java -jar target/springbox-consumer-0.0.1-SNAPSHOT.jar
+$ java -jar target/springtrader-consumer-0.0.1-SNAPSHOT.jar
 ----
 
 . Ten seconds after the consumer application finishes startup, you should see it log its registration with Eureka:
 +
 ----
-2015-02-18 23:29:55.703  INFO 45265 --- [pool-4-thread-1] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_CONSUMER/turkey:consumer:8081 - Re-registering apps/CONSUMER
-2015-02-18 23:29:55.703  INFO 45265 --- [pool-4-thread-1] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_CONSUMER/turkey:consumer:8081: registering service...
-2015-02-18 23:29:55.729  INFO 45265 --- [pool-4-thread-1] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_CONSUMER/turkey:consumer:8081 - registration status: 204
+2016-01-12 16:58:25.130  INFO 3696 --- [pool-4-thread-1] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_CONSUMER/potiguar.local:consumer:8091 - Re-registering apps/CONSUMER
+2016-01-12 16:58:25.130  INFO 3696 --- [pool-4-thread-1] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_CONSUMER/potiguar.local:consumer:8091: registering service...
+2016-01-12 16:58:25.152  INFO 3696 --- [pool-4-thread-1] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_CONSUMER/potiguar.local:consumer:8091 - registration status: 204
 ----
 +
 You should also be able to refresh http://localhost:8761 in the browser and see the producer registered:
@@ -380,15 +380,16 @@ image::../../../Common/images/eureka_3.png[]
 . Using `curl`, test the consumer application and show that it is receiving values from the producer:
 +
 ----
-curl -i localhost:8081
+curl -i localhost:8091
 HTTP/1.1 200 OK
-Content-Length: 11
-Content-Type: application/json;charset=UTF-8Date: Thu, 19 Feb 2015 07:32:21 GMT
 Server: Apache-Coyote/1.1
-X-Application-Context: consumer:8081
+X-Application-Context: consumer:8091
+Content-Type: application/json;charset=UTF-8
+Content-Length: 11
+Date: Tue, 12 Jan 2016 09:00:54 GMT
 
 {
-    "value": 0
+	"value":0
 }
 ----
 
@@ -400,11 +401,11 @@ X-Application-Context: consumer:8081
 ----
 ---
 applications:
-- name: springbox-eureka
-  host: springbox-eureka-${random-word}
+- name: springtrader-eureka
+  host: springtrader-eureka-${random-word}
   memory: 512M
   instances: 1
-  path: target/springbox-eureka-0.0.1-SNAPSHOT.jar
+  path: target/springtrader-eureka-0.0.1-SNAPSHOT.jar
 ----
 
 . Push to Cloud Foundry:
@@ -414,17 +415,19 @@ $ cf push
 
 ...
 
-Showing health and status for app springbox-eureka in org oreilly-class / space instructor as mstine@pivotal.io...
+Showing health and status for app springtrader-eureka in org pivot-cqueiroz / space development as cqueiroz@pivotal.io...
 OK
 
 requested state: started
 instances: 1/1
 usage: 512M x 1 instances
-urls: springbox-eureka-blowsy-catechizer.cfapps.io
-last uploaded: Thu Feb 19 07:40:21 UTC 2015
+urls: springtrader-eureka-nonpatterned-insurgency.cfapps.pez.pivotal.io
+last uploaded: Tue Jan 12 09:35:33 UTC 2016
+stack: cflinuxfs2
+buildpack: java-buildpack=v3.3.1-offline-https://github.com/cloudfoundry/java-buildpack.git#063836b java-main open-jdk-like-jre=1.8.0_65 open-jdk-like-memory-calculator=2.0.0_RELEASE spring-auto-reconfiguration=1.10.0_RELEASE
 
-     state     since                    cpu    memory           disk
-#0   running   2015-02-18 11:41:10 PM   0.3%   386.1M of 512M   135.1M of 1G
+     state     since                    cpu    memory           disk           details
+#0   running   2016-01-12 05:36:49 PM   0.0%   320.1M of 512M   183.9M of 1G
 ----
 
 . In a browser, visit the route assigned to your Eureka server and verify that everything is working properly:
@@ -434,8 +437,8 @@ image::../../../Common/images/eureka_1.png[]
 . Create a user-provided service representing the Eureka server (be sure to use the route assigned to your Eureka server!):
 +
 ----
-$ cf cups springbox-service-registry -p '{"uri":"http://springbox-service-registry-unmaritime-acidification.cfapps.io"}'
-Creating user provided service springbox-service-registry in org oreilly-class / space instructor as mstine@pivotal.io...
+$ cf cups springtrader-service-registry -p '{"uri":"http://springtrader-eureka-nonpatterned-insurgency.cfapps.pez.pivotal.io"}'
+Creating user provided service springtrader-service-registry in org pivot-cqueiroz / space development as cqueiroz@pivotal.io...
 OK
 ----
 
@@ -451,7 +454,7 @@ eureka:
       instanceId: ${vcap.application.instance_id:${spring.application.name}:${server.port:8080}}
   client:    # <--- ADD THE CLIENT SECTION!!!
     serviceUrl:
-      defaultZone: ${vcap.services.springbox-service-registry.credentials.uri:http://127.0.0.1:8761}/eureka/
+      defaultZone: ${vcap.services.springtrader-service-registry.credentials.uri:http://127.0.0.1:8761}/eureka/
 ----
 
 . Also add a second YAML document to `application.yml`:
@@ -469,10 +472,10 @@ eureka:
 . Stage, commit, and push your changes:
 +
 ----
-git add . && git commit -m "swap greeting" && git push origin master
+git add . && git commit -m "adds eureka setup" && git push origin master
 ----
 
-Each of the three microservice projects has been copied into `$COURSE_HOME/day_02/session_05/lab_16/initial`, and are in the state we left them at the end of link:../lab_15/lab_15.adoc[Lab 15].
+Each of the three microservice projects has been copied into `$COURSE_HOME/day_02/session_06/lab_16/initial`, and are in the state we left them at the end of link:../lab_15/lab_15.adoc[Lab 15].
 You can either continue your existing projects or pickup from these copies.
 
 For each project, perform the following steps (we'll do these once for the `springbox-catalog` project in this guide):
@@ -480,7 +483,7 @@ For each project, perform the following steps (we'll do these once for the `spri
 . Change to the lab directory:
 +
 ----
-$ cd $COURSE_HOME/day_02/session_05/lab_16/initial/springbox-catalog
+$ cd $COURSE_HOME/day_02/session_06/lab_16/initial/springtrader-quotes
 ----
 +
 and import the project (via `pom.xml`) into your IDE of choice.
@@ -490,20 +493,20 @@ and import the project (via `pom.xml`) into your IDE of choice.
 ----
 <dependency>
   <groupId>org.springframework.cloud</groupId>
-  <artifactId>spring-cloud-starter-eureka</artifactId>
+  <artifactId>spring-cloud-starter-eureka-server</artifactId>
+  <version>1.0.3.RELEASE</version>
 </dependency>
 ----
 
-. Now open `io.springbox.catalog.SpringboxCatalogApplication` and add the `@EnableDiscoveryClient` annotation:
+. Now open `io.pivotal.springtrader.quotes.QuotesApplication` and add the `@EnableDiscoveryClient` annotation:
 +
 ----
 @SpringBootApplication
-@EnableJpaRepositories
 @EnableDiscoveryClient  // <--- ADD THIS!!!
-public class SpringboxCatalogApplication {
+public class QuotesApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringboxCatalogApplication.class, args);
+        SpringApplication.run(QuotesApplication.class, args);
     }
 }
 ----
@@ -511,27 +514,27 @@ public class SpringboxCatalogApplication {
 . Build the application:
 +
 ----
-$ mvn package
+$ mvn clean package
 ----
 
-. In `manifest.yml`, add a binding to `springbox-service-registry`:
+. In `manifest.yml`, add a binding to `springtrader-service-registry`:
 +
 ----
 ---
 applications:
-- name: springbox-catalog
-  host: springbox-catalog-${random-word}
-  memory: 512M
+- name: springtrader-quotes
+  host: springtrader-quotes-${random-word}
+  memory: 1G
   instances: 1
   timeout: 90
   path: target/springbox-catalog-0.0.1-SNAPSHOT.jar
   env:
     SPRING_PROFILES_ACTIVE: cloud
   services:
-    - springbox-catalog-db
-    - springbox-config-service
-    - springbox-cloud-bus-amqp
-    - springbox-service-registry
+    - springtrader-catalog-db
+    - springtrader-config-service
+    - springtrader-cloud-bus-amqp
+    - springtrader-service-registry
 ----
 
 . Push the application:
@@ -541,30 +544,32 @@ $ cf push
 
 ...
 
-Showing health and status for app springbox-catalog in org oreilly-class / space instructor as mstine@pivotal.io...
+Showing health and status for app springtrader-quotes in org pivot-cqueiroz / space development as cqueiroz@pivotal.io...
 OK
 
 requested state: started
 instances: 1/1
-usage: 512M x 1 instances
-urls: springbox-catalog-overwild-nonrevival.cfapps.io
-last uploaded: Fri Feb 20 02:06:02 UTC 2015
+usage: 1G x 1 instances
+urls: springtrader-quotes-autophytic-concord.cfapps.pez.pivotal.io
+last uploaded: Tue Jan 12 10:36:19 UTC 2016
+stack: cflinuxfs2
+buildpack: java-buildpack=v3.3.1-offline-https://github.com/cloudfoundry/java-buildpack.git#063836b java-main java-opts open-jdk-like-jre=1.8.0_65 open-jdk-like-memory-calculator=2.0.0_RELEASE spring-auto-reconfiguration=1.10.0_RELEASE
 
-     state     since                    cpu     memory           disk
-#0   running   2015-02-19 06:07:35 PM   81.0%   446.1M of 512M   150.9M of 1G
+     state     since                    cpu    memory         disk           details
+#0   running   2016-01-12 06:37:54 PM   0.0%   502.5M of 1G   196.4M of 1G
 ----
 
 . Ten seconds after the catalog application finishes startup, you should see it log its registration with Eureka:
 +
 ----
-2015-02-19T18:07:45.21-0800 [App/0]      OUT 2015-02-20 02:07:45.212  INFO 31 --- [pool-7-thread-1] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_SPRINGBOX-CATALOG/springbox-catalog-overwild-nonrevival.cfapps.io:d458a40215004b2c902c47a157c2a2
-10 - Re-registering apps/SPRINGBOX-CATALOG
-2015-02-19T18:07:45.21-0800 [App/0]      OUT 2015-02-20 02:07:45.212  INFO 31 --- [pool-7-thread-1] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_SPRINGBOX-CATALOG/springbox-catalog-overwild-nonrevival.cfapps.io:d458a40215004b2c902c47a157c2a2
-10: registering service...
-2015-02-19T18:07:45.27-0800 [App/0]      OUT 2015-02-20 02:07:45.277  INFO 31 --- [pool-7-thread-1] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_SPRINGBOX-CATALOG/springbox-catalog-overwild-nonrevival.cfapps.io:d458a40215004b2c902c47a157c2a2
-10 - registration status: 204
+2016-01-12T18:38:34.52+0800 [APP/0]      OUT 2016-01-12 10:38:34.522  INFO 26 --- [scoveryClient-2] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_SPRINGTRADER-QUOTES/9nfl86h1p48:18af4e6e-040c-4786-54ff-74a12e61f882 - retransmit instance info with status UP
+2016-01-12T18:38:34.52+0800 [APP/0]      OUT 2016-01-12 10:38:34.522  INFO 26 --- [scoveryClient-2] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_SPRINGTRADER-QUOTES/9nfl86h1p48:18af4e6e-040c-4786-54ff-74a12e61f882: registering service...
+2016-01-12T18:38:34.54+0800 [APP/0]      OUT 2016-01-12 10:38:34.537  INFO 26 --- [scoveryClient-2] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_SPRINGTRADER-QUOTES/9nfl86h1p48:18af4e6e-040c-4786-54ff-74a12e61f882 - registration status: 204
+2016-01-12T18:38:34.66+0800 [APP/0]      OUT 2016-01-12 10:38:34.665  INFO 26 --- [pool-8-thread-1] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_SPRINGTRADER-QUOTES/9nfl86h1p48:18af4e6e-040c-4786-54ff-74a12e61f882 - Re-registering apps/SPRINGTRADER-QUOTES
+2016-01-12T18:38:34.66+0800 [APP/0]      OUT 2016-01-12 10:38:34.665  INFO 26 --- [pool-8-thread-1] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_SPRINGTRADER-QUOTES/9nfl86h1p48:18af4e6e-040c-4786-54ff-74a12e61f882: registering service...
+2016-01-12T18:38:34.68+0800 [APP/0]      OUT 2016-01-12 10:38:34.681  INFO 26 --- [pool-8-thread-1] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_SPRINGTRADER-QUOTES/9nfl86h1p48:18af4e6e-040c-4786-54ff-74a12e61f882 - registration status: 204
 ----
 +
-You should also be able to refresh the route of your PWS deployed Eureka in the browser and see the catalog registered:
+You should also be able to refresh the route of your PWS deployed Eureka in the browser and see the Quotes App registered:
 +
 image::../../../Common/images/eureka_4.png[]
