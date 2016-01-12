@@ -9,5 +9,5 @@ applications:
 - name: springtrader-quotes
   random-route: true
   path: target/quotes-1.0.0-SNAPSHOT.jar
-  services: [ springtrader-quotes-db, springtrader-config-service ]
+  services: [ springtrader-quotes-db, springtrader-config-service, springtrader-cloud-bus-amqp ]
 

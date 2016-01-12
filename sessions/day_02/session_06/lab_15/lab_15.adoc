@@ -68,14 +68,14 @@ In a different terminal window, change to that directory, rebuild, and run the a
 +
 ----
 $ cd $COURSE_HOME/day_02/session_06/lab_15/initial/springtrader-config-server
-$ mvn packaage
+$ mvn clean package
 $ java -jar target/springtrader-config-server-0.0.1-SNAPSHOT.jar
 ----
 
 . Build your new `springtrader-config-client`:
 +
 ----
-$ mvn package
+$ mvn clean package
 ----
 
 . Run the application:
@@ -89,13 +89,13 @@ $ java -jar target/springtrader-config-client-0.0.1-SNAPSHOT.jar
 ----
 $ curl -i localhost:8080
 HTTP/1.1 200 OK
-Content-Length: 12
-Content-Type: text/plain;charset=UTF-8
-Date: Wed, 18 Feb 2015 21:48:32 GMT
 Server: Apache-Coyote/1.1
 X-Application-Context: demo
+Content-Type: text/plain;charset=UTF-8
+Content-Length: 12
+Date: Wed, 06 Jan 2016 08:10:17 GMT
 
-Howdy World!
+Hello World!
 ----
 
 . In a separate terminal window, run another copy of the client on a different port to create a system of apps connected by the bus:
@@ -109,13 +109,13 @@ $ SERVER_PORT=8081 java -jar target/springtrader-config-client-0.0.1-SNAPSHOT.ja
 ----
 $ curl -i localhost:8081
 HTTP/1.1 200 OK
-Content-Length: 12
-Content-Type: text/plain;charset=UTF-8
-Date: Wed, 18 Feb 2015 21:48:32 GMT
 Server: Apache-Coyote/1.1
-X-Application-Context: demo
+X-Application-Context: demo:8081
+Content-Type: text/plain;charset=UTF-8
+Content-Length: 12
+Date: Wed, 06 Jan 2016 08:12:02 GMT
 
-Howdy World!
+Hello World!
 ----
 
 . Now, open `demo.yml` from your config-repo and change the greeting:
@@ -135,29 +135,24 @@ git add . && git commit -m "swap greeting" && git push origin master
 ----
 $ curl -i localhost:8888/demo/default
 HTTP/1.1 200 OK
-Content-Type: application/json;charset=UTF-8
-Date: Wed, 18 Feb 2015 21:58:34 GMT
 Server: Apache-Coyote/1.1
-Transfer-Encoding: chunked
 X-Application-Context: bootstrap:8888
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Wed, 06 Jan 2016 08:13:00 GMT
 
 {
-    "label": "",
-    "name": "default",
-    "propertySources": [
-        {
-            "name": "https://github.com/mstine/springbox-config-repo.git/demo.yml",
-            "source": {
-                "greeting": "Ohai"
-            }
-        },
-        {
-            "name": "https://github.com/mstine/springbox-config-repo.git/application.yml",
-            "source": {
-                "configserver": true
-            }
-        }
-    ]
+	"name":"default",
+	"label":"",
+	"propertySources":
+	[
+		{"name":"https://github.com/caxqueiroz/springtrader-config-repo.git/demo.yml",
+		"source":{"greeting":"Ohai"}
+	},
+		{"name":"https://github.com/caxqueiroz/springtrader-config-repo.git/application.yml",
+		"source":{"configserver":true}
+	}
+	]
 }
 ----
 
@@ -166,23 +161,23 @@ X-Application-Context: bootstrap:8888
 ----
 $ curl -i localhost:8080
 HTTP/1.1 200 OK
-Content-Length: 12
-Content-Type: text/plain;charset=UTF-8
-Date: Wed, 18 Feb 2015 22:00:11 GMT
 Server: Apache-Coyote/1.1
 X-Application-Context: demo
+Content-Type: text/plain;charset=UTF-8
+Content-Length: 12
+Date: Wed, 06 Jan 2016 08:14:27 GMT
 
-Howdy World!
+Hello World!
 
 $ curl -i localhost:8081
 HTTP/1.1 200 OK
-Content-Length: 12
-Content-Type: text/plain;charset=UTF-8
-Date: Wed, 18 Feb 2015 22:00:16 GMT
 Server: Apache-Coyote/1.1
 X-Application-Context: demo:8081
+Content-Type: text/plain;charset=UTF-8
+Content-Length: 12
+Date: Wed, 06 Jan 2016 08:14:52 GMT
 
-Howdy World!
+Hello World!
 ----
 
 . Now, `POST` a request to the `/bus/refresh` endpoint to trigger a configuration refresh event:
@@ -190,10 +185,10 @@ Howdy World!
 ----
 $ curl -i -X POST localhost:8080/bus/refresh
 HTTP/1.1 200 OK
-Content-Length: 0
-Date: Wed, 18 Feb 2015 22:01:39 GMT
 Server: Apache-Coyote/1.1
 X-Application-Context: demo
+Content-Length: 0
+Date: Wed, 06 Jan 2016 08:15:58 GMT
 ----
 
 . Using `curl`, show that the greeting *has* now refreshed in the client applications:
@@ -201,21 +196,21 @@ X-Application-Context: demo
 ----
 $ curl -i localhost:8080
 HTTP/1.1 200 OK
-Content-Length: 11
-Content-Type: text/plain;charset=UTF-8
-Date: Wed, 18 Feb 2015 22:02:31 GMT
 Server: Apache-Coyote/1.1
 X-Application-Context: demo
+Content-Type: text/plain;charset=UTF-8
+Content-Length: 11
+Date: Wed, 06 Jan 2016 08:16:19 GMT
 
 Ohai World!
 
 $ curl -i localhost:8081
 HTTP/1.1 200 OK
-Content-Length: 11
-Content-Type: text/plain;charset=UTF-8
-Date: Wed, 18 Feb 2015 22:02:35 GMT
 Server: Apache-Coyote/1.1
 X-Application-Context: demo:8081
+Content-Type: text/plain;charset=UTF-8
+Content-Length: 11
+Date: Wed, 06 Jan 2016 08:16:32 GMT
 
 Ohai World!
 ----
@@ -225,8 +220,8 @@ Ohai World!
 . Create a Pivotal RabbitMQ service to back the Cloud Bus:
 +
 ----
-$ cf cs p-rabbitmq standard springbox-cloud-bus-amqp
-Creating service springbox-cloud-bus-amqp in org ACME / space jfullam as jfullam...
+$ cf cs p-rabbitmq standard springtrader-cloud-bus-amqp
+Creating service instance springtrader-cloud-bus-amqp in org pivot-cqueiroz / space development as cqueiroz@pivotal.io...
 OK
 ----
 +
@@ -249,35 +244,35 @@ git add . && git commit -m "add bus property" && git push origin master
 . Access the config server using `curl` to make sure the new property exists:
 +
 ----
-$ curl -i springbox-config-server-unmaritime-acidification.cfapps.io/application/default
+$ curl -i springtrader-config-server-succinct-electronarcosis.cfapps.pez.pivotal.io/application/default
 HTTP/1.1 200 OK
-Connection: keep-alive
-Content-Length: 171
 Content-Type: application/json;charset=UTF-8
-Date: Wed, 18 Feb 2015 22:22:04 GMT
+Date: Mon, 11 Jan 2016 02:20:19 GMT
 Server: Apache-Coyote/1.1
-X-Application-Context: springbox-config-server:cloud:61062
-X-Cf-Requestid: 296e2979-be5b-4cc6-4995-f1333be2be61
+X-Application-Context: springtrader-config-server:cloud:8080
+X-Cf-Requestid: b5c59a87-e45b-4545-4333-93227b677a20
+Content-Length: 178
+Connection: close
 
 {
-    "label": "",
-    "name": "default",
-    "propertySources": [
-        {
-            "name": "https://github.com/mstine/springbox-config-repo.git/application.yml",
-            "source": {
-                "bus": false,
-                "configserver": true
-            }
-        }
-    ]
+	"name":"default",
+	"label":"",
+	"propertySources":[
+		{
+			"name":"https://github.com/caxqueiroz/springtrader-config-repo.git/application.yml",
+			"source":{
+						"configserver":true,
+						"bus":false
+			}
+		}
+	]
 }
 ----
 
-Each of the three microservice projects has been copied into `$COURSE_HOME/day_02/session_05/lab_15/initial`, and are in the state we left them at the end of link:../lab_14/lab_14.adoc[Lab 14].
+Each of the three microservice projects has been copied into `$COURSE_HOME/day_02/session_06/lab_15/initial`, and are in the state we left them at the end of link:../lab_14/lab_14.adoc[Lab 14].
 You can either continue your existing projects or pickup from these copies.
 
-For each project, perform the following steps (we'll do these once for the `springbox-catalog` project in this guide):
+For each project, perform the following steps (we'll do these once for the `springtrader-quotes` project in this guide):
 
 . In `pom.xml`, add a dependency on `spring-cloud-starter-bus-amqp`:
 +
@@ -285,28 +280,33 @@ For each project, perform the following steps (we'll do these once for the `spri
 <dependency>
   <groupId>org.springframework.cloud</groupId>
   <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+  <version>1.0.3.RELEASE</version>
 </dependency>
 ----
 
-. In `manifest.yml`, add a binding to `springbox-cloud-bus-amqp`:
+. In `manifest.yml`, add a binding to `springtrader-cloud-bus-amqp`:
 +
 ----
 ---
-applications:
-- name: springbox-catalog
-  host: springbox-catalog-${random-word}
-  memory: 512M
-  instances: 1
-  timeout: 90
-  path: target/springbox-catalog-0.0.1-SNAPSHOT.jar
-  env:
+timeout: 180
+instances: 1
+memory: 1G
+env:
     SPRING_PROFILES_ACTIVE: cloud
-  services:
-    - springbox-catalog-db
-    - springbox-config-service
-    - springbox-cloud-bus-amqp   # <-- ADD THIS!
+    JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
+applications:
+- name: springtrader-quotes
+  random-route: true
+  path: target/quotes-1.0.0-SNAPSHOT.jar
+  services: [ springtrader-quotes-db, springtrader-config-service, springtrader-cloud-bus-amqp ] # <-- ADD THIS!
 ----
-
+. In `application.yml`, add:
++
+----
+spring:
+	rabbitmq:
+		addresses: ${vcap.services.springtrader-cloud-bus-amqp.credentials.uri:amqp://${RABBITMQ_HOST:localhost}:${RABBITMQ_PORT:5672}}
+----
 . Build the JAR:
 +
 ----
@@ -320,37 +320,39 @@ $ cf push
 
 ...
 
-Showing health and status for app springbox-catalog in org oreilly-class / space instructor as mstine@pivotal.io...
+Showing health and status for app springtrader-quotes in org pivot-cqueiroz / space development as cqueiroz@pivotal.io...
 OK
 
 requested state: started
 instances: 1/1
-usage: 512M x 1 instances
-urls: springbox-catalog-overwild-nonrevival.cfapps.io
-last uploaded: Wed Feb 18 22:36:12 UTC 2015
+usage: 1G x 1 instances
+urls: springtrader-quotes-untrafficked-iodism.cfapps.pez.pivotal.io
+last uploaded: Mon Jan 11 02:39:17 UTC 2016
+stack: cflinuxfs2
+buildpack: java-buildpack=v3.3.1-offline-https://github.com/cloudfoundry/java-buildpack.git#063836b java-main java-opts open-jdk-like-jre=1.8.0_65 open-jdk-like-memory-calculator=2.0.0_RELEASE spring-auto-reconfiguration=1.10.0_RELEASE
 
-     state     since                    cpu    memory           disk
-#0   running   2015-02-18 02:37:41 PM   0.0%   436.6M of 512M   140.2M of 1G
+     state     since                    cpu    memory         disk           details
+#0   running   2016-01-11 10:40:05 AM   0.0%   520.1M of 1G   144.3M of 1G
 ----
 
 . Verify the existence of our new `bus` property using `curl`:
 +
 ----
-curl -i springbox-catalog-overwild-nonrevival.cfapps.io/env
+curl -i curl -i springtrader-quotes-unrefining-peanuts.cfapps.pez.pivotal.io/env
 HTTP/1.1 200 OK
-Connection: keep-alive
 Content-Type: application/json;charset=UTF-8
-Date: Wed, 18 Feb 2015 22:38:29 GMT
+Date: Mon, 11 Jan 2016 06:31:40 GMT
 Server: Apache-Coyote/1.1
-X-Application-Context: springbox-catalog:cloud:61072
-X-Cf-Requestid: 57270766-2096-491b-4947-2cd062f3447f
-transfer-encoding: chunked
+X-Application-Context: springtrader-quotes:cloud:0
+X-Cf-Requestid: f24371d6-73de-4153-7990-235760316ed0
+Connection: close
+Transfer-Encoding: chunked
 
 {
 
 ...
 
-"configService:https://github.com/mstine/springbox-config-repo.git/application.yml": {
+"configService:https://github.com/caxqueiroz/springtrader-config-repo.git/application.yml": {
   "bus": false,
   "configserver": true
 },
@@ -378,22 +380,22 @@ git add . && git commit -m "change bus to true" && git push origin master
 . Using `curl`, test and see that the config server has updated with your new greeting:
 +
 ----
-curl -i springbox-config-server-unmaritime-acidification.cfapps.io/application/default
+curl -i springtrader-config-server-succinct-electronarcosis.cfapps.pez.pivotal.io/application/default
 HTTP/1.1 200 OK
-Connection: keep-alive
-Content-Length: 170
 Content-Type: application/json;charset=UTF-8
-Date: Wed, 18 Feb 2015 22:52:27 GMT
+Date: Mon, 11 Jan 2016 06:38:11 GMT
 Server: Apache-Coyote/1.1
-X-Application-Context: springbox-config-server:cloud:61062
-X-Cf-Requestid: c36caede-530c-487c-4175-fe2294f50248
+X-Application-Context: springtrader-config-server:cloud:8080
+X-Cf-Requestid: f4329f45-e8e2-4fee-692c-efeb00ad1a5a
+Content-Length: 177
+Connection: close
 
 {
     "label": "",
     "name": "default",
     "propertySources": [
         {
-            "name": "https://github.com/mstine/springbox-config-repo.git/application.yml",
+            "name": "https://github.com/caxqueiroz/springtrader-config-repo.git/application.yml",
             "source": {
                 "bus": true,
                 "configserver": true
@@ -403,84 +405,38 @@ X-Cf-Requestid: c36caede-530c-487c-4175-fe2294f50248
 }
 ----
 
-. Using `curl`, `POST` a refresh event to the `springbox-catalog` service:
+. Using `curl`, `POST` a refresh event to the `springtrader-quotes` service:
 +
 ----
-$ curl -i -X POST springbox-catalog-overwild-nonrevival.cfapps.io/bus/refresh
-HTTP/1.1 200 OK
-Content-Type: text/plain; charset=utf-8
-Date: Wed, 18 Feb 2015 22:53:51 GMT
-Server: Apache-Coyote/1.1
-X-Application-Context: springbox-catalog:cloud:61072
-X-Cf-Requestid: 6ef3bcde-1a76-40db-6822-5794bfc9c586
+$ curl -i -X POST springtrader-quotes-hallucal-splitter.cfapps.pez.pivotal.io/bus/refresh
+TTP/1.1 200 OK
 Content-Length: 0
-Connection: keep-alive
+Date: Mon, 11 Jan 2016 07:38:45 GMT
+Server: Apache-Coyote/1.1
+X-Application-Context: springtrader-quotes:cloud:0
+X-Cf-Requestid: 7800e32f-da68-4df3-6cfc-8912003e6ac4
+Content-Type: text/plain; charset=utf-8
+Connection: close
 ----
 
-. Using `curl`, verify that `bus` has updated to `true` across all three services:
+. Using `curl`, verify that `bus` has updated to `true` across all services:
 +
 ----
-$ curl -i springbox-catalog-overwild-nonrevival.cfapps.io/env
+$ curl -i springtrader-quotes-hallucal-splitter.cfapps.pez.pivotal.io/env
 HTTP/1.1 200 OK
-Connection: keep-alive
 Content-Type: application/json;charset=UTF-8
-Date: Wed, 18 Feb 2015 22:55:13 GMT
+Date: Mon, 11 Jan 2016 07:39:50 GMT
 Server: Apache-Coyote/1.1
-X-Application-Context: springbox-catalog:cloud:61072
-X-Cf-Requestid: 9d40141a-48b5-417b-4d0e-6d206329fac7
-transfer-encoding: chunked
+X-Application-Context: springtrader-quotes:cloud:0
+X-Cf-Requestid: 563501ac-e471-46c3-58d1-40f485b870dd
+Connection: close
+Transfer-Encoding: chunked
 
 {
 
 ...
 
-"configService:https://github.com/mstine/springbox-config-repo.git/application.yml": {
-  "bus": true,
-  "configserver": true
-},
-
-...
-
-}
-
-$ curl -i springbox-recommendations-preadherent-werewolf.cfapps.io/env
-HTTP/1.1 200 OK
-Connection: keep-alive
-Content-Type: application/json;charset=UTF-8
-Date: Wed, 18 Feb 2015 22:57:22 GMT
-Server: Apache-Coyote/1.1
-X-Application-Context: springbox-recommendations:cloud:61098
-X-Cf-Requestid: 37ec48c2-f46a-4011-73dc-a0eecf1abf7d
-transfer-encoding: chunked
-
-{
-
-...
-
-"configService:https://github.com/mstine/springbox-config-repo.git/application.yml": {
-  "bus": true,
-  "configserver": true
-},
-
-...
-
-}
-
-$ http springbox-reviews-understaffed-nickeltype.cfapps.io/env
-HTTP/1.1 200 OK
-Connection: keep-alive
-Content-Type: application/json;charset=UTF-8
-Date: Wed, 18 Feb 2015 22:58:08 GMT
-Server: Apache-Coyote/1.1
-X-Application-Context: springbox-reviews:cloud:61086
-X-Cf-Requestid: 6bdc2cd6-4225-40d3-5125-62c8809f0205
-transfer-encoding: chunked
-
-{
-
-...
-
-"configService:https://github.com/mstine/springbox-config-repo.git/application.yml": {
+"configService:https://github.com/caxqueiroz/springtrader-config-repo.git/application.yml": {
   "bus": true,
   "configserver": true
 },
