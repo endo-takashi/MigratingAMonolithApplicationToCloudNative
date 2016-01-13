@@ -8,7 +8,7 @@ We'll again use Spring Cloud Netflix to implement client-side load balancing wit
 
 In this lab, we'll do the following:
 
-. Change the consumer application from link:../../session_05/lab_16/lab_16.html[Lab 16] to:
+. Change the consumer application from link:../../session_06/lab_16/lab_16.adoc[Lab 16] to:
 .. Use a `LoadBalancerClient`
 .. Use a `RestTemplate` configured to resolve service names from Ribbon
 . Test the new consumer versions against our local pool of producers
@@ -17,32 +17,32 @@ In this lab, we'll do the following:
 
 == Setup
 
-. A completed `springbox-config-server` project has been placed in `$COURSE_HOME/day_02/session_06/lab_17/initial/springbox-config-server` for your convenience.
+. A completed `springtrader-config-server` project has been placed in `$COURSE_HOME/day_02/session_07/lab_17/initial/springtrader-config-server` for your convenience.
 In a terminal window, change to that directory, rebuild, and run the application:
 +
 ----
-$ cd $COURSE_HOME/day_02/session_06/lab_17/initial/springbox-config-server
-$ mvn package
-$ java -jar target/springbox-config-server-0.0.1-SNAPSHOT.jar
+$ cd $COURSE_HOME/day_02/session_07/lab_17/initial/springtrader-config-server
+$ mvn clean package
+$ java -jar target/springtrader-config-server-0.0.1-SNAPSHOT.jar
 ----
 
-. A completed `springbox-eureka` project has been placed in `$COURSE_HOME/day_02/session_06/lab_17/initial/springbox-eureka` for your convenience.
+. A completed `springtrader-eureka` project has been placed in `$COURSE_HOME/day_02/session_07/lab_17/initial/springtrader-eureka` for your convenience.
 In a separate terminal window, change to that directory, rebuild, and run the application:
 +
 ----
-$ cd $COURSE_HOME/day_02/session_06/lab_17/initial/springbox-eureka
-$ mvn package
-$ java -jar target/springbox-eureka-0.0.1-SNAPSHOT.jar
+$ cd $COURSE_HOME/day_02/session_07/lab_17/initial/springtrader-eureka
+$ mvn clean package
+$ java -jar target/springtrader-eureka-0.0.1-SNAPSHOT.jar
 ----
 
 . A completed `springbox-producer` project has been placed in `$COURSE_HOME/day_02/session_06/lab_17/initial/springbox-producer` for your convenience.
 In two separate terminal windows, change to that directory, rebuild, and run the application (on different ports):
 +
 ----
-$ cd $COURSE_HOME/day_02/session_06/lab_17/initial/springbox-producer
-$ mvn package
-$ SERVER_PORT=8080 java -jar target/springbox-producer-0.0.1-SNAPSHOT.jar
-$ SERVER_PORT=8082 java -jar target/springbox-producer-0.0.1-SNAPSHOT.jar
+$ cd $COURSE_HOME/day_02/session_07/lab_17/initial/springtrader-producer
+$ mvn clean package
+$ SERVER_PORT=8080 java -jar target/springtrader-producer-0.0.1-SNAPSHOT.jar
+$ SERVER_PORT=8082 java -jar target/springtrader-producer-0.0.1-SNAPSHOT.jar
 ----
 
 . Ensure you have two instances of the producer service registered in Eureka:
@@ -54,12 +54,12 @@ image::../../../Common/images/ribbon_1.png[]
 . Change to the lab directory:
 +
 ----
-$ cd $COURSE_HOME/day_02/session_06/lab_17/initial/springbox-consumer
+$ cd $COURSE_HOME/day_02/session_07/lab_17/initial/springtrader-consumer
 ----
 +
 and import the project (via `pom.xml`) into your IDE of choice.
 
-. In `io.springbox.consumer.ConsumerController`, replace the autowired `DiscoveryClient` with an autowired `LoadBalancerClient`:
+. In `io.springtrader.consumer.ConsumerController`, replace the autowired `DiscoveryClient` with an autowired `LoadBalancerClient`:
 +
 ----
 @Autowired
@@ -84,13 +84,13 @@ String consume() {
 . Build the application:
 +
 ----
-$ mvn package
+$ mvn clean package
 ----
 
 . Run the application:
 +
 ----
-$ java -jar target/springbox-consumer-0.0.1-SNAPSHOT.jar
+$ java -jar target/springtrader-consumer-0.0.1-SNAPSHOT.jar
 ----
 
 . Using `curl`, test the consumer application and show that it is receiving values from the producers.
@@ -110,7 +110,7 @@ Date: Tue, 24 Feb 2015 05:47:33 GMTServer: Apache-Coyote/1.1X-Application-Contex
 
 == Using `RestTemplate`
 
-. In `io.springbox.consumer.ConsumerController`, replace the autowired `LoadBalancerClient` with an autowired `RestTemplate`:
+. In `io.springtrader.consumer.ConsumerController`, replace the autowired `LoadBalancerClient` with an autowired `RestTemplate`:
 +
 ----
 @Autowired
@@ -136,7 +136,7 @@ $ mvn package
 . Rerun the application:
 +
 ----
-$ java -jar target/springbox-consumer-0.0.1-SNAPSHOT.jar
+$ java -jar target/springtrader-consumer-0.0.1-SNAPSHOT.jar
 ----
 
 . Using `curl`, test the consumer application and show that it is receiving values from the producers.
@@ -158,7 +158,7 @@ Date: Tue, 24 Feb 2015 05:47:33 GMTServer: Apache-Coyote/1.1X-Application-Contex
 
 In this section we will swap the default ``round robin'' load balancing rule for a ``weighted response time'' load balancing rule.
 
-. In the package `io.springbox.consumer`, create the class `ProducerConfiguration`, and into that class paste the following code:
+. In the package `io.springtrader.consumer`, create the class `ProducerConfiguration`, and into that class paste the following code:
 +
 ----
 @Configuration
@@ -180,16 +180,16 @@ public class ProducerConfiguration {
 }
 ----
 
-. Add the `@RibbonClient` annotation to `io.springbox.consumer.SpringboxConsumerApplication`:
+. Add the `@RibbonClient` annotation to `io.springtrader.consumer.SpringtraderConsumerApplication`:
 +
 ----
 @SpringBootApplication
 @EnableDiscoveryClient
 @RibbonClient(name = "producer", configuration = ProducerConfiguration.class)  // <--- ADD THIS!
-public class SpringboxConsumerApplication {
+public class SpringtraderConsumerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringboxConsumerApplication.class, args);
+        SpringApplication.run(SpringtraderConsumerApplication.class, args);
     }
 }
 ----
@@ -203,11 +203,11 @@ $ mvn package
 . Rerun the application:
 +
 ----
-$ java -jar target/springbox-consumer-0.0.1-SNAPSHOT.jar
+$ java -jar target/springtrader-consumer-0.0.1-SNAPSHOT.jar
 ----
 
 . Now, let's introduce artificial latency into the producer application to cause the load balancer to prefer one instance over the other (on the average).
-Modify `io.springbox.producer.ProducerController` by pasting in the following source code:
+Modify `io.springtrader.producer.ProducerController` by pasting in the following source code:
 +
 ====
 ----
@@ -244,14 +244,14 @@ If that property is not present, it will inject `0`.
 . Rebuild the application:
 +
 ----
-$ mvn package
+$ mvn clean package
 ----
 
 . In the two separate terminal windows running the producers, restart the applications while introducing the `LATENCY` environment variable:
 +
 ----
-$ LATENCY=250 SERVER_PORT=8080 java -jar target/springbox-producer-0.0.1-SNAPSHOT.jar
-$ LATENCY=1000 SERVER_PORT=8082 java -jar target/springbox-producer-0.0.1-SNAPSHOT.jar
+$ LATENCY=250 SERVER_PORT=8080 java -jar target/springtrader-producer-0.0.1-SNAPSHOT.jar
+$ LATENCY=1000 SERVER_PORT=8082 java -jar target/springtrader-producer-0.0.1-SNAPSHOT.jar
 ----
 
 . Issue a `curl localhost:8081`.
@@ -263,7 +263,7 @@ You should see log messages in the consumer indicating that the load balancer ha
 2015-02-24 09:14:49.647  INFO 86301 --- [nio-8081-exec-1] c.n.l.WeightedResponseTimeRule           : Weight adjusting job started
 ----
 
-. Use the `hitIt.sh` script located at `$COURSE_HOME/day_02/session_06/lab_17/initial/hitIt.sh` at to issue many requests to the consumer.
+. Use the `hitIt.sh` script located at `$COURSE_HOME/day_02/session_07/lab_17/initial/hitIt.sh` at to issue many requests to the consumer.
 You will see very different load balancing behavior from the original:
 +
 ----
