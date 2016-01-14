@@ -7,7 +7,7 @@ Now we'll monitor what's happening in our Circuit Breakers by using Netflix Hyst
 
 In this lab, we'll do the following:
 
-. Run everything that we created in  link:../../session_06/lab_19/lab_19.html[Lab 19].
+. Run everything that we created in  link:../../session_07/lab_19/lab_19.adoc[Lab 19].
 . Create a Hystrix Dashboard
 . Kill both of the producers and watch the circuit open in the Dashboard.
 . Restart a producer and watch the circuit close in the Dashboard.
@@ -15,14 +15,14 @@ In this lab, we'll do the following:
 
 == Setup
 
-. Make sure you've completed link:../../session_06/lab_19/lab_19.html[Lab 19] and have everything still running.
+. Make sure you've completed link:../../session_07/lab_19/lab_19.adoc[Lab 19] and have everything still running.
 
 == Building the Hystrix Dashboard
 
 . Change to the lab directory:
 +
 ----
-$ cd $COURSE_HOME/day_02/session_06/lab_20/initial/springbox-hystrix-dashboard
+$ cd $COURSE_HOME/day_02/session_07/lab_20/initial/springtrader-hystrix-dashboard
 ----
 +
 and import the project (via `pom.xml`) into your IDE of choice.
@@ -57,7 +57,7 @@ $ mvn package
 $ java -jar target/hystrix-dashboard-0.0.1-SNAPSHOT.jar
 ----
 
-. Now, access the Hystrix Dashboard at http://localhost:7979.
+. Now, access the Hystrix Dashboard at http://localhost:7979/hystrix.
 Enter http://localhost:8081/hystrix.stream into the text field  and click the ``Monitor Stream.''
 +
 image:../../../Common/images/fortunes_2.png[]
