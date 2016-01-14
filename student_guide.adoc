@@ -22,7 +22,7 @@ This can be accomplished as follows:
 $ git clone https://github.com/caxqueiroz/MigratingAMonolithApplicationToCloudNative
 $ git fetch --all
 
-$ git clone https://bitbucket.org/caxqueiroz/springtrader-monolith.git
+$ git clone https://github.com/caxqueiroz/springtrader-monolith.git
 $ git fetch --all
 
 $ git clone https://github.com/caxqueiroz/springtrader-microservices.git
