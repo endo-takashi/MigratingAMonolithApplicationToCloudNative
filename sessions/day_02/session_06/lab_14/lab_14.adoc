@@ -147,31 +147,8 @@ $ mvn package
 $ java -jar target/springtrader-config-server-0.0.1-SNAPSHOT.jar
 ----
 
-. Test the application with `curl` to make sure everything is working properly:
-+
-----
-$ curl -i localhost:8888/demo/default
-HTTP/1.1 200 OK
-Server: Apache-Coyote/1.1
-X-Application-Context: bootstrap:8888
-Content-Type: application/json;charset=UTF-8
-Transfer-Encoding: chunked
-Date: Tue, 05 Jan 2016 06:51:15 GMT
-
-{
-	"name":"default",
-	"label":"",
-	"propertySources":
-	[
-		{
-		"name":"https://github.com/caxqueiroz/springtrader-config-repo.git/demo.yml",
-		"source":
-			{
-				"greeting":"Hello"
-			}
-		}
-	]
-}
+. Test the application in your web browser by connecting to http://localhost:8888/demo/default.
+You should be able to see your properties displayed.
 ----
 
 == Create the Sample Test Application
