@@ -90,25 +90,10 @@ and import the project (via `pom.xml`) into your IDE of choice.
 <parent>
   <groupId>org.springframework.cloud</groupId>
   <artifactId>spring-cloud-starter-parent</artifactId>
-  <version>1.0.0.RELEASE</version>
+  <version>1.0.2.RELEASE</version>
   <relativePath/>
   <!-- lookup parent from repository -->
 </parent>
-----
-
-. Add the following repository to resolve the `1.0.0.RELEASE` artifacts:
-+
-----
-<repositories>
-    <repository>
-        <id>spring-release</id>
-        <name>Spring Release</name>
-        <url>https://repo.spring.io/release/</url>
-        <snapshots>
-            <enabled>true</enabled>
-        </snapshots>
-    </repository>
-</repositories>
 ----
 
 . Change the dependency on `spring-boot-starter` to `spring-cloud-starter`:
@@ -120,15 +105,6 @@ and import the project (via `pom.xml`) into your IDE of choice.
 </dependency>
 ----
 
-. Add a dependency on `spring-cloud-config-server`:
-+
-----
-<dependency>
-   <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
-</dependency>
-----
 
 . Add a dependency on `spring-cloud-config-server`:
 +
@@ -152,11 +128,11 @@ public class SpringtraderConfigServerApplication {
 }
 ----
 
-. Now open `src/main/resources/application.properties` and paste the following code (be sure to replace the Git URI with the one you created in this lab!):
+. Now open `src/main/resources/application.properties` and paste the following code (be sure to replace <yourUserName> with the one you created in this lab!):
 +
 ----
 server.port=8888
-spring.cloud.config.server.git.uri: https://github.com/caxqueiroz/springtrader-config-repo.git
+spring.cloud.config.server.git.uri: https://github.com/<yourUserName>/springtrader-config-repo.git
 ----
 
 . Build the JAR:
@@ -213,7 +189,7 @@ and import the project (via `pom.xml`) into your IDE of choice.
 <parent>
   <groupId>org.springframework.cloud</groupId>
   <artifactId>spring-cloud-starter-parent</artifactId>
-  <version>1.0.0.RELEASE</version>
+  <version>1.0.2.RELEASE</version>
   <relativePath/>
   <!-- lookup parent from repository -->
 </parent>
