@@ -4,4 +4,8 @@ target/
 *.iml
 *.pptx
 gradle/
-build/
+
+.settings/*
+.classpath
+.project
+.idea
