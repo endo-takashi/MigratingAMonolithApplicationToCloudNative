@@ -149,8 +149,7 @@ $ java -jar target/springtrader-config-server-0.0.1-SNAPSHOT.jar
 
 . Test the application in your web browser by connecting to http://localhost:8888/demo/default.
 You should be able to see your properties displayed.
-+
-----
+
 
 == Create the Sample Test Application
 . Change to the lab directory:
@@ -469,52 +468,3 @@ Transfer-Encoding: chunked
 
 }
 ----
-
-// == Configure and Use the Pivotal Cloud Foundry Config Server Marketplace Service
-
-// . Create the service
-
-// +
-// ----
-// $ cf cs p-config-server standard springtrader-config-service
-// Creating service springbox-config-service in org ACME / space jfullam as jfullam...
-// OK
-// ----
-
-// . Add the git repo URL to the newly provisioned config service via the `Manage` link in the Pivotal Application Manager
-
-// +
-// image::../../../Common/images/Service-config-manage.png[]
-
-// image::../../../Common/images/config-server-config.png[]
-
-// . Bind the springbox-config-service to the 3 microservices
-
-// +
-// ----
-// $ cf bs springbox-catalog springbox-config-service
-// Binding service springbox-config-service to app springbox-catalog in org ACME / space jfullam as jfullam...
-// OK
-// TIP: Use 'cf restage' to ensure your env variable changes take effect
-
-// $ cf bs springbox-reviews springbox-config-service
-// Binding service springbox-config-service to app springbox-reviews in org ACME / space jfullam as jfullam...
-// OK
-// TIP: Use 'cf restage' to ensure your env variable changes take effect
-
-// $ cf bs springbox-recommendations springbox-config-service
-// Binding service springbox-config-service to app springbox-recommendations in org ACME / space jfullam as jfullam...
-// OK
-// TIP: Use 'cf restage' to ensure your env variable changes take effect
-// ----
-
-// . Restage the 3 microservices
-
-// +
-// ----
-// $ cf restage springbox-catalog
-// $ cf restage springbox-recommendations
-// $ cf restage springbox-reviews
-// ----
-
-// . Test via the `/env` endpoint per micro service using curl or your browser
