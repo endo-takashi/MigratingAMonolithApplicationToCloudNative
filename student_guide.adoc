@@ -82,7 +82,7 @@ $ git fetch --all
 ** link:sessions/day_02/session_06/lab_15/lab_15.adoc[Lab 15 - Refreshing Configuration with Spring Cloud Bus]
 ** link:sessions/day_02/session_06/lab_16/lab_16.adoc[Lab 16 - Leveraging Eureka for Service Discovery via Spring Cloud Netflix]
 
-* Session 7 (link:day_02/session_07/session_07.pdf[Slides])
+* Session 7 (link:sessions/day_02/session_07/session_07.pdf[Slides])
 ** link:sessions/day_02/session_07/lab_17/lab_17.adoc[Lab 17 - Client-Side Load Balancing with Ribbon]
 ** link:sessions/day_02/session_07/lab_18/lab_18.adoc[Lab 18 - Declarative REST Clients with Feign]
 ** link:sessions/day_02/session_07/lab_19/lab_19.adoc[Lab 19 - Fault-Tolerance with Hystrix]
