@@ -242,6 +242,8 @@ The information you need is on the first line.
 
 == Deploy the Config Server to Cloud Foundry
 
+. We are now going to move your Config Server to the cloud. As a first step, stop the instance of `springtrader-config-server` that was running on localhost:8888.
+
 . You can get back to the project `springtrader-config-server`.
 At the root of the project, create an application manifest in `manifest.yml` as follows:
 +
@@ -277,18 +279,9 @@ buildpack: java-buildpack=v3.1.1-offline-https://github.com/cloudfoundry/java-bu
 #0   running   2016-01-05 06:21:27 PM   0.0%   330.7M of 512M   147.5M of 1G
 ----
 
-. Access the application using `curl` to make sure everything is working properly:
+. Access the application on `http://springtrader-config-server-<yourAppSuffix>.cfapps.io/demo/default` to make sure everything is working properly:
 +
 ----
-$ curl -i springtrader-config-server-conservational-soloist.cfapps.pez.pivotal.io/demo/default
-HTTP/1.1 200 OK
-Content-Type: application/json;charset=UTF-8
-Date: Wed, 06 Jan 2016 04:57:10 GMT
-Server: Apache-Coyote/1.1
-X-Application-Context: springtrader-config-server:cloud:63318
-X-Cf-Requestid: 1f06db22-1e45-46a2-6e31-7523caa9ebc0
-Content-Length: 158
-Connection: close
 
 {
 	"name":"default",
