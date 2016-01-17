@@ -319,7 +319,7 @@ git add . && git commit -m "add default application config" && git push origin m
 . Access the application again on `http://springtrader-config-server-<yourAppSuffix>.cfapps.io/demo/default` and make sure that the new property has been added
 
 
-. It is now time to create a user-provided service representing the config server. You can use the `cf cups` command for that. `cf cups` is a shortcut for `cf create-user-provided-service`.
+. It is now time to create a user-provided service representing the config server. You can use the `cf cups` command for that. It is a shortcut for `cf create-user-provided-service`.
 +
 ----
 $ cf cups springtrader-config-service -p '{"uri":"cf cups springtrader-config-service -p '{"uri":"http://springtrader-config-<yourAppSuffix>.cfapps.io/"}'"}'
@@ -353,7 +353,7 @@ spring:
       uri: ${vcap.services.springtrader-config-service.credentials.uri:http://localhost:8888}
 ----
 
-. Add the `springtrader-config-service` service to the `manifest.yml`:
+. Add the `springtrader-config-service` service to the `manifest.yml` (at the root of the `springtrader-quotes` project):
 +
 ----
 ---
