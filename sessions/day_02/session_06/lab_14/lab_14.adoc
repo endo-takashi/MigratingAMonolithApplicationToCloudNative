@@ -242,11 +242,11 @@ The information you need is on the first line.
 
 == Deploy the Config Server to Cloud Foundry
 
-. Create an application manifest in `manifest.yml`:
+. You can get back to the project `springtrader-config-server`.
+At the root of the project, create an application manifest in `manifest.yml` as follows:
 +
 [source,yml]
 ----
----
 applications:
 - name: springtrader-config-server
   host: springtrader-config-server-${random-word}
