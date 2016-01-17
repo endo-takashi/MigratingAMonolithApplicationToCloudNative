@@ -280,6 +280,7 @@ buildpack: java-buildpack=v3.1.1-offline-https://github.com/cloudfoundry/java-bu
 ----
 
 . Access the application on `http://springtrader-config-server-<yourAppSuffix>.cfapps.io/demo/default` to make sure everything is working properly:
+
 +
 ----
 
@@ -315,33 +316,8 @@ We'll use the existence of this property in each of our microservices' environme
 git add . && git commit -m "add default application config" && git push origin master
 ----
 
-. Access the config server using `curl` to make sure the new property exists:
-+
-----
-$ curl -i springtrader-config-server-conservational-soloist.cfapps.pez.pivotal.io/demo/default
-HTTP/1.1 200 OK
-Content-Type: application/json;charset=UTF-8
-Date: Wed, 06 Jan 2016 05:01:25 GMT
-Server: Apache-Coyote/1.1
-X-Application-Context: springtrader-config-server:cloud:63318
-X-Cf-Requestid: 5de7c60b-fdbe-4dfe-7625-fe4e7dc08019
-Content-Length: 275
-Connection: close
+. Access the application again on `http://springtrader-config-server-<yourAppSuffix>.cfapps.io/demo/default` and make sure that the new property has been added
 
-{
-	"name":"default",
-	"label":"",
-	"propertySources":
-	[{
-		"name":"https://github.com/caxqueiroz/springtrader-config-repo.git/demo.yml",
-		"source":{"greeting":"Hello"}},
-		{
-			"name":"https://github.com/caxqueiroz/springtrader-config-repo.git/application.yml",
-			"source":{"configserver":true}
-		}
-	]
-}
-----
 
 . Create a user-provided service representing the config server (be sure to use the route assigned to your config server!):
 +
