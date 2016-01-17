@@ -1,5 +1,6 @@
 = Lab 14 - Deploying and Using Spring Cloud Config Server
 
+Estimated time to complete: 45 minutes
 [abstract]
 --
 Now we'll begin using the components found in Spring Cloud to implement patterns for distributed systems.
@@ -10,8 +11,8 @@ In this lab, we'll do the following:
 
 . Create a GitHub repository to store our configuration
 . Create a Spring Cloud Config Server and test it with a basic sample application
-. Deploy the Config Server to Pivotal Cloud Foundry
-. Update our previously developed microservices to source their configuration from the Config Server
+. (Optional) Only if you have time, deploy the Config Server to Pivotal Cloud Foundry
+. (Optional) Update our previously developed microservices to source their configuration from the Config Server
 --
 
 == Create a GitHub repository to Store Configuration
@@ -240,7 +241,7 @@ The information you need is on the first line.
 }
 ----
 
-== Deploy the Config Server to Cloud Foundry
+== (Optional) Deploy the Config Server to Cloud Foundry
 
 . We are now going to move your Config Server to the cloud. As a first step, stop the instance of `springtrader-config-server` that was running on localhost:8888.
 
@@ -300,7 +301,7 @@ buildpack: java-buildpack=v3.1.1-offline-https://github.com/cloudfoundry/java-bu
 }
 ----
 
-== Update the Microservices to Use the Config Server
+== (Optional) Update the Microservices to Use the Config Server
 
 . In your config repo, add the file `application.yml` and into that file paste the following:
 +
