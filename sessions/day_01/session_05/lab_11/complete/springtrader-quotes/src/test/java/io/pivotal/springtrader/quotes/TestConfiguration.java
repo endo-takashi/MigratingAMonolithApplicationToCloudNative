@@ -1,7 +1,7 @@
 package io.pivotal.springtrader.quotes;
 
 
-import io.pivotal.springtrader.quotes.domain.Stock;
+import io.pivotal.springtrader.quotes.domain.jpa.Stock;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

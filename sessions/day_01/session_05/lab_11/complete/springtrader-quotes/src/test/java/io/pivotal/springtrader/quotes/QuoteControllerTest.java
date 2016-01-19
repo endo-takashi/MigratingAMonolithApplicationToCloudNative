@@ -2,7 +2,7 @@ package io.pivotal.springtrader.quotes;
 
 
 import io.pivotal.springtrader.quotes.controllers.QuoteController;
-import io.pivotal.springtrader.quotes.domain.Stock;
+import io.pivotal.springtrader.quotes.domain.jpa.Stock;
 import io.pivotal.springtrader.quotes.exceptions.SymbolNotFoundException;
 import io.pivotal.springtrader.quotes.services.QuoteService;
 import net.minidev.json.JSONArray;

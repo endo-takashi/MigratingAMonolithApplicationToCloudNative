@@ -1,9 +1,9 @@
 package io.pivotal.springtrader.quotes.services;
 
 
-import io.pivotal.springtrader.quotes.domain.Stock;
+import io.pivotal.springtrader.quotes.domain.jpa.Stock;
 import io.pivotal.springtrader.quotes.exceptions.SymbolNotFoundException;
-import io.pivotal.springtrader.quotes.repositories.StockRepository;
+import io.pivotal.springtrader.quotes.repositories.jpa.StockRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

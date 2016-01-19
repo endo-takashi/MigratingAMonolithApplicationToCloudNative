@@ -3,7 +3,7 @@ package io.pivotal.springtrader.quotes.config;
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
-import io.pivotal.springtrader.quotes.domain.Stock;
+import io.pivotal.springtrader.quotes.domain.mongodb.Stock;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  * Created by cax on 28/11/2015.
  */
 @Configuration
-@Profile("local")
+@Profile("local-mongodb")
 @EnableMongoAuditing
 @EnableMongoRepositories(basePackages = {"io.pivotal.springtrader.quotes"})
 public class MongoLocalConfig extends AbstractMongoConfiguration {

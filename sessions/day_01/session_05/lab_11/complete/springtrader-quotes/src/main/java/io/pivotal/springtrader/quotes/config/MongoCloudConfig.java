@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.MongoDbFactory;
  * Created by cax on 28/11/2015.
  */
 @Configuration
-@Profile("cloud")
+@Profile("cloud-mongodb")
 public class MongoCloudConfig extends AbstractCloudConfig {
 
 
