@@ -1,5 +1,5 @@
 spring:
-  profiles.active: local
+  profiles.active: local-jpa
   application:
      name: quotes
 
@@ -12,9 +12,12 @@ expiration:
 
 ---
 spring:
-  profiles: local
+  jpa:
+    show-sql: true
+  profiles: local-jpa
 server:
   port: 8086
+
 ---
 spring:
   profiles: cloud

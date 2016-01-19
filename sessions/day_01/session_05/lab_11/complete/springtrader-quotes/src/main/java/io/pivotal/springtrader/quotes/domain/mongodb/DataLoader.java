@@ -1,4 +1,4 @@
-package io.pivotal.springtrader.quotes.domain;
+package io.pivotal.springtrader.quotes.domain.mongodb;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.pivotal.springtrader.quotes.repositories.StockRepository;

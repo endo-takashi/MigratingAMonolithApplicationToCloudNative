@@ -1,4 +1,4 @@
-package io.pivotal.springtrader.quotes.domain;
+package io.pivotal.springtrader.quotes.domain.mongodb;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
