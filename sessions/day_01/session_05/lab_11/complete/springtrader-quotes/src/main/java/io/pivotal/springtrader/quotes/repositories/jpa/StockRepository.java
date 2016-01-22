@@ -13,5 +13,5 @@ import java.util.List;
 @Repository
 public interface StockRepository extends CrudRepository<Stock, String> {
 
-    List<Stock> findByNameLike(String companyName);
+    List<Stock> findByNameContainingIgnoreCaseOrSymbol(String name, String symbol);
 }

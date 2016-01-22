@@ -27,7 +27,7 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {QuotesApplication.class})
-@ActiveProfiles("test")
+@ActiveProfiles("local-jpa")
 public class QuoteServiceIntegrationTest {
 
     @Autowired

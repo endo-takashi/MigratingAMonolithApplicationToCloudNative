@@ -14,7 +14,7 @@ import java.util.Date;
  * Created by cq on 18/1/16.
  */
 @Entity(name = "STOCKS")
-@Table(indexes = @Index(name = "name_idx", columnList = "name"))
+@Table(name = "STOCKS", indexes = @Index(name = "name_idx", columnList = "name"))
 public class Stock {
 
         @Id

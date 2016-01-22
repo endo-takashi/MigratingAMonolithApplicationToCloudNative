@@ -58,7 +58,7 @@ public class QuoteService {
     public Stock getQuote(String symbol) throws Exception {
         logger.debug("QuoteService.getQuote: retrieving quote for: " + symbol);
 
-        symbol = symbol.toUpperCase();
+//        symbol = symbol.toUpperCase();
         Stock stock = stockRepository.findOne(symbol);
 
         //what's happen if a stock has no info about its quotes?
@@ -95,7 +95,7 @@ public class QuoteService {
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            throw e;
+            throw new SymbolNotFoundException(e.getMessage());
         }
         return returnedStock;
     }
@@ -108,7 +108,7 @@ public class QuoteService {
         try {
 
             //only search for name.
-            stockList = stockRepository.findByNameLike(name);
+            stockList = stockRepository.findByNameContainingIgnoreCaseOrSymbol(name, name);
             if (stockList.size() > 0) return stockList;
 
             Map<String, String> params = new HashMap<>();
