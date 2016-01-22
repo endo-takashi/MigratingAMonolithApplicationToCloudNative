@@ -12,9 +12,20 @@ expiration:
 
 ---
 spring:
-  jpa:
-    show-sql: true
   profiles: local-jpa
+
+  jpa:
+      show-sql: true
+      database: H2
+
+      hibernate:
+        ddl-auto: create-drop
+  datasource:
+      platform: h2
+
+  database:
+      driverClassName: org.postgresql.Driver
+
 server:
   port: 8086
 

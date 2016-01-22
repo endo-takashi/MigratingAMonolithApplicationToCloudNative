@@ -5,17 +5,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.joda.time.DateTime;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.mongodb.core.index.Indexed;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+
+import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Created by cq on 18/1/16.
  */
 @Entity(name = "STOCKS")
+@Table(indexes = @Index(name = "name_idx", columnList = "name"))
 public class Stock {
 
         @Id
@@ -26,7 +25,7 @@ public class Stock {
         @JsonIgnore
         private DateTime lastModifiedDate;
 
-        @Indexed()
+
         @JsonProperty("Name")
         private String name;
 
@@ -49,7 +48,8 @@ public class Stock {
 
         @JsonProperty("Timestamp")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "EEE MMM dd HH:mm:ss zzzXXX yyyy", locale = "ENGLISH")
-        private Date timestamp;
+        @Temporal(TemporalType.TIMESTAMP)
+        private Date ts;
 
         @JsonProperty("MSDate")
         private Double mSDate;
@@ -143,11 +143,11 @@ public class Stock {
         }
 
         public Date getTimestamp() {
-            return timestamp;
+            return ts;
         }
 
         public void setTimestamp(Date timestamp) {
-            this.timestamp = timestamp;
+            this.ts = timestamp;
         }
 
         public Double getmSDate() {
@@ -224,7 +224,7 @@ public class Stock {
                     ", lastPrice=" + lastPrice +
                     ", change=" + change +
                     ", changePercent=" + changePercent +
-                    ", timestamp=" + timestamp +
+                    ", timestamp=" + ts +
                     ", mSDate=" + mSDate +
                     ", marketCap=" + marketCap +
                     ", volume=" + volume +

@@ -12,5 +12,36 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(basePackages = "io.pivotal.springtrader.quotes.repositories.jpa")
 public class JPALocalConfig  {
 
+//    @Bean
+//    public DataSource dataSource() {
+//        DriverManagerDataSource driver = new DriverManagerDataSource();
+//        driver.setDriverClassName("org.postgresql.Driver");
+//        driver.setUrl("jdbc:postgresql://localhost:5432/cq");
+//        driver.setUsername("cq");
+//        return driver;
+//    }
+//
+//    @Bean
+//    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+//        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+//        vendorAdapter.setDatabase(Database.POSTGRESQL);
+//        vendorAdapter.setGenerateDdl(true);
+//        vendorAdapter.setShowSql(true);
+//        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+//        factory.setJpaVendorAdapter(vendorAdapter);
+//        factory.setDataSource(dataSource());
+//        factory.setPackagesToScan("io.pivotal.springtrader.quotes.domain.jpa");
+//
+//        return factory;
+//    }
+//
+//    @Bean
+//    @Autowired
+//    public JpaTransactionManager transactionManager() {
+//        JpaTransactionManager txManager = new JpaTransactionManager();
+//        txManager.setEntityManagerFactory(entityManagerFactory().getObject());
+//
+//        return txManager;
+//    }
 
 }
