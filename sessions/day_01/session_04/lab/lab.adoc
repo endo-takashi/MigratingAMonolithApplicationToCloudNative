@@ -5,7 +5,7 @@ In this lab we'll identify the bounded contexts so that they can be easily extra
 
 == Data decomposition
 
-. Look at the domain model and identify it can be split up. 
+. Look at the domain model and identify if and how it can be split up.
 +
 image::../../../Common/images/data_model_st.png[]
 +
