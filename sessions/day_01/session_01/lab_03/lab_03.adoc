@@ -54,7 +54,11 @@ Hello World!
 . Run the application again, this time setting the `GREETING` environment variable:
 +
 ----
+Linux, MacOS:
 $ GREETING=Ohai java -jar target/hello-spring-boot-0.0.1-SNAPSHOT.jar
+
+Windows:
+> set GREETING=Ohai && java -jar target/hello-spring-boot-0.0.1-SNAPSHOT.jar
 ----
 
 . Visit the application in the browser (http://localhost:8080), and verify that the output has changed to the following:
