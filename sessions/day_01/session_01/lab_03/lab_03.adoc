@@ -113,7 +113,7 @@ Linux, MacOS:
 $ SPRING_PROFILES_ACTIVE=spanish GREETING=Ohai java -jar target/hello-spring-boot-0.0.1-SNAPSHOT.jar
 
 Windows:
-$ set SPRING_PROFILES_ACTIVE=spanish && GREETING=Ohai java -jar target/hello-spring-boot-0.0.1-SNAPSHOT.jar
+$ set SPRING_PROFILES_ACTIVE=spanish && set GREETING=Ohai && java -jar target/hello-spring-boot-0.0.1-SNAPSHOT.jar
 ----
 
 . Visit the application in the browser (http://localhost:8080), and verify that the output has changed to the following:
