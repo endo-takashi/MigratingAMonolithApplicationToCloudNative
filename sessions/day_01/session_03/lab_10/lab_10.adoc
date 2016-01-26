@@ -49,7 +49,7 @@ Binding service quotes-db to app companies...
 OK
 ----
 
-. Next we'll add Spring Cloud and MySQL dependencies to our maven pom file. Just after the dependency declaration for +h2+ line add add the following in the +dependencies+ section:
+. Next we'll add Spring Cloud and MySQL dependencies to our maven pom file. Just after the dependency declaration for +h2+, add add the following in the +dependencies+ section:
 +
 [source,xml]
 ----
