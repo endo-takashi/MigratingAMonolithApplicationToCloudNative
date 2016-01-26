@@ -73,7 +73,7 @@ OK
 
 ----
 +
-Since we've added new dependencies, re-run +mvn clean package+ to build your project.
+Since we've added new dependencies, re-run +mvn clean package+ to build your project and download them.  If you are using an IDE, you will need to bring it up to date.  In Eclipse or STS you will need to right-click on the project and select Maven -> Update Project.
 
 . Next, let's create the package +io.pivotal.demo.quotes.config+ and create in that package the class +CloudDataSourceConfig+. Add the following code:
 +
