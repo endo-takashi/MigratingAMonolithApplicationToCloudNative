@@ -49,7 +49,7 @@ image::../../../Common/images/PWS_Marketplace.png[]
 == Creating and Binding to a Service Instance
 
 . Let's begin by creating a MySql instance provided by Pivotal.
- 
++
 From the CLI, let's _create_ a `p-mysql` service instance:
 +
 ----
