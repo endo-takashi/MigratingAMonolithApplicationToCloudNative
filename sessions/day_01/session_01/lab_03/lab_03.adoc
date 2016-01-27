@@ -93,7 +93,12 @@ $ mvn package
 . Run the application, this time setting the `SPRING_PROFILES_ACTIVE` environment variable:
 +
 ----
+Linux, MacOS:
 $ SPRING_PROFILES_ACTIVE=spanish java -jar target/hello-spring-boot-0.0.1-SNAPSHOT.jar
+
+Windows:
+$ set SPRING_PROFILES_ACTIVE=spanish && java -jar target/hello-spring-boot-0.0.1-SNAPSHOT.jar
+
 ----
 
 . Visit the application in the browser (http://localhost:8080), and verify that the output has changed to the following:
