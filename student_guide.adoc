@@ -19,7 +19,7 @@ The overwhelming majority of our time will be spent writing code directly!
 This can be accomplished as follows:
 
 ----
-$ git clone https://github.com/caxqueiroz/MigratingAMonolithApplicationToCloudNative
+$ git clone https://github.com/S2EDU/MigratingAMonolithApplicationToCloudNative
 $ git fetch --all
 
 $ git clone https://github.com/caxqueiroz/springtrader-monolith.git
