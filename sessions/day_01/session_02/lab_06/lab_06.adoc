@@ -58,7 +58,8 @@ Creating service spring-music-db in org CNA / space instructor as mstine@pivotal
 OK
 ----
 +
-If `p-mysql` is not an available service, use `cleardb` instead.
+If `p-mysql` is not an available service, use `cleardb` instead (select the free `spark` plan:
+`cf create-service cleardb spark spring-music-db`).
 
 . Next we'll _bind_ the newly created instance to our `spring-music` application:
 +
