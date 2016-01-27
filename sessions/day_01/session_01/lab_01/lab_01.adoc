@@ -39,7 +39,7 @@ public String hello() {
 Again you will need to import the `@RequestMapping` annotation.
 
 . To run the application:
-  * Eclipse/STS: Right click in the editor window and select `Run As` -> `Run as Spring Boot Application`.
+  * Eclipse/STS: Right click in the editor window and select `Run As` -> `Spring Boot App`.
   * IntelliJ: In the editor window press CTRL-SHIFT-R (MacOS: COMMAND-SHIFT-R) 
 +
 Wait for the application to start up.
