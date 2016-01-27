@@ -24,9 +24,9 @@ Unpack that zip file at `$COURSE_HOME/day_01/session_01/lab_01/initial`.
 
 . Import the project's `pom.xml` into your editor/IDE of choice.
 
-. Add a `@RestController` annotation to the class `io.pivotal.spring.hello.HelloSpringBootApplication`.
+. Add a `@RestController` annotation to the class `io.pivotal.spring.hello.HelloSpringBootApplication`.  It will be marked in red, so you need to add the import for this annotation.  In Eclipse/STS press CTRL-SHIFT-O (MacOS: COMMAND-SHIFT-O).  In IntelliJ use CTRL+ALT+o (MacOS: COMMAND-ALT-o)
 
-. Add the following request handler to the class `io.pivotal.spring.hello.HelloSpringBootApplication`:
+. Add the following request handler mathod to the class `io.pivotal.spring.hello.HelloSpringBootApplication` after the static `main` method:
 +
 [source,java]
 ----
@@ -35,6 +35,16 @@ public String hello() {
     return "Hello World!";
 }
 ----
++
+Again you will need to import the `@RequestMapping` annotation.
+
+. To run the application:
+  * Eclipse/STS: Right click in the editor window and select `Run As` -> `Run as Spring Boot Application`.
+  * IntelliJ: In the editor window press CTRL-SHIFT-R (MacOS: COMMAND-SHIFT-R) 
++
+Wait for the application to start up.
+
+. Open http://localhost:8080 in your browser and it should return `Hello World!`.
 
 *Congratulations!*
 You've just completed your first Spring Boot application.
