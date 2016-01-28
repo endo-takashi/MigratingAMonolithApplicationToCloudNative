@@ -154,7 +154,7 @@ You should be able to see your properties displayed similar to this:
 ----
 {"name":"default",
  "label":"",
- "propertySources":[{"name":"https: //github.com/<your-name>/springtrader-config-repo.git/demo.yml",
+ "propertySources":[{"name":"https: //github.com/<yourUserName>/springtrader-config-repo.git/demo.yml",
  "source":{"greeting":"Hi there"}}]}
 ----
 +
