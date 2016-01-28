@@ -22,6 +22,8 @@ $ cf cs p-mysql 100mb-dev quotes-db
 Creating service quotes-db...
 OK
 ----
++
+Again, if `p-mysql` service is not available, please use the free `spark` plan from `cleardb` like this `cf cs cleardb spark quotes-db`.
 
 . Next add the service to your application manifest, which will _bind_ the service to our application on the next push. We'll also add an environment variable to switch on the ``cloud'' profile,
 +
