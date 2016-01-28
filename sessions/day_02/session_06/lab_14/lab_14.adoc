@@ -149,7 +149,18 @@ $ java -jar target/springtrader-config-server-0.0.1-SNAPSHOT.jar
 ----
 
 . Test the application in your web browser by connecting to http://localhost:8888/demo/default
-You should be able to see your properties displayed.
+You should be able to see your properties displayed similar to this:
++
+----
+{"name":"default",
+ "label":"",
+ "propertySources":[{"name":"https: //github.com/<your-name>/springtrader-config-repo.git/demo.yml",
+ "source":{"greeting":"Hi there"}}]}
+----
++
+If you can't see `greeting` in the output your server is not working.
++
+Leave the Config Server running, the client will need it.
 
 
 == Create the Sample Test Application
@@ -205,7 +216,7 @@ public class GreetingController {
 spring.application.name=demo
 ----
 
-. Build the JAR:
+. Build the JAR using _a new command/terminal window_ - the Config Server *must* still be running:
 +
 ----
 $ mvn package
