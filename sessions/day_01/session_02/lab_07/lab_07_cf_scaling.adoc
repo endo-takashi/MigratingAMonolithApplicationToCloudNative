@@ -27,7 +27,8 @@ So, when the CLI indicates that application is up and running, visit its route i
 image::../../../Common/images/cf-scale-boot-initial.png[]
 +
 You'll see that the application is reporting various bits of information that it has discovered from its environment.
-Of primary interest is that this application reports its _instance index_.
+Of primary interest is that this application reports its _instance index_ - note that this is the instance id _not_
+the number of instances running.
 It also keeps track of and reports how many web requests that this instance has serviced.
 
 == Scale the Application Up
