@@ -4,10 +4,7 @@ This course is derived from Matt Stine's link:https://github.com/mstine/CloudNat
 
 == Student Guide
 
-=== Schedule
-
-The lectures for this class are intentionally very light and are only intended to set the stage for the hands-on labs.
-The overwhelming majority of our time will be spent writing code directly!
+=== Resources
 
 Make sure you have installed the necessary software for this course - see link:sessions/setup.adoc[Setup].
 
@@ -24,6 +21,13 @@ $ git clone https://github.com/caxqueiroz/springtrader-microservices.git
 $ git fetch --all
 
 ----
+
+=== Schedule
+
+The lectures for this class are intentionally very light and are only intended to set the stage for the hands-on labs.
+The overwhelming majority of our time will be spent writing code directly!
+
+Approximate session times are as follows.  Lab times vary by group and may be different for your course.
 
 ==== Day One
 9:00 AM - 10:30 AM:: *Session 1:* _Cloud-Native Architecture Overview and Building Twelve-Factor Apps with Spring Boot_
@@ -42,9 +46,7 @@ $ git fetch --all
 12:30 PM - 1:30 PM:: Lunch
 1:30 PM - 3:00 PM:: *Session 8:* _Securing Cloud-Native Applications_
 3:00 PM - 3:15 PM:: Afternoon Break
-3:15 PM - 5:00 PM:: *Session 9:* _The API Gateway Pattern_
-
- 
+3:15 PM - 4:00 PM:: *Session 9:* _The API Gateway Pattern_
 
 === Course Materials
 
