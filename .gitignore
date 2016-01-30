@@ -6,6 +6,7 @@ target/
 gradle/
 bin/
 
+workspace/
 .settings/
 .classpath
 .project
