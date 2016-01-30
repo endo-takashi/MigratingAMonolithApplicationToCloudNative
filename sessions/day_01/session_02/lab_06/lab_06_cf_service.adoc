@@ -164,6 +164,8 @@ Once the application is running again, revisit or refresh the browser tab where 
 image::../../../Common/images/Spring_Music_PGSQL.png[]
 +
 As you can see from the information dialog, the application is now utilizing a MySql database via the `spring-music-db` service.
++
+*Note:* If the application hasb't picked up the `spring-music-db` service, try doing a complete `cf push` again.
 
 . *(OPTIONAL STEPS)* If you have a MySql GUI tool handy and you are using a lab environment that has the necessary network access (ask your instructor), you can inspect the music database created. Otherwise, your instructor will demo via a Pivotal VPN connection.
 
