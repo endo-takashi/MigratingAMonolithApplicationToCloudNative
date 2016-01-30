@@ -2,16 +2,9 @@
 
 This course is based on mstine's link:https://github.com/mstine/CloudNativeArchitectureClass[course].
 
-Student Guide
+== Student Guide
 
-== Instructor Details
-
-Carlos Queiroz (@cax) +
-Advanced Field Engineer - Pivotal +
-cqueiroz @ pivotal.io
-
-
-== Schedule
+=== Schedule
 
 The lectures for this class are intentionally very light and are only intended to set the stage for the hands-on labs.
 The overwhelming majority of our time will be spent writing code directly!
@@ -30,7 +23,7 @@ $ git fetch --all
 
 ----
 
-=== Day One
+==== Day One
 9:00 AM - 10:30 AM:: *Session 1:* _Cloud-Native Architecture Overview and Building Twelve-Factor Apps with Spring Boot_
 10:30 AM - 10:45 AM:: Morning Break
 10:45 AM - 12:30 PM:: *Session 2:* _Operating Twelve-Factor Apps with Cloud Foundry_
@@ -40,7 +33,7 @@ $ git fetch --all
 3:30 PM - 3:45 PM:: Afternoon Break
 3:45 PM - 5:00 PM:: *Session 5:* _Microservices with Polyglot Persistence_
 
-=== Day Two
+==== Day Two
 9:00 AM - 10:30 AM:: *Session 6:* _Cloud-Native Architecture Patterns: Part One_
 10:30 AM - 10:45 AM:: Morning Break
 10:45 AM - 12:30 AM:: *Session 7:* _Cloud-Native Architecture Patterns: Part Two_
@@ -51,15 +44,19 @@ $ git fetch --all
 
  
 
-== Course Materials
+=== Course Materials
 
-=== Day One
+==== Setup
+
+** link:sessions/setup.adoc[Software Setup] for this course.
+
+==== Day One
 
 * Session 1 (link:sessions/day_01/session_01/session_01.pdf[Slides])
-** link:sessions/day_01/session_01/lab_01/lab_01.adoc[Lab 1 - Getting Started with Spring Boot]
-** link:sessions/day_01/session_01/lab_02/lab_02.adoc[Lab 2 - Deploying a Web Application with an Embedded Container]
-** link:sessions/day_01/session_01/lab_03/lab_03.adoc[Lab 3 - Externalizing Configuration with Spring Boot]
-** link:sessions/day_01/session_01/lab_04/lab_04.adoc[Lab 4 - Introspection, Monitoring, and Metrics using Spring Boot Actuator]
+** link:sessions/day_01/session_01/lab_01/lab_01_boot_getting_started.adoc[Lab 1 - Getting Started with Spring Boot]
+** link:sessions/day_01/session_01/lab_02/lab_02_boot_with_jetty.adoc[Lab 2 - Deploying a Web Application with an Embedded Container]
+** link:sessions/day_01/session_01/lab_03/lab_03_boot_properties.adoc[Lab 3 - Externalizing Configuration with Spring Boot]
+** link:sessions/day_01/session_01/lab_04/lab_04_actuator.adoc[Lab 4 - Introspection, Monitoring, and Metrics using Spring Boot Actuator]
 * Session 2 (link:sessions/day_01/session_02/session_02.pdf[Slides])
 ** link:sessions/day_01/session_02/lab_05/lab_05.adoc[Lab 5 - From Zero to Pushing Your First Application]
 ** link:sessions/day_01/session_02/lab_06/lab_06.adoc[Lab 6 - Binding to Cloud Foundry Services]
@@ -75,7 +72,7 @@ $ git fetch --all
 ** link:sessions/day_01/session_05/lab_12/lab_12.adoc[Lab 12 - Build Account Service using MySQL]
 ** link:sessions/day_01/session_05/lab_13/lab_13.adoc[Lab 13 - Build Portfolio Service with MySQL]
 
-=== Day Two
+==== Day Two
 
 * Session 6 (link:sessions/day_02/session_06/session_06.pdf[Slides])
 ** link:sessions/day_02/session_06/lab_14/lab_14.adoc[Lab 14 - Deploying and Using Spring Cloud Config Server]
