@@ -182,7 +182,7 @@ $ cf cs p-mongodb development spring-music-mongo
 Creating service spring-music-mongo in org ACME / space instructor as mstine@pivotal.io...
 OK
 ----
-
++
 If you do not have the `p-mongodb` service available use `mongolab` and choose the `sandbox` plan:
 `cf cs mongolab sandbox spring-music-mongo`.
 
