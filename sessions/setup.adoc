@@ -1,6 +1,13 @@
 = Course Setup
 
-Ideally this setup should be completed before you attend the course.
+The following software is rwquired to complete this course:
+ * Java JDK 8
+ * An IDE or editor of your choice
+ * Maven `mvn`
+ * Git `git`
+ * Cloud Foundry CLI `cf`
+ 
+Ideally this setup should be completed _before_ you attend the course.
 
 == Note on Lab Usage
 
