@@ -2,6 +2,14 @@
 
 Ideally this setup should be completed before you attend the course.
 
+== Note
+
+Much of this course involves using command line tools rather than
+GUI applications.  This may be unfamiliar to some of you.
+
+In particular, Windows users will need to open and use Command windows. To do this
+press WK + R and type `cmd` (where WK is the Windows Key).  image::./Common/images/winkey.png[]
+
 == Java
 
 A Java 8 JDK needs to be installed.  Go to Oracle at
@@ -60,7 +68,12 @@ You will need to close any existing Terminal/Cmd windows and open a new one for 
 
 == Git Command-Line Utility
 
-Go to https://git-scm.com/downloads, download the installer and run it.
+Go to https://git-scm.com/downloads, click the image corresponding to your platform, download the installer and run it.
+
+*Warning:* Ignore the large computer monitor labelled "Latest source Release".
+
+* Windows users: When running the installer, select "Use Git from the Windows Command Prompt" (this is not the default).
+Accept all other defaults.
 
 == Cloud Foundry Command-Line Utility
 
