@@ -24,7 +24,12 @@ Unpack that zip file at `$COURSE_HOME/day_01/session_01/lab_01/initial`.
 
 . Import the project's `pom.xml` into your editor/IDE of choice.
 
-. Add a `@RestController` annotation to the class `io.pivotal.spring.hello.HelloSpringBootApplication`.  It will be marked in red, so you need to add the import for this annotation.  In Eclipse/STS press CTRL-SHIFT-O (MacOS: COMMAND-SHIFT-O).  In IntelliJ use CTRL+ALT+o (MacOS: COMMAND-ALT-o)
+. Add a `@RestController` annotation to the class `io.pivotal.spring.hello.HelloSpringBootApplication`
+to indicate that we wish to return REST (data) responses not HTML.
++
+It will be marked in red, so you need to add the import for this annotation.
+In Eclipse/STS press CTRL-SHIFT-O (MacOS: COMMAND-SHIFT-O).
+In IntelliJ use CTRL+ALT+o (MacOS: COMMAND-ALT-o)
 
 . Add the following request handler mathod to the class `io.pivotal.spring.hello.HelloSpringBootApplication` after the static `main` method:
 +
@@ -36,7 +41,7 @@ public String hello() {
 }
 ----
 +
-Again you will need to import the `@RequestMapping` annotation.
+Again you will need to use the IDE to import the `@RequestMapping` annotation.
 
 . To run the application:
   * Eclipse/STS: Right click in the editor window and select `Run As` -> `Spring Boot App`.
