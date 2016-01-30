@@ -2,13 +2,18 @@
 
 Ideally this setup should be completed before you attend the course.
 
-== Note
+== Note on Lab Usage
 
-Much of this course involves using command line tools rather than
-GUI applications.  This may be unfamiliar to some of you.
+Much of this course involves using command line tools rather than GUI
+applications.  This may be unfamiliar to some of you.
 
 In particular, Windows users will need to open and use Command windows. To do this
-press WK + R and type `cmd` (where WK is the Windows Key).  image::./Common/images/winkey.png[]
+press `WK` + `R` and type `cmd` (where WK is the Windows Key).
+
+To keep the labs simple, although we encourage you to use an IDE, we only use it
+for creating and editing files.  In most cases we build using `mvn` directly.
+We accept that this is not typical but it makes the lab instructions simpler.
+
 
 == Java
 
@@ -33,9 +38,10 @@ the course.
 convenient.  Windows users are recommended to unpack it directly into `C:\` otherwise
 you will have problems exceeding the maximum path length (yes even on Windows 8 and 10).
 +
-Once unpacked you should find a directory similar to `sts_bundle/sts-3.7.1.RELEASE-e4.5.1`
-(the versions will differ).  In here is the executable for STS (`STS.exe`, `STS.app` or
-`STS`).
+Once unpacked you should find a directory similar to `sts_bundle/sts-X.X.X.RELEASE`
+or `sts_bundle/sts-X.X.X.RELEASE-eX.X.X` (the versions will differ).  In here is
+the executable for STS (`STS.exe`, `STS.app` or `STS`).  For convenience, you might
+like to create a shortcut on your Desktop.
 
  * Eclipse: https://eclipse.org/downloads/  Either use the Installer or choose
 "Eclipse IDE for Java Developers ".
@@ -45,17 +51,18 @@ and will be sufficient for this course.
 
 An IDE is not required to do this course, but if you prefer not to use an IDE, you
 will need to use your favorite editor instead.  Windows users are recommended to
-download the free Notepad++s editor from https://notepad-plus-plus.org/downloaa.d
+download the free Notepad++s editor from https://notepad-plus-plus.org/download
 
 == Maven
 
 Download Maven from https://maven.apache.org/download.cgi - select the binary zip archive
 (Windows) or the binary tar.gz archive (MacOS, Linux).
 
-Once downloaded, you need to add the bin directory to your execution path.
+Once downloaded, unpack into a convenient directory.
+You need to add the `bin` directory to your execution path.
 
-* Windows - Right click My Computer/This PC -> Properties -> Advanced system settings -> Environment variables ...
-PATH should already exist, click Edit and add to the end.  Don't forget to add a semicolon first.
+* Windows - Right click `My Computer`/`This PC` -> `Properties` -> `Advanced system settings` -> `Environment variables` ...
+`PATH` should already exist, click `Edit` and add to the end.  Don't forget to add a semicolon first.
 For more details on how to do this see http://www.computerhope.com/issues/ch000549.htm.
 
 * MacOS, Linux - Assuming you are using a BASH shell, edit `~/.bashrc` and add:
@@ -72,7 +79,7 @@ Go to https://git-scm.com/downloads, click the image corresponding to your platf
 
 *Warning:* Ignore the large computer monitor labelled "Latest source Release".
 
-* Windows users: When running the installer, select "Use Git from the Windows Command Prompt" (this is not the default).
+* Windows users: When running the installer, select "_Use Git from the Windows Command Prompt_" (this is not the default).
 Accept all other defaults.
 
 == Cloud Foundry Command-Line Utility
