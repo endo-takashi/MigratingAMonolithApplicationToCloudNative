@@ -1,3 +1,0 @@
-= Lab 23 - Running the SpringBox application
-
-In this lab you will download the springbox application and deploy it to Pivotal Cloud Foundry.
