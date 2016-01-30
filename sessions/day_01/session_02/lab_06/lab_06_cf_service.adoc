@@ -163,7 +163,8 @@ Once the application is running again, revisit or refresh the browser tab where 
 +
 image::../../../Common/images/Spring_Music_PGSQL.png[]
 +
-As you can see from the information dialog, the application is now utilizing a MySql database via the `spring-music-db` service.
+Click on the `(i)` symbol at top-right and it will drop down the information dialog.  You should be able to see that
+the application is now utilizing a MySql database via the `spring-music-db` service.
 +
 *Note:* If the application hasb't picked up the `spring-music-db` service, try doing a complete `cf push` again.
 
