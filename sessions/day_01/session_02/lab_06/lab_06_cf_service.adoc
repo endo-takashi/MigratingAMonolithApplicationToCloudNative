@@ -25,25 +25,43 @@ Let's change that.
 
 == The Services Marketplace
 
-There are two ways to discover what services are available on Pivotal Web Services.
-The first is available on any instance of Cloud Foundry: the CLI. Just type:
+There are two ways to discover what services are available when using Pivotal Cloud Foundry (PCF):
 
+ 1. The first is available on _any_ instance of Cloud Foundry (Open Source or PCF) via the `cf` CLI.
+Type:
++
 ----
 $ cf marketplace
 ----
++
+and you'll get a list of services, their available plans, and descriptions (the services list may vary
+from what we show here):
++
+----
+instructor$ cf marketplace
+Getting services from marketplace in org pivotaledu / space development as pchapman@gopivotal.com...
+OK
 
-and you'll get a list of services, their available plans, and descriptions.
+service          plans                                                   description   
+3scale           free_appdirect, basic_appdirect*, pro_appdirect*        API Management Platform   
+app-autoscaler   bronze, gold                                            Scales bound applications in response to load (beta)   
+blazemeter       free-tier, basic1kmr*, pro5kmr*                         Performance Testing Platform   
+cleardb          spark, boost*, amp*, shock*                             Highly available MySQL for your Apps.   
+...
+----
 
-The second way is specific to Pivotal Cloud Foundry's Application Manager UI.
-If you haven't already, login to it by visiting {CF-CONSOLE-URL}.
-
-Click on the ``Marketplace'' link:
-_The Screenshots below are from Pivotal Web Services (public managed Pivotal CF).  If you are using Pivotal Cloud Foundry, you will see something similar._
-
+ 1. The second way is specific to PCF's Application Manager UI.  If using Pivotal Web Services
+(PWS), this is what you see once you login to http://run.pivotal.io. If you haven't already,
+login now.  
++
+Click on the ``Marketplace'' link (on the left hand side panel):
+_The Screenshots below are from PWS (public managed Pivotal CF).
+If you are using your own installation of PCF, you will see something similar._
++
 image::../../../Common/images/PWS_AM_InstructorSpace.png[]
-
++
 and you'll see the same service/plan/description listing in the browser:
-
++
 image::../../../Common/images/PWS_Marketplace.png[]
 
 == Creating and Binding to a Service Instance
@@ -165,6 +183,9 @@ Creating service spring-music-mongo in org ACME / space instructor as mstine@piv
 OK
 ----
 
+If you do not have the `p-mongodb` service available use `mongolab` and choose the `sandbox` plan:
+`cf cs mongolab sandbox spring-music-mongo`.
+
 . Next we'll unbind our application from our MySql instance (_Spring Music_ does not support being bound to multiple datasources at the same time):
 +
 ----
@@ -212,7 +233,7 @@ Deleting app spring-music in org oreilly-class / space instructor as mstine@pivo
 OK
 ----
 
-. Delete the `spring-music-mongo` service:
+. If you did the optional section using MongoDB, delete the `spring-music-mongo` service:
 +
 ----
 $ cf ds spring-music-mongo
