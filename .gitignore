@@ -6,7 +6,7 @@ target/
 gradle/
 bin/
 
-*/.settings/*
+.settings/
 .classpath
 .project
 .idea
