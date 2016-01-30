@@ -1,6 +1,6 @@
 = Migrating a Monolith Application to Cloud Native
 
-This course is based on mstine's link:https://github.com/mstine/CloudNativeArchitectureClass[course].
+This course is derived from Matt Stine's link:https://github.com/mstine/CloudNativeArchitectureClass[course].
 
 == Student Guide
 
