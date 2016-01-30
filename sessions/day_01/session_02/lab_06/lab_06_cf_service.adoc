@@ -151,7 +151,9 @@ As you can see from the information dialog, the application is now utilizing a M
 
 . In your DB tool, create a new server connection and populate the properties with values from the URI in your `VCAP_SERVICES` environment variable (remember `cf env spring-muisc`!):
 
-== Swapping from MySql to MongoDB
+== Optional: Swapping from MySql to MongoDB
+
+Only do this next section if you have sufficient time.
 
 . Now let's bind our _Spring Music_ application to MongoDB instead of MySql. First let's create footnote:[Notice in this listing that we're typing `cf cs` rather than `cf create-service`.
 Most CF CLI commands have a shorthand version to save typing time.
