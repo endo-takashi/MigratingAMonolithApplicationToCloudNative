@@ -22,6 +22,8 @@ $ cf cs p-mysql 100mb-dev quotes-db
 Creating service quotes-db...
 OK
 ----
++
+Again, if `p-mysql` service is not available, please use the free `spark` plan from `cleardb` like this `cf cs cleardb spark quotes-db`.
 
 . Next add the service to your application manifest, which will _bind_ the service to our application on the next push. We'll also add an environment variable to switch on the ``cloud'' profile,
 +
@@ -49,7 +51,7 @@ Binding service quotes-db to app companies...
 OK
 ----
 
-. Next we'll add Spring Cloud and MySQL dependencies to our maven pom file. Comment or remove the +h2+ line add add the following in the +dependencies+ section:
+. Next we'll add Spring Cloud and MySQL dependencies to our maven pom file. Just after the dependency declaration for +h2+, add add the following in the +dependencies+ section:
 +
 [source,xml]
 ----
@@ -73,7 +75,7 @@ OK
 
 ----
 +
-Since we've added new dependencies, re-run +mvn clean package+ to build your project.
+Since we've added new dependencies, re-run +mvn clean package+ to build your project and download them.  If you are using an IDE, you will need to bring it up to date.  In Eclipse or STS you will need to right-click on the project and select Maven -> Update Project.
 
 . Next, let's create the package +io.pivotal.demo.quotes.config+ and create in that package the class +CloudDataSourceConfig+. Add the following code:
 +
@@ -95,7 +97,7 @@ The +@Profile+ annotation will cause this class (which becomes Spring configurat
 +
 With this code, Spring Cloud will detect a bound service that is compatible with +DataSource+, read the credentials, and then create a +DataSource+ as appropriate (it will throw an exception otherwise).
 
-. Add the following to +src/main/resources/application.properties+ to cause Hibernate to create the database schema and import data at startup. This is done automatically for embedded databases, not for custom ++DataSource++s. Other Hibernate native properties can be set in a similar fashion:
+. Add the following to +src/main/resources/application.properties+ to cause Hibernate to create the database schema and import data at startup. This is done automatically for embedded databases, but not for a custom ++DataSource++. Other Hibernate native properties can be set in a similar fashion:
 +
 [source,java]
 ----

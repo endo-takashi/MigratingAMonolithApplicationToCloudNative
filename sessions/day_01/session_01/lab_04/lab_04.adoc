@@ -62,7 +62,8 @@ It will add Git branch and commit coordinates to the `/info` endpoint:
 </plugin>
 ----
 +
-NOTE: The path `../../../../../.git` refers to the `.git` directory at the root of the course materials.
+NOTE: The path `../../../../../.git` refers to the `.git` directory at the root of the course materials.  If it's easier
+use the absolute path: `$COURSE_HOME/.git` instead.
 
 . Add the following properties to `src/main/resources/application.yml`:
 +
@@ -75,7 +76,8 @@ info:
     version: @project.version@
 ----
 +
-These will add the project's Maven coordinates to the `/info` endpoint. The Spring Boot Maven plugin will cause them to automatically be replaced in the assembled JAR.
+These will add the project's Maven coordinates to the `/info` endpoint. The Spring Boot Maven plugin will cause them to automatically be replaced in the assembled JAR.  If you are doing this in your IDE, you may get an error due to the use of the `@` symbol - please
+ignore.
 
 . Build the application:
 +
