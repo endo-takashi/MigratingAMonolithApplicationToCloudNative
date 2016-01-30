@@ -1,0 +1,25 @@
+= Course Setup
+
+Ideally this setup should be completed before you attend the course.
+
+== IDE
+
+We recommend installing the integrated development environment of your choice,
+such as Eclipse, Spring Tool Suite (STS) or IntelliJ.  If you have no preference
+we recommend STS as it has additional support for the Spring facilities used during
+the course.
+
+ 1. STS: http://spring.io/tools  The download is a zip file, so unpack it somewhere
+convenient.  Windows users are recommended to unpack it directly into C:\ otherwise
+you will have problems exceeding the maximum path length (yes even on Windows 10)
++
+Once unpacked you should find directory similar to `sts_bundle/sts-3.7.1.RELEASE-e4.5.1`
+(the versions will differ).  In here is the executable for STS (STS.exe, STS.app or
+STS).
+
+An IDE is not required to do this course, but if you prefer not to use an IDE, you
+will need to use your favorite editor instead.
+
+== Maven
+
+Download Maven from
