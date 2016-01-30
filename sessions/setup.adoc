@@ -2,6 +2,17 @@
 
 Ideally this setup should be completed before you attend the course.
 
+== Java
+
+A Java 8 JDK needs to be installed.  Go to Oracle at
+http://www.oracle.com/technetwork/java/javase/downloads/index.html
+and click the Java download button on the right.  You should be on the page to
+download the "Java SE Development Kit".  Click the radio-button to
+say you "Accept License Agreement" and then pick the right JDK for your platform.
+Make sure you are downloading the JDK _not_ the JRE.
+
+Once downloaded, run the installer.  It takes a while to run.
+
 == IDE
 
 We recommend installing the integrated development environment of your choice,
@@ -9,17 +20,62 @@ such as Eclipse, Spring Tool Suite (STS) or IntelliJ.  If you have no preference
 we recommend STS as it has additional support for the Spring facilities used during
 the course.
 
- 1. STS: http://spring.io/tools  The download is a zip file, so unpack it somewhere
+ * STS: http://spring.io/tools  The download is a zip file, so unpack it somewhere
 convenient.  Windows users are recommended to unpack it directly into C:\ otherwise
-you will have problems exceeding the maximum path length (yes even on Windows 10)
+you will have problems exceeding the maximum path length (yes even on Windows 8 and 10).
 +
-Once unpacked you should find directory similar to `sts_bundle/sts-3.7.1.RELEASE-e4.5.1`
+Once unpacked you should find a directory similar to `sts_bundle/sts-3.7.1.RELEASE-e4.5.1`
 (the versions will differ).  In here is the executable for STS (STS.exe, STS.app or
 STS).
+
+ * Eclipse: https://eclipse.org/downloads/  Either use the Installer or choose
+"Eclipse IDE for Java Developers ".
+ 
+ * IntelliJ: https://www.jetbrains.com/idea/download/  The Community Edition is free
+and will be sufficient for this course. The Ultimate Edition is approx $500 USD but
+provides a direct integration with Pivotal Cloud Foundry.
 
 An IDE is not required to do this course, but if you prefer not to use an IDE, you
 will need to use your favorite editor instead.
 
 == Maven
 
-Download Maven from
+Download Maven from https://maven.apache.org/download.cgi - select the binary zip archive
+(Windows) or the binary tar.gz archive (MacOS, Linux).
+
+Once downloaded, you need to add the bin directory to your execution path.
+
+* Windows - right click My Computer/This PC -> Properties -> Advanced system settings -? Environment variables ...
+PATH should already exist, click Edit and add to the end.  Don't forget to add a semicolon first.
+* MacOS, Linux - assuming you are using a BASH shell, edit `~/.bashrc` and add:
++
+```
+PATH=$PATH:/path/to/maven/bin
+```
+
+You will need to close any existing Terminal/Cmd windows and open a new one for the change to take effect.
+
+== Git Command-Line Utility
+
+Go to https://git-scm.com/downloads, download the installer and run it.
+
+== Cloud Foundry Command-Line Utility
+
+Go to https://github.com/cloudfoundry/cli/releases, download and run the right installer for your platform.
+
+== Testing Your Setup
+
+If everything has installed correctly, _open a brand new_ Terminal/Cmd window.  You should be able to run
+the following:
+
+```
+java -version
+mvn -version
+git --version
+cf --version
+```
+
+
+
+
+
