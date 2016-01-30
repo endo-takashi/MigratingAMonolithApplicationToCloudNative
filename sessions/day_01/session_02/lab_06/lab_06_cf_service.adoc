@@ -27,7 +27,7 @@ Let's change that.
 
 There are two ways to discover what services are available when using Pivotal Cloud Foundry (PCF):
 
- 1. The first is available on _any_ instance of Cloud Foundry (Open Source or PCF) via the `cf` CLI.
+ . The first is available on _any_ instance of Cloud Foundry (Open Source or PCF) via the `cf` CLI.
 Type:
 +
 ----
@@ -50,7 +50,7 @@ cleardb          spark, boost*, amp*, shock*                             Highly 
 ...
 ----
 
- 1. The second way is specific to PCF's Application Manager UI.  If using Pivotal Web Services
+ . The second way is specific to PCF's Application Manager UI.  If using Pivotal Web Services
 (PWS), this is what you see once you login to http://run.pivotal.io. If you haven't already,
 login now.  
 +
