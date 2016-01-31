@@ -48,6 +48,18 @@ Approximate session times are as follows.  Lab times vary by group and may be di
 3:00 PM - 3:15 PM:: Afternoon Break
 3:15 PM - 4:00 PM:: *Session 9:* _The API Gateway Pattern_
 
+=== Important Note on the Labs
+
+Much of this course involves using command line tools rather than GUI
+applications.  This may be unfamiliar to some of you.
+
+In particular, Windows users will need to open and use Command windows. To do this
+press `WK` + `R` and type `cmd` (where WK is the Windows Key).
+
+To keep the labs simple, although we encourage you to use an IDE, we only use it
+for creating and editing files.  In most cases we build using `mvn` directly.
+We accept that this is not typical but it makes the lab instructions simpler.
+
 === Course Materials
 
 ==== Setup
