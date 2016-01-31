@@ -7,6 +7,7 @@ The following software is required to complete this course:
   * Maven utility: `mvn`
   * Git command line: `git`
   * Cloud Foundry CLI `cf`
+  * Curl (Windows users only)
  
 Ideally this setup should be completed _before_ you attend the course.
 
@@ -94,6 +95,14 @@ Accept all other defaults.
 
 Go to https://github.com/cloudfoundry/cli/releases, download and run the right installer for your platform.
 
+== Curl for Windows
+
+Linux and MacOS users already have the `curl` utility.  Windows users can download it from here:
+https://github.com/S2EDU/PCFImmersionStudentFiles/raw/master/curl.zip.
+
+Once downloaded, unpack it somewhere convenient and add to your path - the same procedure as for
+Maven.
+
 == Testing Your Setup
 
 If everything has installed correctly, _open a brand new_ Terminal/Cmd window.  You should be able to run
@@ -104,6 +113,7 @@ java -version
 mvn -version
 git --version
 cf --version
+curl --version
 ```
 
 
