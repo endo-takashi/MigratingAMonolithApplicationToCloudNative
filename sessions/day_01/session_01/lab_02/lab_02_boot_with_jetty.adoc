@@ -19,7 +19,7 @@ $ mvn package
 . Run the application:
 +
 ----
-$ java -jar target/hello-spring-boot-0.0.1-SNAPSHOT.jar
+$ java -jar target/lab02-hello-spring-boot-0.0.1-SNAPSHOT.jar
 ----
 +
 You should see the application start up an embedded Apache Tomcat server on port 8080:
