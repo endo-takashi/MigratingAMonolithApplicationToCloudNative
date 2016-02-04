@@ -19,6 +19,28 @@ $ cd $COURSE_HOME/day_01/session_01/lab_04/initial/hello-spring-boot
 </dependency>
 ----
 
+== Adding proper JSon formatting
+
+. Run the application
+. open this URL in  your browser: `http://localhost:8080/beans`
+As you can see, the information is hard to read.
+
+. Add the following configuration at the end of `HelloSpringBootApplication`:
++
+----
+@Configuration
+class RestWsApplicationConfig {
+
+    @Bean
+    public Jackson2ObjectMapperBuilder jacksonBuilder() {
+        Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
+        builder.indentOutput(true);
+        return builder;
+    }
+}
+----
+. Run the application again and connect to `http://localhost:8080/beans`
+
 == Introspection Endpoints
 
 . Run the application
