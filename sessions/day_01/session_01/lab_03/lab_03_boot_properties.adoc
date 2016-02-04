@@ -29,16 +29,13 @@ String greeting;
 return String.format("%s World!", greeting);
 ----
 
-. Build the application:
+. Run the application
++
+You can run it within your IDE or use the below command:
 +
 ----
 $ mvn package
-----
-
-. Run the application:
-+
-----
-$ java -jar target/hello-spring-boot-0.0.1-SNAPSHOT.jar
+$ java -jar target/lab03-hello-spring-boot-0.0.1-SNAPSHOT.jar
 ----
 
 . Visit the application in the browser (http://localhost:8080), and verify that the output is still the following:
@@ -106,26 +103,6 @@ $ set SPRING_PROFILES_ACTIVE=spanish && java -jar target/hello-spring-boot-0.0.1
 +
 ----
 Hola World!
-----
-
-. Stop the application.
-
-== Resolving Conflicts
-
-. Run the application, this time setting both the `SPRING_PROFILES_ACTIVE` and `GREETING` environment variables:
-+
-----
-Linux, MacOS:
-$ SPRING_PROFILES_ACTIVE=spanish GREETING=Ohai java -jar target/hello-spring-boot-0.0.1-SNAPSHOT.jar
-
-Windows:
-$ set SPRING_PROFILES_ACTIVE=spanish && set GREETING=Ohai && java -jar target/hello-spring-boot-0.0.1-SNAPSHOT.jar
-----
-
-. Visit the application in the browser (http://localhost:8080), and verify that the output has changed to the following:
-+
-----
-Ohai World!
 ----
 
 . Visit http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html to learn more about this outcome and the entire priority scheme for conflict resolution.
