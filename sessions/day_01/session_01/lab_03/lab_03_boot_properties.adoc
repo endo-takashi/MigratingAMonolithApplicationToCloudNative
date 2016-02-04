@@ -10,7 +10,7 @@ $ cd $COURSE_HOME/day_01/session_01/lab_03/initial/hello-spring-boot
 
 . Import the project's `pom.xml` into your editor/IDE of choice (if you haven't in a previous lab).
 
-. Rename `src/main/resources/application.properties` to `src/main/resources/application.yml`. Into that file, paste the following:
+. Open `src/main/resources/application.yml` and paste the following:
 +
 ----
 greeting: Hello
