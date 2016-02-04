@@ -10,15 +10,13 @@ Spring Boot will embed Apache Tomcat by default.
 $ cd $COURSE_HOME/day_01/session_01/lab_02/initial/hello-spring-boot
 ----
 
-. Build the application:
+. Run the application:
++
+The easiest way is to run the `HelloSpringBootApplication` class from Eclipse/IntelliJ.
+Alternatively, you can use the command line as shown below:
 +
 ----
 $ mvn package
-----
-
-. Run the application:
-+
-----
 $ java -jar target/lab02-hello-spring-boot-0.0.1-SNAPSHOT.jar
 ----
 +
@@ -67,20 +65,11 @@ with:
 </dependency>
 ----
 
-. Build the application:
+. Build and run the application
 +
-----
-$ mvn package
-----
-
-. Run the application:
-+
-----
-$ java -jar target/hello-spring-boot-0.0.1-SNAPSHOT.jar
-----
+You can run it within your Development environment or from the command line (same as earlier in this lab).
 +
 You should see the application start up an embedded Jetty server on port 8080:
-+
 ----
 2015-05-03 13:26:31.370  INFO 3078 --- [           main] .s.b.c.e.j.JettyEmbeddedServletContainer : Jetty started on port(s) 8080 (http/1.1)
 2015-05-03 13:26:31.371  INFO 3078 --- [           main] i.p.s.hello.HelloSpringBootApplication   : Started HelloSpringBootApplication in 3.671 seconds (JVM running for 4.079)
