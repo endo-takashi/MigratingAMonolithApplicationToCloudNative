@@ -1,6 +1,6 @@
 package io.pivotal.spring.hello;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloSpringBootApplication {
 
-    @Autowired
-    private GreetingService greetingService;
+    @Value("${greeting}")
+    String greeting;
 
     @RequestMapping("/")
     public String hello() {
-        return String.format("%s World!", greetingService.getGreeting());
+        return String.format("%s World!", greeting);
     }
 
     public static void main(String[] args) {
