@@ -33,10 +33,10 @@ It also keeps track of and reports how many web requests that this instance has 
 
 == Scale the Application Up
 
-. Now let's increase the number of running application instances to 5:
+. Now let's increase the number of running application instances to 4 (make sure you have stopped `spring-music` before doing this or you may exceed your quota):
 +
 ----
-$ cf scale -i 5 cf-scale-boot
+$ cf scale -i 4 cf-scale-boot
 Scaling app cf-scale-boot in org oreilly-class / space instructor as mstine@pivotal.io...
 OK
 ----
@@ -52,8 +52,8 @@ Showing health and status for app cf-scale-boot in org oreilly-class / space ins
 OK
 
 requested state: started
-instances: 5/5
-usage: 512M x 5 instances
+instances: 4/4
+usage: 512M x 4 instances
 urls: cf-scale-boot-stockinged-rust.cfapps.io
 last uploaded: Fri Feb 13 18:56:29 UTC 2015
 
@@ -62,7 +62,6 @@ last uploaded: Fri Feb 13 18:56:29 UTC 2015
 #1   starting   2015-02-13 03:04:33 PM   0.0%   0 of 0           0 of 0 <2>
 #2   running    2015-02-13 03:04:47 PM   0.0%   398.7M of 512M   128.9M of 1G
 #3   starting   2015-02-13 03:04:33 PM   0.0%   0 of 0           0 of 0
-#4   starting   2015-02-13 03:04:33 PM   0.0%   0 of 0           0 of 0
 ----
 <1> This application instance has completed the startup process and is actually able to accept requests.
 <2> This application instance is still starting and will not have any requests routed to it.
@@ -76,8 +75,8 @@ Showing health and status for app cf-scale-boot in org oreilly-class / space ins
 OK
 
 requested state: started
-instances: 5/5
-usage: 512M x 5 instances
+instances: 4/4
+usage: 512M x 4 instances
 urls: cf-scale-boot-stockinged-rust.cfapps.io
 last uploaded: Fri Feb 13 18:56:29 UTC 2015
 
@@ -86,7 +85,6 @@ last uploaded: Fri Feb 13 18:56:29 UTC 2015
 #1   running   2015-02-13 03:04:51 PM   0.1%   377.5M of 512M   128.9M of 1G
 #2   running   2015-02-13 03:04:47 PM   0.1%   397.3M of 512M   128.9M of 1G
 #3   running   2015-02-13 03:05:03 PM   0.0%   389.2M of 512M   128.9M of 1G
-#4   running   2015-02-13 03:04:52 PM   0.1%   393.4M of 512M   128.9M of 1G
 ----
 
 . Revisit the application route in the browser.
