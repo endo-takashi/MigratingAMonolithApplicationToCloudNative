@@ -7,7 +7,9 @@ package io.pivotal.springtrader.quotes.exceptions;
  */
 public class SymbolNotFoundException extends Exception {
 
-    public SymbolNotFoundException(String message) {
+	private static final long serialVersionUID = -5906264030684211422L;
+
+	public SymbolNotFoundException(String message) {
         super(message);
     }
 }
