@@ -1,6 +1,6 @@
 = Lab 4 - Introspection, Monitoring, and Metrics using Spring Boot Actuator
 
-Estimated time to complete: 30 minutes
+Estimated time to complete: 20 minutes
 
 == Set up the Actuator
 
@@ -20,15 +20,18 @@ $ cd $COURSE_HOME/day_01/session_01/lab_04/initial/hello-spring-boot
 	<artifactId>spring-boot-starter-actuator</artifactId>
 </dependency>
 ----
+. Run the application
+. open this URL in  your browser: `http://localhost:8080/beans` (use right-click `Open in New Tab`).
+You can see runtime information about your `Spring` beans. However it is hard to read.
+
 
 == Adding proper JSon formatting
 
-. Run the application
-. open this URL in  your browser: `http://localhost:8080/beans`
-As you can see, the information is hard to read.
 
-. Add the following configuration at the end of `HelloSpringBootApplication`:
-+
+. Add the following configuration at the end of the class `HelloSpringBootApplication`:
+
+(you are allowed to have 2 classes in the same file as long as only one of them is `public`)
+
 ----
 @Configuration
 class RestWsApplicationConfig {
@@ -45,10 +48,7 @@ class RestWsApplicationConfig {
 
 == Introspection Endpoints
 
-. Run the application
-+
-
-. Try out the following endpoints (use right-click `Open in New Tab`). The output is omitted here because it can be quite large:
+. Try out the following endpoints. The output is omitted here because it can be quite large:
 +
 http://localhost:8080/beans:: Dumps all of the beans in the Spring context.
 http://localhost:8080/autoconfig:: Dumps all of the auto-configuration performed as part of application bootstrapping.
