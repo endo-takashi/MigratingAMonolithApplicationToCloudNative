@@ -2,7 +2,7 @@
 
 This course is derived from Matt Stine's link:https://github.com/mstine/CloudNativeArchitectureClass[course].
 
-These course materials can be found link:ttps://github.com/S2EDU/MigratingAMonolithApplicationToCloudNative[here].
+These course materials can be found link:https://github.com/S2EDU/MigratingAMonolithApplicationToCloudNative[here].
 
 == Student Guide
 
