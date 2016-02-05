@@ -356,5 +356,5 @@ buildpack: java-buildpack=v3.3.1-offline-https://github.com/cloudfoundry/java-bu
 +
 [source,bash]
 ----
-$ curl -i companies-getable-section.cfapps.pez.pivotal.io/companies
+http://companies-getable-section.cfapps.pez.pivotal.io/companies
 ----
