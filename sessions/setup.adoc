@@ -103,6 +103,17 @@ https://github.com/S2EDU/PCFImmersionStudentFiles/raw/master/curl.zip.
 Once downloaded, unpack it somewhere convenient and add to your path - the same procedure as for
 Maven.
 
+== Asciidoctor 
+
+To view the lab intructions on your machine you need a plugin - Firefox or Chrome only.
+
+Do an Internet search for `Asciidoctor Live Preview` and select "Asciidoctor.js Live Preview :: Add-ons for Firefox" or
+"Asciidoctor.js Live Preview - Chrome Web Store - Google" as appropriate.
+
+Click the "Add to Firefox" button to install the add-on.
+
+Now you can drag Asciidoctor files (`.adoc`) files onto the browser to view them.  
+
 == Testing Your Setup
 
 If everything has installed correctly, _open a brand new_ Terminal/Cmd window.  You should be able to run
