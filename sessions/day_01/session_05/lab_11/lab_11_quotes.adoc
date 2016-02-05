@@ -322,7 +322,7 @@ public class QuoteService {
                     .findFirst().orElse(new Stock());
 
             if (stock.getSymbol() == null) throw new SymbolNotFoundException("Symbol not found: " + symbol);
-            returnedStock.setName(stock.getName());
+            returnedStock.setCompanyName(stock.getCompanyName());
             returnedStock.setExchange(stock.getExchange());
 
         } catch (Exception e) {
@@ -338,7 +338,7 @@ public class QuoteService {
         try {
 
             //only search for name.
-            stockList = stockRepository.findByNameLike(name);
+            stockList = stockRepository.findByCompanyNameLike(name);
             if (stockList.size() > 0) return stockList;
 
             Map<String, String> params = new HashMap<>();
@@ -348,7 +348,7 @@ public class QuoteService {
 
             for (Map<String, String> company : companies) {
                 Stock stock = new Stock();
-                stock.setName(company.get("Name"));
+                stock.setCompanyName(company.get("Name"));
                 stock.setExchange(company.get("Exchange"));
                 stock.setSymbol(company.get("Symbol"));
                 stockList.add(stock);
