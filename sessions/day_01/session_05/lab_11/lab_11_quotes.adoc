@@ -1,12 +1,15 @@
 :compat-mode:
 = Lab 11 - Build a Quotes services using MongoDB
 
+Estimated time to complete: 30 minutes
+
+
 [abstract]
 --
 In this lab we'll begin the first subproject of our complete cloud-native application architecture: _SpringTrader_, which implements the quotes fetching portion of a ``Trading-like'' application.
 This microservice will provide the _Quotes Service_, which will allow us to search for companies and symbols in order to make transactions.
 
-We'll be using the http://dev.markitondemand.com[MarketItOnDemad] API, and we'll model it's `Quote` and `Company` as a Stock concept in this microservice.
+We'll be using the http://dev.markitondemand.com[MarketItOnDemad] API, and we'll model its `Quote and Company as a Stock` concept in this microservice.
 --
 
 NOTE: The completed code for this lab can be found at `$COURSE_HOME/day_01/session_05/lab_11/complete/springtrader-quotes`.
@@ -442,7 +445,7 @@ Paste the following code and add appropriate imports:
 ----
 @Configuration
 @Profile("local") // <-- local profile. To run on local laptop
-@EnableMongoAuditing // <-- Used to update lastmodifieddate field every time a document changes. 
+@EnableMongoAuditing // <-- Used to update lastmodifieddate field every time a document changes.
 @EnableMongoRepositories(basePackages = {"io.pivotal.springtrader.quotes"})
 public class MongoLocalConfig extends AbstractMongoConfiguration{
 
@@ -460,7 +463,7 @@ public class MongoLocalConfig extends AbstractMongoConfiguration{
     public Mongo mongo() throws Exception {
         Fongo fongo = new Fongo("mongo server 1");
         return fongo.getMongo();
-//        return new MongoClient("localhost", 27017); <-- If you want to connect to a local mongodb. 
+//        return new MongoClient("localhost", 27017); <-- If you want to connect to a local mongodb.
     }
 
     @Override
@@ -538,7 +541,7 @@ OK
    <groupId>org.springframework.cloud</groupId>
    <artifactId>spring-cloud-cloudfoundry-connector</artifactId>
    <version>1.2.0.RELEASE</version>
-</dependency>		
+</dependency>
 ----
 
 .  Rename `src/main/resources/application.properties` file to `src/main/resources/application.yml` file.
