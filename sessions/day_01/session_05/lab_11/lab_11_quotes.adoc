@@ -249,12 +249,7 @@ public class Stock {
 }
 ----
 +
-Notice that we're using Json annotations on the class and its fields. You'll need to use your IDE's features to add the appropriate import statements.
-This class won't compile just yet, and we'll fix that in the next step.
-
-+
-Once again, use the IDE to add the appropriate import statements.
-At this point, `Stock` should compile.
+Notice that we're using Json annotations on the class and its fields. Use your IDE's features to add the appropriate import statements.
 
 . Create the package `io.springtrader.quotes.repositories` and in that package create the interface `StockRepository`. Paste the following code and add appropriate imports:
 +
