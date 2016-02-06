@@ -108,13 +108,13 @@ Maven.
 The easiest way to view the lab intructions is online.  However, if you wish to view them on your machine you need a plugin - Firefox or Chrome only.
 
   * *Firefox:*
-    * Do an Internet search for `Asciidoctor Live Preview` and select "Asciidoctor.js Live Preview :: Add-ons for Firefox"
-    * Click the "Add to Firefox" button to install the add-on.
+  ** Do an Internet search for `Asciidoctor Live Preview` and select "Asciidoctor.js Live Preview :: Add-ons for Firefox"
+  ** Click the "Add to Firefox" button to install the add-on.
  
   * *Chrome:*
-    * Do an Internet search for `Asciidoctor Live Preview` and select "Asciidoctor.js Live Preview - Chrome Web Store - Google"
-    * Install
-    * Check `Allow access to file URLs` in chrome://extensions
+  ** Do an Internet search for `Asciidoctor Live Preview` and select "Asciidoctor.js Live Preview - Chrome Web Store - Google"
+  ** Install
+  ** Check `Allow access to file URLs` in chrome://extensions
 
 Now you can drag Asciidoctor files (`.adoc`) files onto the browser to view them.
 
