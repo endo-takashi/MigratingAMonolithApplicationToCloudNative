@@ -16,11 +16,19 @@ and import the project (via `pom.xml`) into your IDE of choice.
 . Run the application
 
 . Browse spring-trader on http://localhost:8080
-Create a user account with at least $5000 balance, perform a few trades and check your portfolio
++
+Create a user account with at least $5000 balance, perform a few trades and check your portfolio.
+
+. Domain classes
++
+Inside your IDE, look at the domain classes (package `io.pivotal.springtrader.domain`).
++
+Try to write down all the relations between those domain classes
+
++
+image::../../../Common/images/data_model_st.png[]
 
 == Decomposition into microservices
 
-. Look at the domain model and identify if and how it can be split up.
-+
-image::../../../Common/images/data_model_st.png[]
+. Based on the domain model, identify how the Spring Trader monolith application should be split up.
 +
