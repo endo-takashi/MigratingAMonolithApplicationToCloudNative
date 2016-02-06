@@ -261,7 +261,7 @@ public interface StockRepository extends MongoRepository<Stock, String>{
 }
 ----
 
-. Create the package `io.springtrader.quotes.services` and in that package create the interface `QuoteService`. Paste the following code and add appropriate imports:
+. Create the package `io.springtrader.quotes.services` and in that package create the class `QuoteService`. Paste the following code and add appropriate imports:
 +
 ----
 @Service
@@ -478,32 +478,11 @@ It contains a stocks dataset to be imported that we'll be using (excerpt here):
   "Symbol": "TFSC", "ChangePercentYTD": 3.93617021276595, "High": 9.77}
 ----
 
-. Build the JAR:
+. Run the application
+
+. Access the application at http://localhost:8086/quote/msft. You should see the below:
 +
 ----
-$ mvn clean package
-----
-
-. Run the application:
-+
-----
-$ java -jar target/quotes-1.0.0-SNAPSHOT.jar
-----
-
-. Access the application using `curl` to make sure everything is working properly:
-+
-----
-$ curl -i localhost:8086/quote/msft
-HTTP/1.1 200 OK
-Cache-Control: no-cache
-Content-Type: application/json;charset=UTF-8
-Date: Mon, 30 Nov 2015 10:51:36 GMT
-Server: Apache-Coyote/1.1
-X-Application-Context: quotes:cloud:0
-X-Cf-Requestid: a5fc51f7-de23-47e1-5459-d56508826bb8
-Content-Length: 365
-Connection: close
-
 {"Symbol":"MSFT","Name":"Microsoft Corp","Exchange":"NASDAQ","Status":"SUCCESS","LastPrice":53.95,
 "Change":0.260000000000005,"ChangePercent":0.484261501210663,"Timestamp":"Fri Nov 27 17:59:00 GMTZ 2015",
 "MSDate":42335.5409722222,"MarketCap":4.3094790635E11,"Volume":716782,"ChangeYTD":46.45,
@@ -543,7 +522,7 @@ OK
 YAML files make it much easier to represent multiple Spring profiles.
 This will allow us to run locally with MongoDB locally and on CloudFoundry and when doing tests run Fongo (a java version of MongoDB).
 
-. Paste the following into `application.yml`:
+. Open `src/main/resources/application.yml` and see that a `cloud` profile has been setup in preparation for deployment to Cloud Foundry:
 +
 ----
 spring:
@@ -620,20 +599,9 @@ buildpack: java-buildpack=v3.3.1-offline-https://github.com/cloudfoundry/java-bu
 #0   running   2015-12-07 07:18:48 PM   3.7%   367.2M of 512M   140.2M of 1G
 ----
 
-. Access the application using `curl` at the random route provided by CF:
+. Access the application at the random route provided by CF (such as `http://quotes-undespising-lenition.cfapps.pez.pivotal.io/quote/aapl`). The output should be:
 +
 ----
-$ curl -i curl -i quotes-undespising-lenition.cfapps.pez.pivotal.io/quote/aapl
-HTTP/1.1 200 OK
-Cache-Control: no-cache
-Content-Type: application/json;charset=UTF-8
-Date: Mon, 07 Dec 2015 22:20:11 GMT
-Server: Apache-Coyote/1.1
-X-Application-Context: quotes:cloud:0
-X-Cf-Requestid: 74a6092b-a1e4-4995-6a19-97398840309d
-Content-Length: 367
-Connection: close
-
 {"Symbol":"AAPL","Name":"Apple Inc.","Exchange":"NASDAQ","Status":"SUCCESS",
 "LastPrice":117.82,"Change":-0.210000000000008,"ChangePercent":-0.177920867576047,
 "Timestamp":"Fri Nov 27 17:59:00 GMTZ 2015","MSDate":42335.5409722222,"MarketCap":6.5688549842E11,
