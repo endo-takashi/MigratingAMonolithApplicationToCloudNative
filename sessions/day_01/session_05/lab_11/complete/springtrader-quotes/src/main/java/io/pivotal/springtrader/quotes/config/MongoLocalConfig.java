@@ -1,9 +1,8 @@
 package io.pivotal.springtrader.quotes.config;
 
 
-import com.mongodb.Mongo;
-import com.mongodb.MongoClient;
-import io.pivotal.springtrader.quotes.domain.Stock;
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +15,10 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.index.Index;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-import java.util.concurrent.TimeUnit;
+import com.github.fakemongo.Fongo;
+import com.mongodb.Mongo;
+
+import io.pivotal.springtrader.quotes.domain.Stock;
 
 /**
  * Created by cax on 28/11/2015.
@@ -48,8 +50,9 @@ public class MongoLocalConfig extends AbstractMongoConfiguration {
 
     @Override
     public Mongo mongo() throws Exception {
-        Mongo mongo = new MongoClient("localhost", 27017);
-        return mongo;
+        Fongo fongo = new Fongo("mongo server 1");
+        return fongo.getMongo();
+//        return new MongoClient("localhost", 27017); <-- If you want to connect to a local mongodb.
     }
 
     @Override
