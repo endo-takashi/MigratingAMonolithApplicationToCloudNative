@@ -8,6 +8,7 @@ The following software is required to complete this course:
   * Git command line: `git`
   * Cloud Foundry CLI `cf`
   * Curl (Windows users only)
+  * Optional: Browser plugin to view Asciidoc (Chrome or Firefox only)
  
 Ideally this setup should be completed _before_ you attend the course.
 
