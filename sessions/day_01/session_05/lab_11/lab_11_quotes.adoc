@@ -63,35 +63,16 @@ OK
 <dependency>
    <groupId>org.springframework.cloud</groupId>
    <artifactId>spring-cloud-spring-service-connector</artifactId>
-   <version>1.2.0.RELEASE</version>
 </dependency>
 <dependency>
    <groupId>org.springframework.cloud</groupId>
    <artifactId>spring-cloud-cloudfoundry-connector</artifactId>
-   <version>1.2.0.RELEASE</version>
 </dependency>
 ----
-
-.  Rename `src/main/resources/application.properties` file to `src/main/resources/application.yml` file.
-YAML files make it much easier to represent multiple Spring profiles.
-This will allow us to run locally with MongoDB locally and on CloudFoundry and when doing tests run Fongo (a java version of MongoDB).
 
 . Open `src/main/resources/application.yml` and see that a `cloud` profile has been setup in preparation for deployment to Cloud Foundry:
 +
 ----
-spring:
-  profiles.active: local
-  application:
-     name: quotes
-
-security:
-  basic:
-    enabled: false
-
-expiration:
-  time: -1 # enable offline mode. no expiration.
-
----
 spring:
   profiles: local
 server:
@@ -127,7 +108,7 @@ env:
 applications:
 - name: quotes
   random-route: true
-  path: target/quotes-1.0.0-SNAPSHOT.jar
+  path: target/lab11-quotes-1.0.0-SNAPSHOT.jar
   services: [ springtrader-quotes-db ]
 ----
 
@@ -153,7 +134,7 @@ buildpack: java-buildpack=v3.3.1-offline-https://github.com/cloudfoundry/java-bu
 #0   running   2015-12-07 07:18:48 PM   3.7%   367.2M of 512M   140.2M of 1G
 ----
 
-. Access the application at the random route provided by CF (such as `http://quotes-undespising-lenition.cfapps.pez.pivotal.io/quote/aapl`). The output should be:
+. Access the application at the random route provided by CF (such as `http://quotes-undespising-lenition.cfapps.pez.pivotal.io/quote/aapl`). The output should look like:
 +
 ----
 {"Symbol":"AAPL","Name":"Apple Inc.","Exchange":"NASDAQ","Status":"SUCCESS",
