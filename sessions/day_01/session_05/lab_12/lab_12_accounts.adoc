@@ -51,8 +51,22 @@ security.basic.enabled=false
 +
 [source,json]
 ----
-{"id":1,"address":"45 Test Dr.","passwd":"123","userid":"johnsmith3","email":"john@pivotal.io","creditcard":"999999999","fullname":"John Smith","authtoken":null,"creationdate":null,"openbalance":1200.50,"logoutcount":0,"balance":null,"lastlogin":null,"logincount":0}
-
+{
+   "id":1,
+   "address":"45 Test Dr.",
+   "passwd":"123",
+   "userid":"johnsmith3",
+   "email":"john@pivotal.io",
+   "creditcard":"999999999",
+   "fullname":"John Smith",
+   "authtoken":null,
+   "creationdate":null,
+   "openbalance":1200.50,
+   "logoutcount":0,
+   "balance":null,
+   "lastlogin":null,
+   "logincount":0
+}
 ----
 
 == Preparing for Cloud Foundry
@@ -62,6 +76,7 @@ security.basic.enabled=false
 ----
 $ cf cs p-mysql 100mb-dev springtrader-accounts-db
 ----
+NOTE: if you are using Pivotal Web Service, the above service is not available in the command line. You just need to create it using the Web console at https://console.run.pivotal.io . You can select a MySql database service and name it `springtrader-accounts-db`.
 +
 . Rebuild the JAR:
 +
@@ -85,7 +100,7 @@ env:
 applications:
 - name: accounts
   random-route: true
-  path: target/accounts-1.0.0-SNAPSHOT.jar
+  path: target/lab12-accounts-1.0.0-SNAPSHOT.jar
   services: [ springtrader-accounts-db ]
 ----
 
@@ -111,23 +126,24 @@ buildpack: java-buildpack=v3.3.1-offline-https://github.com/cloudfoundry/java-bu
 #0   running   2015-12-07 06:02:51 PM   0.9%   456.4M of 512M   163.4M of 1G
 ----
 
-.  Use what you've learned so far to insert a couple accounts into the MySQL instance through the REST service you just deployed (hint:  inspect the controller)
-
-. Access the application using `curl` to make sure everything is working properly:
+. Access the application at the random route provided by CF (such as `http://quotes-undespising-lenition.cfapps.pez.pivotal.io/accounts/1`). The output should be the same as when run locally:
 +
+[source,json]
 ----
-$ curl -i http://accounts-recompensatory-assassinator.cfapps.pez.pivotal.io/account/1
-HTTP/1.1 200 OK
-Cache-Control: no-cache
-Content-Type: application/json;charset=UTF-8
-Date: Mon, 07 Dec 2015 21:33:09 GMT
-Server: Apache-Coyote/1.1
-X-Application-Context: accounts:cloud:0
-X-Cf-Requestid: 61792646-ccda-4538-4243-2f4e7e65b5bf
-Content-Length: 284
-Connection: close
-
-{"id":1,"address":"45 Test Dr.","passwd":"123","userid":"johndoe",
-"email":"anon@springsource.com","creditcard":"999999999","fullname":"John Doe",
-"authtoken":null,"creationdate":"2015-12-07 21:32:00","openbalance":1200.50,"logoutcount":0,"balance":null,"lastlogin":null,"logincount":0}
+{
+   "id":1,
+   "address":"45 Test Dr.",
+   "passwd":"123",
+   "userid":"johnsmith3",
+   "email":"john@pivotal.io",
+   "creditcard":"999999999",
+   "fullname":"John Smith",
+   "authtoken":null,
+   "creationdate":null,
+   "openbalance":1200.50,
+   "logoutcount":0,
+   "balance":null,
+   "lastlogin":null,
+   "logincount":0
+}
 ----

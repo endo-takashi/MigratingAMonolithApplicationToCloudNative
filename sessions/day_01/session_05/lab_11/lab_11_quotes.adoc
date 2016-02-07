@@ -57,7 +57,7 @@ Creating service springtrader-quotes-db in org cqueiroz-pivot / space developmen
 OK
 ----
 
-NOTE: if you are using Pivotal Web Service, the above service is not available in the command line. You just need to create it using the Web console at https://console.run.pivotal.io (and name it `springtrader-quotes-db`)
+NOTE: if you are using Pivotal Web Service, the above service is not available in the command line. You just need to create it using the Web console at https://console.run.pivotal.io. You can select a MongoDB  service and name it `springtrader-quotes-db`.
 
 . Go into the package `io.pivotal.sprintrader.quotes.config` and observe the differences between `MongoCloudConfig` (`cloud` profile) and `MongoLocalConfig` (`local` profile)
 +
