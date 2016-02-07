@@ -123,6 +123,7 @@ buildpack: java-buildpack=v3.3.1-offline-https://github.com/cloudfoundry/java-bu
 
 . Access the application at the random route provided by CF (such as `http://quotes-undespising-lenition.cfapps.pez.pivotal.io/quote/aapl`). The output should look like:
 +
+[source,json]
 ----
 {"Symbol":"AAPL","Name":"Apple Inc.","Exchange":"NASDAQ","Status":"SUCCESS",
 "LastPrice":117.82,"Change":-0.210000000000008,"ChangePercent":-0.177920867576047,
