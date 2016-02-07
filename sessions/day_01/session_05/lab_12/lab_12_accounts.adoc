@@ -47,7 +47,7 @@ security.basic.enabled=false
 
 . Open `src/main/resources/import.sql`. As a naming convention, Spring Boot automatically loads this file at startup time. You will therefore have 2 accounts created by default at application startup time.
 
-. Run the application and open the url http://localhost:8082/account/1 into your web brower. You should see the following:
+. Run the application and open the url http://localhost:8082/account/1 into your web browser. You should see the following:
 +
 [source,json]
 ----
