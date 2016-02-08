@@ -121,7 +121,7 @@ and import the project (via `pom.xml`) into your IDE of choice.
 <parent>
   <groupId>org.springframework.cloud</groupId>
   <artifactId>spring-cloud-starter-parent</artifactId>
-  <version>1.0.1.RELEASE</version>
+  <version>1.0.2.RELEASE</version>
   <relativePath/>
   <!-- lookup parent from repository -->
 </parent>
@@ -129,6 +129,7 @@ and import the project (via `pom.xml`) into your IDE of choice.
 
 . Add a dependency on `spring-cloud-starter-eureka`:
 +
+[source,xml]
 ----
 <dependency>
   <groupId>org.springframework.cloud</groupId>

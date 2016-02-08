@@ -87,6 +87,7 @@ and import the project (via `pom.xml`) into your IDE of choice.
 
 . Open `pom.xml`, change the parent POM to the `spring-cloud-starter-parent`:
 +
+[source,xml]
 ----
 <parent>
   <groupId>org.springframework.cloud</groupId>
@@ -99,6 +100,7 @@ and import the project (via `pom.xml`) into your IDE of choice.
 
 . Change the dependency on `spring-boot-starter` to `spring-cloud-starter`:
 +
+[source,xml]
 ----
 <dependency>
   <groupId>org.springframework.cloud</groupId>
@@ -109,6 +111,7 @@ and import the project (via `pom.xml`) into your IDE of choice.
 
 . Add a dependency on `spring-cloud-config-server`:
 +
+[source,xml]
 ----
 <dependency>
   <groupId>org.springframework.cloud</groupId>
@@ -118,6 +121,7 @@ and import the project (via `pom.xml`) into your IDE of choice.
 
 . Now open `io.springtrader.configserver.SpringtraderConfigServerApplication` and add the `@EnableConfigServer` annotation:
 +
+[source,java]
 ----
 @SpringBootApplication
 @EnableConfigServer  // <--- ADD THIS!
@@ -133,24 +137,15 @@ public class SpringtraderConfigServerApplication {
 +
 ----
 server.port=8888
-spring.cloud.config.server.git.uri: https://github.com/<yourUserName>/springtrader-config-repo.git
+spring.cloud.config.server.git.uri= https://github.com/<yourUserName>/springtrader-config-repo.git
 ----
 
-. Build the JAR:
+. Run the application
 +
-----
-$ mvn package
-----
-
-. Run the application:
-+
-----
-$ java -jar target/springtrader-config-server-0.0.1-SNAPSHOT.jar
-----
-
 . Test the application in your web browser by connecting to http://localhost:8888/demo/default
 You should be able to see your properties displayed similar to this:
 +
+[source,json]
 ----
 {"name":"default",
  "label":"",
