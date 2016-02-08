@@ -15,6 +15,8 @@ In this lab, we'll do the following:
 . (Optional) Update our previously developed microservices to source their configuration from the Config Server
 --
 
+NOTE: before starting this lab, you can stop all the applications you had started in the previous labs. You will not need them anymore.
+
 == Create a GitHub repository to Store Configuration
 
 . Change to the lab directory:
