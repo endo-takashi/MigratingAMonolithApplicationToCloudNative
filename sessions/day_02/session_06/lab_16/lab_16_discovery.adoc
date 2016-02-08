@@ -130,10 +130,6 @@ and import the project (via `pom.xml`) into your IDE of choice.
 ----
 <dependency>
   <groupId>org.springframework.cloud</groupId>
-  <artifactId>spring-cloud-starter</artifactId>
-</dependency>
-<dependency>
-  <groupId>org.springframework.cloud</groupId>
   <artifactId>spring-cloud-starter-eureka</artifactId>
 </dependency>
 ----
