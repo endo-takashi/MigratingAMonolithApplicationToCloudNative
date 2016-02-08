@@ -1,6 +1,7 @@
 :compat-mode:
 = Lab 16 - Leveraging Eureka for Service Discovery via Spring Cloud Netflix
 
+Estimated time to complete: 45 minutes
 [abstract]
 --
 Let's continue learning the components found in Spring Cloud to implement patterns for distributed systems.
@@ -10,8 +11,8 @@ In this lab, we'll do the following:
 
 . Create a Eureka server
 . Create two applications, a ``producer'' and a ``consumer,'' wire them up using Eureka, and test them.
-. Deploy the Eureka server to Pivotal Cloud Foundry
-. Update our previously developed microservices to register themselves with Eureka
+. (optional) Deploy the Eureka server to Pivotal Cloud Foundry
+. (optional) Update our previously developed microservices to register themselves with Eureka
 --
 
 NOTE: before starting this lab, you can stop all the applications you had started in the previous labs. You will not need them anymore.
@@ -346,7 +347,7 @@ image::../../../Common/images/eureka_3.png[]
 }
 ----
 
-== Deploy the Eureka Server to Cloud Foundry
+== (optional) Deploy the Eureka Server to Cloud Foundry
 
 . Create an application manifest in `manifest.yml`:
 +
@@ -361,7 +362,7 @@ applications:
   path: target/springtrader-eureka-0.0.1-SNAPSHOT.jar
 ----
 
-. Push to Cloud Foundry:
+. (optional) Push to Cloud Foundry:
 +
 ----
 $ cf push
