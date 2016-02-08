@@ -15,7 +15,20 @@ In this lab, we'll do the following:
 . (optional) Update our previously developed microservices to register themselves with Eureka
 --
 
-NOTE: before starting this lab, you can stop all the applications you had started in the previous labs. You will not need them anymore.
+== Introduction
+
+. Before starting this lab, you can stop all the web applications that you had started in the previous labs. You will not need them anymore.
+
+. There are four different web applications to be run locally in this lab. To avoid any confusion, we have listed all the port numbers below:
+
+[options="header"]
+|=======
+|Application |port number
+|Eureka Server |8761
+|Config Server |8888
+|Producer |8080 (default)
+|Consumer |8091
+|=======
 
 == Creating a Eureka Server
 
