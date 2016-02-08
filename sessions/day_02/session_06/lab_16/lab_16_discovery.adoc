@@ -70,6 +70,7 @@ NOTE: the above workaround will not be necessary starting from `spring-cloud-net
 
 . In `io.springtrader.eureka.SpringboxEurekaApplication`, add the `@EnableEurekaServer` annotation:
 +
+[source,java]
 ----
 @SpringBootApplication
 @EnableEurekaServer    // <-- ADD THIS!
@@ -115,6 +116,7 @@ and import the project (via `pom.xml`) into your IDE of choice.
 
 . Open `pom.xml`, change the parent POM to the `spring-cloud-starter-parent`:
 +
+[source,xml]
 ----
 <parent>
   <groupId>org.springframework.cloud</groupId>
@@ -137,6 +139,7 @@ and import the project (via `pom.xml`) into your IDE of choice.
 . In the package `io.springtrader.producer`, create the class `ProducerController`.
 Into that class paste the following code:
 +
+[source,java]
 ----
 @RestController
 public class ProducerController {
@@ -157,6 +160,7 @@ public class ProducerController {
 
 . Now open `io.springtrader.producer.SpringtraderProducerApplication` and add the `@EnableDiscoveryClient` annotation:
 +
+[source,java]
 ----
 @SpringBootApplication
 @EnableDiscoveryClient  // <--- ADD THIS!
