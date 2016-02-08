@@ -142,7 +142,6 @@ Your Eureka properties should be displayed.
 == Create and Register the Producer Service
 
 . In your IDE, open the `lab16-springtrader-producer` project
-----
 
 . Open `pom.xml`, change the parent POM to the `spring-cloud-starter-parent`:
 +
