@@ -81,7 +81,7 @@ public class SpringtraderEurekaApplication {
 }
 ----
 
-. Rename `src/main/resources/application.properties` to `src/main/resources/application.yml`, and paste in the following source:
+. Open `src/main/resources/application.yml` and paste in the following source:
 +
 ----
 server:
