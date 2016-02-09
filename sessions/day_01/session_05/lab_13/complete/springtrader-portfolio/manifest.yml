@@ -8,5 +8,5 @@ env:
 applications:
 - name: portfolio
   random-route: true
-  path: target/portfolio-1.0.0-SNAPSHOT.jar
+  path: target/lab13-portfolio-solution-1.0.0-SNAPSHOT.jar
   services: [ springtrader-portfolio-db ]
