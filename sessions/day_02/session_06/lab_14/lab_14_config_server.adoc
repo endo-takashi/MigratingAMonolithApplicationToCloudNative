@@ -28,7 +28,8 @@ $ cd $COURSE_HOME/day_02/session_06/lab_14/initial
 . Create a directory for the configuration repo:
 +
 ----
-$ mkdir config-repo && cd config-repo
+mkdir config-repo
+cd config-repo
 ----
 
 . Initialize the Git repository:
@@ -46,7 +47,8 @@ greeting: Hello
 . Stage your changes and commit them:
 +
 ----
-git add . && git commit -m "initial commit"
+git add .
+git commit -m "initial commit"
 ----
 
 . Make sure you're logged in to your GitHub account, and create a new repository:
@@ -306,7 +308,9 @@ We'll use the existence of this property in each of our microservices' environme
 . Stage, commit, and push your changes:
 +
 ----
-git add . && git commit -m "add default application config" && git push origin master
+git add .
+git commit -m "add default application config"
+git push origin master
 ----
 
 . Access the application again on `http://springtrader-config-server-<yourAppSuffix>.cfapps.io/demo/default` and make sure that the new property has been added
