@@ -142,7 +142,9 @@ eureka:
 . push your changes on git as shown below:
 +
 ----
-git add . && git commit -m "adds eureka config client" && git push origin master
+git add .
+git commit -m "adds eureka config client"
+git push origin master
 ----
 
 . `lab16-springtrader-config-server` has been placed in your `lab_16/initial` folder.
@@ -378,8 +380,7 @@ applications:
 . (optional) Push to Cloud Foundry:
 +
 ----
-$ cf push
-
+cf push
 ...
 
 Showing health and status for app springtrader-eureka in org pivot-cqueiroz / space development as cqueiroz@pivotal.io...
