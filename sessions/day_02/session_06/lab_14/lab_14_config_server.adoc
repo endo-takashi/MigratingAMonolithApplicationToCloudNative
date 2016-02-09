@@ -210,8 +210,7 @@ public class GreetingController {
 }
 ----
 
-. Make sure the `config server` is still running. Launch the `config-client` application - it will attempt to connect to localhost:8888 by default.  Test in your web browser by connecting to http://localhost:8080
-You should be able to see a "Hello World" message displayed.
+. Make sure the `config server` is still running. Launch the `config-client` application -- it will attempt to connect to http://localhost:8888 by default.  Test the client has succeeded in fetching its configuration by using your web browser to connect to http://localhost:8080. You should be able to see a "Hello World" message displayed.
 +
 ----
 Hello World!
