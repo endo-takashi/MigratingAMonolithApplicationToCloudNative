@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>lab11-quotes-solution</name>
-	<description>Lab 11 - Solution: Quotes Microservice for SpringTrader App</description>
+	<description>Lab 11: Quotes Microservice for SpringTrader App</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

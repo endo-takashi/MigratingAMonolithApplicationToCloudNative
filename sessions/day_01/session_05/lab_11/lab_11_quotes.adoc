@@ -12,476 +12,34 @@ This microservice will provide the _Quotes Service_, which will allow us to sear
 We'll be using the http://dev.markitondemand.com[MarketItOnDemad] API, and we'll model its `Quote and Company as a Stock` concept in this microservice.
 --
 
-NOTE: The completed code for this lab can be found at `$COURSE_HOME/day_01/session_05/lab_11/complete/springtrader-quotes`.
+NOTE: The completed code for this lab can be found at `$COURSE_HOME/day_01/session_05/lab_11/springtrader-quotes`.
 
 
-== Developing the Service
+== Exploring springtrader-quotes
 
 . Change to the lab directory:
 +
 ----
-$ cd $COURSE_HOME/day_01/session_05/lab_11/initial/springtrader-quotes
+$ cd $COURSE_HOME/day_01/session_05/lab_11/springtrader-quotes/initial
 ----
 +
 and import the project (via `pom.xml`) into your IDE of choice.
 
 
-. Create the package `io.pivotal.springtrader.quotes.domain` and in that package create the class `Stock`. Into that file you can paste the following source code, which models the MarketItOnDemand `Company` and `Quote` concepts:
+. Explore the new `quotes` microservice:
+- How many domain classes do you now have?
+- How many controller classes?
 +
-----
+You can see that `html`, `css` and `javascript` files are not included in `springtrader-quotes`. They will all be contained in a `web` microservice (dedicated to the web layer)
 
-@Document(collection="Stocks")
-public class Stock {
 
-    @Id
-    @JsonProperty("Symbol")
-    private String symbol;
+. Run the application using an embedded version of MongoDB
+. Access the application at http://localhost:8086/quote/msft
 
-    @Indexed(expireAfterSeconds = 60)
-    @LastModifiedDate
-    @JsonIgnore
-    private DateTime lastModifiedDate;
-
-    @Indexed()
-    @JsonProperty("Name")
-    private String companyName;
-
-    @JsonProperty("Exchange")
-    private String exchange;
-
-    @JsonProperty("Status")
-    private String status;
-
-    @JsonProperty("LastPrice")
-    private Double lastPrice;
-
-    @JsonProperty("Change")
-    private Double change;
-
-    @JsonProperty("ChangePercent")
-    private Double changePercent;
-
-    @JsonProperty("Timestamp")
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="EEE MMM dd HH:mm:ss zzzXXX yyyy", locale="ENGLISH")
-    private Date timestamp;
-
-    @JsonProperty("MSDate")
-    private Double mSDate;
-
-    @JsonProperty("MarketCap")
-    private Double marketCap;
-
-    @JsonProperty("Volume")
-    private Integer volume;
-
-    @JsonProperty("ChangeYTD")
-    private Double changeYTD;
-
-    @JsonProperty("ChangePercentYTD")
-    private Double changePercentYTD;
-
-    @JsonProperty("High")
-    private Double high;
-
-    @JsonProperty("Low")
-    private Double low;
-
-    @JsonProperty("Open")
-    private Double open;
-
-    public DateTime getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(DateTime lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
-
-    public String getSymbol() {
-        return symbol;
-    }
-
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getExchange() {
-        return exchange;
-    }
-
-    public void setExchange(String exchange) {
-        this.exchange = exchange;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Double getLastPrice() {
-        return lastPrice;
-    }
-
-    public void setLastPrice(Double lastPrice) {
-        this.lastPrice = lastPrice;
-    }
-
-    public Double getChange() {
-        return change;
-    }
-
-    public void setChange(Double change) {
-        this.change = change;
-    }
-
-    public Double getChangePercent() {
-        return changePercent;
-    }
-
-    public void setChangePercent(Double changePercent) {
-        this.changePercent = changePercent;
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public Double getmSDate() {
-        return mSDate;
-    }
-
-    public void setmSDate(Double mSDate) {
-        this.mSDate = mSDate;
-    }
-
-    public Double getMarketCap() {
-        return marketCap;
-    }
-
-    public void setMarketCap(Double marketCap) {
-        this.marketCap = marketCap;
-    }
-
-    public Integer getVolume() {
-        return volume;
-    }
-
-    public void setVolume(Integer volume) {
-        this.volume = volume;
-    }
-
-    public Double getChangeYTD() {
-        return changeYTD;
-    }
-
-    public void setChangeYTD(Double changeYTD) {
-        this.changeYTD = changeYTD;
-    }
-
-    public Double getChangePercentYTD() {
-        return changePercentYTD;
-    }
-
-    public void setChangePercentYTD(Double changePercentYTD) {
-        this.changePercentYTD = changePercentYTD;
-    }
-
-    public Double getHigh() {
-        return high;
-    }
-
-    public void setHigh(Double high) {
-        this.high = high;
-    }
-
-    public Double getLow() {
-        return low;
-    }
-
-    public void setLow(Double low) {
-        this.low = low;
-    }
-
-    public Double getOpen() {
-        return open;
-    }
-
-    public void setOpen(Double open) {
-        this.open = open;
-    }
-
-    @Override
-    public String toString() {
-        return "Stock{" +
-                "symbol='" + symbol + '\'' +
-                ", companyName='" + companyName + '\'' +
-                ", exchange='" + exchange + '\'' +
-                ", status='" + status + '\'' +
-                ", lastPrice=" + lastPrice +
-                ", change=" + change +
-                ", changePercent=" + changePercent +
-                ", timestamp=" + timestamp +
-                ", mSDate=" + mSDate +
-                ", marketCap=" + marketCap +
-                ", volume=" + volume +
-                ", changeYTD=" + changeYTD +
-                ", changePercentYTD=" + changePercentYTD +
-                ", high=" + high +
-                ", low=" + low +
-                ", open=" + open +
-                '}';
-    }
-}
-----
 +
-Notice that we're using Json annotations on the class and its fields. Use your IDE's features to add the appropriate import statements.
+You should see the below:
 
-. Create the package `io.springtrader.quotes.repositories` and in that package create the interface `StockRepository`. Paste the following code and add appropriate imports:
-+
-----
-@Repository
-public interface StockRepository extends MongoRepository<Stock, String>{
-
-    List<Stock> findByCompanyNameLike(String companyName);
-}
-----
-
-. Create the package `io.springtrader.quotes.services` and in that package create the class `QuoteService`. Paste the following code and add appropriate imports:
-+
-----
-@Service
-public class QuoteService {
-
-
-    private static final Logger logger = LoggerFactory.getLogger(QuoteService.class);
-
-    @Value("${api.url.company}")
-    private String companyUrl = "http://dev.markitondemand.com/MODApis/Api/v2/Lookup/json?input={name}";
-
-    @Value("${api.url.quote}")
-    private String quoteUrl = "http://dev.markitondemand.com/MODApis/Api/v2/Quote/json?symbol={symbol}";
-
-
-    private RestOperations restOperations = new RestTemplate();
-
-    private StockRepository stockRepository;
-
-
-    @Autowired
-    public void setStockRepository(StockRepository stockRepository) {
-        this.stockRepository = stockRepository;
-    }
-
-    public Stock getQuote(String symbol) throws Exception {
-        logger.debug("QuoteService.getQuote: retrieving quote for: " + symbol);
-
-        symbol = symbol.toUpperCase();
-        Stock stock = stockRepository.findOne(symbol);
-
-        //what's happen if a stock has no info about its quotes?
-        if (stock == null || stock.getStatus() == null) {
-            stock = createStock(symbol);
-            stock = stockRepository.save(stock);
-        }
-
-
-        return stock;
-
-    }
-
-    private Stock createStock(String symbol) throws SymbolNotFoundException {
-
-        Stock returnedStock;
-
-        try {
-
-            Map<String, String> params = new HashMap<>();
-            params.put("symbol", symbol);
-            returnedStock = restOperations.getForObject(quoteUrl, Stock.class, params);
-            logger.debug("QuoteService.getQuote: retrieved quote: " + returnedStock);
-
-            Stock stock = companiesByNameOrSymbol(symbol)
-                    .stream()
-                    .filter(s -> s.getSymbol()
-                            .equalsIgnoreCase(symbol))
-                    .findFirst().orElse(new Stock());
-
-            if (stock.getSymbol() == null) throw new SymbolNotFoundException("Symbol not found: " + symbol);
-            returnedStock.setCompanyName(stock.getCompanyName());
-            returnedStock.setExchange(stock.getExchange());
-
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            throw e;
-        }
-        return returnedStock;
-    }
-
-    public List<Stock> companiesByNameOrSymbol(String name) {
-        logger.debug("QuoteService.companiesByNameOrSymbol: retrieving info for: " + name);
-        List<Stock> stockList = new ArrayList<>();
-        try {
-
-            //only search for name.
-            stockList = stockRepository.findByCompanyNameLike(name);
-            if (stockList.size() > 0) return stockList;
-
-            Map<String, String> params = new HashMap<>();
-            params.put("name", name);
-            Map[] companies = restOperations.getForObject(companyUrl, Map[].class, params);
-
-
-            for (Map<String, String> company : companies) {
-                Stock stock = new Stock();
-                stock.setCompanyName(company.get("Name"));
-                stock.setExchange(company.get("Exchange"));
-                stock.setSymbol(company.get("Symbol"));
-                stockList.add(stock);
-            }
-
-            logger.debug("QuoteService.companiesByNameOrSymbol: retrieved info: " + stockList);
-
-
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-        }
-
-        return stockList;
-    }
-}
-----
-
-. Create the package `io.springtrader.quotes.controllers` and in that package create the class `QuoteController`. Paste the following code and add appropriate imports:
-+
-----
-@RestController
-public class QuoteController {
-
-	private static final Logger logger = LoggerFactory.getLogger(QuoteController.class);
-
-	/**
-	 * The quoteService to delegate calls to.
-	 */
-	@Autowired
-	private QuoteService quoteService;
-
-	/**
-	 * Retrives the current quote for the given symbol.
-	 *
-	 * @param symbol The symbol to retrieve the quote for.
-	 * @return The Stock
-	 * @throws SymbolNotFoundException if the symbol is not valid.
-	 */
-	@RequestMapping(value = "/quote/{symbol}", method = RequestMethod.GET)
-	public ResponseEntity<Stock> getQuote(@PathVariable("symbol") final String symbol) throws Exception {
-		logger.debug("QuoteController.getQuote: retrieving quote for: " + symbol);
-		Stock stock = quoteService.getQuote(symbol);
-		logger.info(String.format("Retrieved symbol: %s with quote %s", symbol, stock));
-		return new ResponseEntity<>(stock, getNoCacheHeaders(), HttpStatus.OK);
-	}
-
-	/**
-	 * Searches for companies that have a name or symbol matching the parameter.
-	 *
-	 * @param name The name or symbol to search for.
-	 * @return The list of companies that match the search parameter.
-	 */
-	@RequestMapping(value = "/company/{name}", method = RequestMethod.GET)
-	public ResponseEntity<List<Stock>> getCompanies(@PathVariable("name") final String name) {
-		logger.debug("QuoteController.getCompanies: retrieving companies for: " + name);
-		List<Stock> companies = quoteService.companiesByNameOrSymbol(name);
-		logger.info(String.format("Retrieved companies with search parameter: %s - list: {}", name), companies);
-		return new ResponseEntity<>(companies, HttpStatus.OK);
-	}
-
-	/**
-	 * Generates HttpHeaders that have the no-cache set.
-	 * @return HttpHeaders.
-	 */
-	private HttpHeaders getNoCacheHeaders() {
-		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.set("Cache-Control", "no-cache");
-		return responseHeaders;
-	}
-
-	/**
-	 * Handles the response to the client if there is any exception during the processing of HTTP requests.
-	 *
-	 * @param e The exception thrown during the processing of the request.
-	 * @param response The HttpResponse object.
-	 * @throws IOException
-	 */
-	@ExceptionHandler({Exception.class})
-	public void handleException(Exception e, HttpServletResponse response) throws IOException {
-		logger.error("Handle Error: " + e.getMessage());
-		response.sendError(HttpStatus.BAD_REQUEST.value(), "ERROR: " + e.getMessage());
-	}
-}
-----
-
-. Create the package `io.springtrader.quotes.config`, in it create the class `MongoLocalConfig`. This class represents the local configuration for MongoDB access. In this case, we will use an in-memory mongodb-like database (fongo).
-Paste the following code and add appropriate imports:
-+
-----
-@Configuration
-@Profile("local") // <-- local profile. To run on local laptop
-@EnableMongoAuditing // <-- Used to update lastmodifieddate field every time a document changes.
-@EnableMongoRepositories(basePackages = {"io.pivotal.springtrader.quotes"})
-public class MongoLocalConfig extends AbstractMongoConfiguration{
-
-    @Bean
-    public MongoTemplate mongoTemplate(MongoDbFactory mongoDbFactory) {
-        return new MongoTemplate(mongoDbFactory);
-    }
-
-    @Override
-    protected String getDatabaseName() {
-        return "Stocks";
-    }
-
-    @Override
-    public Mongo mongo() throws Exception {
-        Fongo fongo = new Fongo("mongo server 1");
-        return fongo.getMongo();
-//        return new MongoClient("localhost", 27017); <-- If you want to connect to a local mongodb.
-    }
-
-    @Override
-    protected String getMappingBasePackage() {
-        return "io.pivotal.springtrader.quotes.domain";
-    }
-}
-----
-
-. Take a look at `src/main/resources/data.json`, which has already been provided in your project.
-It contains a stocks dataset to be imported that we'll be using (excerpt here):
-+
-----
-{"LastPrice": 9.77, "Volume": 2000, "MSDate": 42312, "Low": 9.77, "Timestamp": "Wed Nov 4 00:00:00 UTC-05:00 2015",
- "Open": 9.77, "Change": -0.0500000000000007, "ChangePercent": -0.509164969450109, "Exchange": "NASDAQ", "ChangeYTD": 9.4,
-  "Status": "SUCCESS", "CompanyName": "1347 Capital Corp.", "MarketCap": 58111960,
-  "Symbol": "TFSC", "ChangePercentYTD": 3.93617021276595, "High": 9.77}
-----
-
-. Run the application
-
-. Access the application at http://localhost:8086/quote/msft. You should see the below:
-+
+[source,json]
 ----
 {"Symbol":"MSFT","Name":"Microsoft Corp","Exchange":"NASDAQ","Status":"SUCCESS","LastPrice":53.95,
 "Change":0.260000000000005,"ChangePercent":0.484261501210663,"Timestamp":"Fri Nov 27 17:59:00 GMTZ 2015",
@@ -495,61 +53,25 @@ It contains a stocks dataset to be imported that we'll be using (excerpt here):
 +
 ----
 $ cf cs p-mongodb development springtrader-quotes-db
-Creating service pringtrader-quotes-db in org cqueiroz-pivot / space development as cqueiroz@pivotal.io...
+Creating service springtrader-quotes-db in org cqueiroz-pivot / space development as cqueiroz@pivotal.io...
 OK
 ----
 
-. Add the appropriate dependencies for MongoDB's driver and the Spring Cloud Connectors:
-+
-----
-<dependency>
-   <groupId>org.springframework.boot</groupId>
-   <artifactId>spring-boot-starter-data-mongodb</artifactId>
-</dependency>
-<dependency>
-   <groupId>org.springframework.cloud</groupId>
-   <artifactId>spring-cloud-spring-service-connector</artifactId>
-   <version>1.2.0.RELEASE</version>
-</dependency>
-<dependency>
-   <groupId>org.springframework.cloud</groupId>
-   <artifactId>spring-cloud-cloudfoundry-connector</artifactId>
-   <version>1.2.0.RELEASE</version>
-</dependency>
-----
+NOTE: if you are using Pivotal Web Service, the above service is not available in the command line. You just need to create it using the Web console at https://console.run.pivotal.io. You can select a MongoDB  service and name it `springtrader-quotes-db`.
 
-.  Rename `src/main/resources/application.properties` file to `src/main/resources/application.yml` file.
-YAML files make it much easier to represent multiple Spring profiles.
-This will allow us to run locally with MongoDB locally and on CloudFoundry and when doing tests run Fongo (a java version of MongoDB).
+. Go into the package `io.pivotal.sprintrader.quotes.config` and observe the differences between `MongoCloudConfig` (`cloud` profile) and `MongoLocalConfig` (`local` profile)
++
+As you will see, the `local` profile provides you with a MongoDB in-memory database. The `cloud` profile will rely on the service that you have just created on Cloud Foundry.
 
 . Open `src/main/resources/application.yml` and see that a `cloud` profile has been setup in preparation for deployment to Cloud Foundry:
 +
 ----
-spring:
-  profiles.active: local
-  application:
-     name: quotes
-
-security:
-  basic:
-    enabled: false
-
-expiration:
-  time: -1 # enable offline mode. no expiration.
-
----
-spring:
-  profiles: local
-server:
-  port: 8086
+...
 ---
 spring:
   profiles: cloud
 ---
-api:
- url:
-   company: http://dev.markitondemand.com/MODApis/Api/v2/Lookup/json?input={name}
-   quote: http://dev.markitondemand.com/MODApis/Api/v2/Quote/json?symbol={symbol}
+...
 ----
 
 . Rebuild the JAR:
@@ -573,7 +95,7 @@ env:
 applications:
 - name: quotes
   random-route: true
-  path: target/quotes-1.0.0-SNAPSHOT.jar
+  path: target/lab11-quotes-1.0.0-SNAPSHOT.jar
   services: [ springtrader-quotes-db ]
 ----
 
@@ -599,8 +121,9 @@ buildpack: java-buildpack=v3.3.1-offline-https://github.com/cloudfoundry/java-bu
 #0   running   2015-12-07 07:18:48 PM   3.7%   367.2M of 512M   140.2M of 1G
 ----
 
-. Access the application at the random route provided by CF (such as `http://quotes-undespising-lenition.cfapps.pez.pivotal.io/quote/aapl`). The output should be:
+. Access the application at the random route provided by CF (such as `http://quotes-undespising-lenition.cfapps.pez.pivotal.io/quote/aapl`). The output should look like:
 +
+[source,json]
 ----
 {"Symbol":"AAPL","Name":"Apple Inc.","Exchange":"NASDAQ","Status":"SUCCESS",
 "LastPrice":117.82,"Change":-0.210000000000008,"ChangePercent":-0.177920867576047,

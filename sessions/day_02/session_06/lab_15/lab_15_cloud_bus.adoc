@@ -7,6 +7,8 @@ We'll use it, combined with a Spring bean scope called `@RefreshScope`, to broad
 The bus will be backed by a running instance of http://www.rabbitmq.com/[RabbitMQ].
 --
 
+You must have `curl` installed to complete this lab.
+
 == Adding the Cloud Bus to the Test Config Client
 
 . Change to the lab directory:
@@ -84,7 +86,7 @@ $ mvn clean package
 $ java -jar target/springtrader-config-client-0.0.1-SNAPSHOT.jar
 ----
 
-. Use `curl` to access the application and make sure that everything is still working as before:
+. Use `curl` (or a browser) to access the application and make sure that everything is still working as before:
 +
 ----
 $ curl -i localhost:8080
@@ -98,13 +100,18 @@ Date: Wed, 06 Jan 2016 08:10:17 GMT
 Hello World!
 ----
 
-. In a separate terminal window, run another copy of the client on a different port to create a system of apps connected by the bus:
+. In a _new_ terminal/command window, run another copy of the client on a different port to create a system of apps connected by the bus:
 +
 ----
+Linux, MacOS:
 $ SERVER_PORT=8081 java -jar target/springtrader-config-client-0.0.1-SNAPSHOT.jar
+
+Windows
+> set SERVER_PORT=8081
+> java -jar target/springtrader-config-client-0.0.1-SNAPSHOT.jar
 ----
 
-. Use `curl` to access the second instance running on port `8081`:
+. Use `curl` (or a browser) to access the second instance running on port `8081`:
 +
 ----
 $ curl -i localhost:8081
@@ -127,10 +134,12 @@ greeting: Ohai
 . Stage, commit, and push your changes:
 +
 ----
-git add . && git commit -m "swap greeting" && git push origin master
+git add .
+git commit -m "swap greeting"
+git push origin master
 ----
 
-. Using `curl`, test and see that the config server has updated with your new greeting:
+. Using `curl` (or a browser), test and see that the config server has updated with your new greeting:
 +
 ----
 $ curl -i localhost:8888/demo/default
@@ -156,7 +165,7 @@ Date: Wed, 06 Jan 2016 08:13:00 GMT
 }
 ----
 
-. Using `curl`, show that the greeting *has not* refreshed in the client applications:
+. Using `curl` (or a browser), show that the greeting *has not* refreshed in the client applications:
 +
 ----
 $ curl -i localhost:8080
@@ -180,7 +189,7 @@ Date: Wed, 06 Jan 2016 08:14:52 GMT
 Hello World!
 ----
 
-. Now, `POST` a request to the `/bus/refresh` endpoint to trigger a configuration refresh event:
+. Now, `POST` a request to the `/bus/refresh` endpoint to trigger a configuration refresh event. You can only do this easily with `curl`:
 +
 ----
 $ curl -i -X POST localhost:8080/bus/refresh
@@ -191,7 +200,7 @@ Content-Length: 0
 Date: Wed, 06 Jan 2016 08:15:58 GMT
 ----
 
-. Using `curl`, show that the greeting *has* now refreshed in the client applications:
+. Using `curl` (or a browser), show that the greeting *has* now refreshed in the client applications:
 +
 ----
 $ curl -i localhost:8080
@@ -238,10 +247,12 @@ We'll use the refresh of this property in each of our microservices' environment
 . Stage, commit, and push your changes:
 +
 ----
-git add . && git commit -m "add bus property" && git push origin master
+git add .
+git commit -m "add bus property"
+git push origin master
 ----
 
-. Access the config server using `curl` to make sure the new property exists:
+. Access the config server using `curl` (or a browser) to make sure the new property exists:
 +
 ----
 $ curl -i springtrader-config-server-succinct-electronarcosis.cfapps.pez.pivotal.io/application/default
@@ -317,7 +328,6 @@ $ mvn package
 +
 ----
 $ cf push
-
 ...
 
 Showing health and status for app springtrader-quotes in org pivot-cqueiroz / space development as cqueiroz@pivotal.io...
@@ -335,10 +345,10 @@ buildpack: java-buildpack=v3.3.1-offline-https://github.com/cloudfoundry/java-bu
 #0   running   2016-01-11 10:40:05 AM   0.0%   520.1M of 1G   144.3M of 1G
 ----
 
-. Verify the existence of our new `bus` property using `curl`:
+. Verify the existence of our new `bus` property using `curl` (or a browser):
 +
 ----
-curl -i curl -i springtrader-quotes-unrefining-peanuts.cfapps.pez.pivotal.io/env
+curl -i springtrader-quotes-unrefining-peanuts.cfapps.pez.pivotal.io/env
 HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
 Date: Mon, 11 Jan 2016 06:31:40 GMT
@@ -374,10 +384,12 @@ bus: true
 . Stage, commit, and push your changes:
 +
 ----
-git add . && git commit -m "change bus to true" && git push origin master
+git add .
+git commit -m "change bus to true"
+git push origin master
 ----
 
-. Using `curl`, test and see that the config server has updated with your new greeting:
+. Using `curl` (or a browser) test and see that the config server has updated with your new greeting:
 +
 ----
 curl -i springtrader-config-server-succinct-electronarcosis.cfapps.pez.pivotal.io/application/default
@@ -419,7 +431,7 @@ Content-Type: text/plain; charset=utf-8
 Connection: close
 ----
 
-. Using `curl`, verify that `bus` has updated to `true` across all services:
+. Using `curl` (or a browser), verify that `bus` has updated to `true` across all services:
 +
 ----
 $ curl -i springtrader-quotes-hallucal-splitter.cfapps.pez.pivotal.io/env

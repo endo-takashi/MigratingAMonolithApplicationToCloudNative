@@ -9,5 +9,5 @@ env:
 applications:
 - name: accounts
   random-route: true
-  path: target/accounts-1.0.0-SNAPSHOT.jar
+  path: target/lab12-accounts-1.0.0-SNAPSHOT.jar
   services: [ springtrader-accounts-db ]

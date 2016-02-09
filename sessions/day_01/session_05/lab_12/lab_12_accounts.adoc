@@ -1,6 +1,7 @@
 :compat-mode:
 = Lab 12 - Build Accounts Service with Mysql/H2
 
+Estimated time to complete: 30 minutes
 [abstract]
 --
 In this lab we'll begin the second subproject of our complete cloud-native application architecture: _SpringTrader_, which implements the quotes fetching portion of a ``Trading-like'' application.
@@ -10,7 +11,7 @@ We'll be using a relational model to represent the user accounts.
 
 NOTE: The completed code for this lab can be found at `$COURSE_HOME/day_01/session_05/lab_12/complete/springtrader-accounts`.
 
-== Developing the Service
+== Exploring springtrader-accounts
 
 . Change to the lab directory:
 +
@@ -20,559 +21,15 @@ $ cd $COURSE_HOME/day_01/session_05/lab_12/initial/springtrader-accounts
 +
 and import the project (via `pom.xml`) into your IDE of choice.
 
-. Create the package `io.springtrader.accounts.domain` and in that package create the class `Account`. Into that file you can paste the following source code:
+. Explore the new `accounts` microservice:
+- How many domain classes do you now have? Are there relationships between those classes?
+- How many controller classes?
 +
-----
-@Entity
-@Table(name = "ACCOUNT")
-public class Account implements Serializable {
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = -3057275461420965784L;
+As for `spring-trader-quotes`, You can see that static web files are not included in `springtrader-accounts`. They will all be contained in a `web` microservice (dedicated to the web layer)
 
-	@Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    @Column(name = "id")
-	private Integer id;
 
-	@Column(name = "address", length = 250)
-    private String address;
 
-	@Column(name = "passwd", length = 250)
-    private String passwd;
-
-	@Column(name = "userid", length = 250, unique = true)
-    @NotNull
-    private String userid;
-
-	@Column(name = "email", length = 250)
-    private String email;
-
-	@Column(name = "creditcard", length = 250)
-    private String creditcard;
-
-	@Column(name = "fullname", length = 250)
-    private String fullname;
-
-	@Column(name = "authtoken", length = 100)
-    private String authtoken;
-
-	@Column(name = "creationdate")
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style = "LL")
-    private Date creationdate;
-
-	@Column(name = "openbalance", precision = 14, scale = 2)
-    private BigDecimal openbalance;
-
-	@Column(name = "logoutcount")
-	@NotNull
-    private Integer logoutcount;
-
-	@Column(name = "balance", precision = 14, scale = 2)
-    private BigDecimal balance;
-
-	@Column(name = "lastlogin")
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style = "LL")
-    private Date lastlogin;
-
-	@Column(name = "logincount")
-	@NotNull
-    private Integer logincount;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public String getPasswd() {
-		return passwd;
-	}
-
-	public void setPasswd(String passwd) {
-		this.passwd = passwd;
-	}
-
-	public String getUserid() {
-		return userid;
-	}
-
-	public void setUserid(String userid) {
-		this.userid = userid;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getCreditcard() {
-		return creditcard;
-	}
-
-	public void setCreditcard(String creditcard) {
-		this.creditcard = creditcard;
-	}
-
-	public String getFullname() {
-		return fullname;
-	}
-
-	public void setFullname(String fullname) {
-		this.fullname = fullname;
-	}
-
-	public Date getCreationdate() {
-		return creationdate;
-	}
-
-	public void setCreationdate(Date creationdate) {
-		this.creationdate = creationdate;
-	}
-
-	public BigDecimal getOpenbalance() {
-		return openbalance;
-	}
-
-	public void setOpenbalance(BigDecimal openbalance) {
-		this.openbalance = openbalance;
-	}
-
-	public Integer getLogoutcount() {
-		return logoutcount;
-	}
-
-	public void setLogoutcount(Integer logoutcount) {
-		this.logoutcount = logoutcount;
-	}
-
-	public BigDecimal getBalance() {
-		return balance;
-	}
-
-	public void setBalance(BigDecimal balance) {
-		this.balance = balance;
-	}
-
-	public Date getLastlogin() {
-		return lastlogin;
-	}
-
-	public void setLastlogin(Date lastlogin) {
-		this.lastlogin = lastlogin;
-	}
-
-	public Integer getLogincount() {
-		return logincount;
-	}
-
-	public void setLogincount(Integer logincount) {
-		this.logincount = logincount;
-	}
-
-	public String getAuthtoken() {
-		return authtoken;
-	}
-
-	public void setAuthtoken(String authtoken) {
-		this.authtoken = authtoken;
-	}
-}
-----
-
-. Also in the package `io.springtrader.accounts.domain` create the class `AuthenticationRequest`. Into that file you can paste the following source code:
-+
-----
-public class AuthenticationRequest {
-	private String username;
-	private String password;
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-}
-
-----
-
-. Create the package `io.springtrader.accounts.repositories` and in that package create the interface `AccountRepository`. Into that file you can paste the following source code:
-+
-----
-public interface AccountRepository extends CrudRepository<Account,Integer> {
-
-	Account findByUseridAndPasswd(String userId, String passwd);
-
-	Account findByUserid(String userId);
-
-	Account findByAuthtoken(String authtoken);
-}
-----
-
-. Create the package `io.springtrader.accounts.controllers` and in that package create the class `AccountController`. Into that file you can paste the following source code:
-+
-----
-@RestController
-public class AccountController {
-
-	private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
-
-	@Autowired
-	private AccountService accountService;
-
-	@RequestMapping(value = "/account/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Account> find(@PathVariable("id") final int id) {
-
-		logger.info("AccountController.find: id=" + id);
-
-		Account accountResponse = accountService.getAccount(id);
-		return new ResponseEntity<>(accountResponse,getNoCacheHeaders(), HttpStatus.OK);
-	}
-
-	@RequestMapping(value = "/account/", method = RequestMethod.GET)
-	public ResponseEntity<Account> findAccount(@RequestParam(value="name") final String id) {
-
-		logger.info("AccountController.getAccount: id=" + id);
-
-		Account accountResponse = accountService.getAccount(id);
-		return new ResponseEntity<>(accountResponse,getNoCacheHeaders(), HttpStatus.OK);
-
-	}
-
-
-	@RequestMapping(value = "/account", method = RequestMethod.POST)
-	public ResponseEntity<String> save(@RequestBody Account accountRequest, UriComponentsBuilder builder) {
-
-		logger.debug("AccountController.save: userId=" + accountRequest.getUserid());
-
-		Integer accountProfileId = accountService.saveAccount(accountRequest);
-		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.setLocation(builder.path("/account/{id}").buildAndExpand(accountProfileId).toUri());
-
-		return new ResponseEntity<>(responseHeaders, HttpStatus.CREATED);
-	}
-
-	@RequestMapping(value = "/accounts/{userId}/decreaseBalance/{amount:.+}", method = RequestMethod.GET)
-	public ResponseEntity<Double> decreaseBalance(@PathVariable("userId") final String userId, @PathVariable("amount") final double amount) {
-
-		logger.debug("AccountController.decreaseBalance: id='" + userId + "', amount='"+amount+"'");
-
-		if (amount > 0.0) {
-
-            double currentBalance = accountService.getAccount(userId).getBalance().doubleValue();
-			double newBalance = accountService.decreaseBalance(amount,userId);
-
-            if(currentBalance != newBalance) return new ResponseEntity<>(newBalance,getNoCacheHeaders(), HttpStatus.OK);
-
-            else return new ResponseEntity<>(currentBalance,getNoCacheHeaders(), HttpStatus.EXPECTATION_FAILED);
-
-		} else {
-
-			return new ResponseEntity<>(getNoCacheHeaders(), HttpStatus.EXPECTATION_FAILED);
-		}
-
-	}
-
-	@RequestMapping(value = "/accounts/{userId}/increaseBalance/{amount:.+}", method = RequestMethod.GET)
-	public ResponseEntity<Double> increaseBalance(@PathVariable("userId") final String userId, @PathVariable("amount") final double amount) {
-
-        logger.debug("AccountController.increaseBalance: id='" + userId + "', amount='"+amount+"'");
-
-        if (amount > 0.0) {
-
-            double currentBalance = accountService.increaseBalance(amount, userId);
-            logger.debug("AccountController.increaseBalance: current balance='" + currentBalance + "'.");
-            return new ResponseEntity<>(currentBalance, getNoCacheHeaders(),HttpStatus.OK);
-
-        } else {
-
-            //amount can not be negative for increaseBalance, please use decreaseBalance
-            return new ResponseEntity<>(accountService.getAccount(userId).getBalance().doubleValue(), getNoCacheHeaders(),
-                    HttpStatus.EXPECTATION_FAILED);
-        }
-
-	}
-
-	private HttpHeaders getNoCacheHeaders() {
-		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.set("Cache-Control", "no-cache");
-		return responseHeaders;
-	}
-}
-----
-
-. Also in the package `io.springtrader.accounts.controllers` create the class `AuthenticationController`. Into that file you can paste the following source code:
-+
-----
-@RestController
-public class AuthenticationController {
-
-	private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
-	/**
-	 * the service to delegate to.
-	 */
-	@Autowired
-	private AccountService service;
-
-	/**
-	 * Logins in the user from the authentication request passed in body.
-	 *
-	 * @param authenticationRequest The request with username and password.
-	 * @return HTTP status CREATED if successful.
-	 */
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	@ResponseStatus( HttpStatus.CREATED )
-	@ResponseBody
-	public Map<String, Object> login(@RequestBody AuthenticationRequest authenticationRequest) {
-		logger.debug("AuthenticationController.login: login request for username: " + authenticationRequest.getUsername());
-		Map<String, Object> authenticationResponse = this.service.login(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-		return authenticationResponse;// authToken and accountId;
-	}
-
-	/**
-	 * Logs out the user.
-	 *
-	 * @param userId The user id to log out.
-	 */
-	@RequestMapping(value = "/logout/{user}", method = RequestMethod.GET)
-	@ResponseStatus( HttpStatus.OK )
-	@ResponseBody
-	public void logout(@PathVariable("user") final String userId) {
-		logger.debug("AuthenticationController.logout: logout request for userid: " + userId);
-		this.service.logout(userId);
-	}
-
-	/**
-	 * To ensure no one does login through HTTP GET.
-	 * returns METHOD_NOT_ALLOWED.
-	 */
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	@ResponseStatus( HttpStatus.METHOD_NOT_ALLOWED )
-	public void get() {
-
-	}
-}
-----
-
-.  Create the package `io.springtrader.accounts.services` create the class `AccountService`. Into that file you can paste the following source code:
-+
-----
-@Service
-public class AccountService {
-
-	private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
-
-	@Autowired
-	AccountRepository accountRepository;
-
-	public Account getAccount(Integer id) {
-
-		logger.debug("AccountService.getAccount: id=" + id);
-
-		Account account = accountRepository.findOne(id);
-		if (account == null) {
-			logger.warn("AccountService.getAccount: could not find account with id: " + id);
-			throw new NoRecordsFoundException();
-		}
-
-		logger.info(String.format("AccountService.getAccount - retrieved account with id: %s. Payload is: %s", id, account));
-
-		return account;
-	}
-
-	public Account getAccount(String id) {
-
-		logger.debug("AccountService.getAccount: id=" + id);
-
-		Account account = accountRepository.findByUserid(id);
-		if (account == null) {
-			logger.warn("AccountService.getAccount: could not find account with id: " + id);
-			throw new NoRecordsFoundException();
-		}
-
-		logger.info(String.format("AccountService.getAccount - retrieved account with id: %s. Payload is: %s", id, account));
-
-		return account;
-	}
-
-	@Cacheable(value = "authorizationCache")
-	public Account findAccountProfileByAuthToken(String token) {
-		logger.debug("AccountService.findAccountProfileByAuthToken looking for authToken: " + token);
-		if (token == null) {
-			//TODO: no point in checking database. throw exception here.
-			logger.error("AccountService.findAccountProfileByAuthToken(): token is null");
-			throw new AuthenticationException("Authorization Token is null");
-		}
-		Account accountProfile = null;
-		accountProfile = accountRepository.findByAuthtoken(token);
-		if (accountProfile == null) {
-			logger.error("AccountService.findAccountProfileByAuthToken(): accountProfile is null for token="
-					+ token);
-			throw new AuthenticationException("Authorization Token not found");
-		}
-
-		return accountProfile;
-	}
-
-	public Integer saveAccount(Account accountRequest) {
-
-		logger.debug("AccountService.saveAccount:" + accountRequest.toString());
-		// need to set some stuff that cannot be null!
-		if (accountRequest.getLogincount() == null) accountRequest.setLogincount(0);
-		if (accountRequest.getLogoutcount() == null) accountRequest.setLogoutcount(0);
-		if(accountRequest.getCreationdate() == null) accountRequest.setCreationdate(new Date());
-
-
-		Account account = accountRepository.save(accountRequest);
-		logger.info("AccountService.saveAccount: account saved: " + account);
-		return account.getId();
-	}
-
-	public Map<String, Object> login(String username, String password) {
-		logger.debug("login in user: " + username);
-		Map<String, Object> loginResponse;
-		Account account = accountRepository.findByUseridAndPasswd(username, password);
-		if (account != null) {
-			logger.debug("Found Account for user: " + username);
-			account.setAuthtoken(UUID.randomUUID().toString());
-			account.setLogincount(account.getLogincount() + 1);
-			account.setLastlogin(new Date());
-			account = accountRepository.save(account); // persist new auth token and last
-												// login
-			loginResponse = new HashMap<>();
-
-			loginResponse.put("authToken", account.getAuthtoken());
-			loginResponse.put("accountid", account.getId());
-
-			logger.info("AccountService.login success for " + username
-					+ " username::token=" + loginResponse.get("authToken"));
-
-		} else {
-			logger.warn("AccountService.login failed to find username="
-					+ username + " password=" + password);
-			throw new AuthenticationException("Login failed for user: "
-					+ username);
-		}
-		return loginResponse;
-	}
-
-	public Account logout(String userId) {
-		logger.debug("AccountService.logout: Logging out account with userId: " + userId);
-		Account account = accountRepository.findByUserid(userId);
-		if (account != null) {
-			account.setAuthtoken(null); // remove token
-			account.setLogoutcount(account.getLogoutcount() + 1);
-			accountRepository.save(account);
-			logger.info("AccountService.logout: Account logged out: " + account.getUserid());
-		} else {
-			logger.warn("AccountService.logout: Could not find account to logout with userId: " + userId);
-		}
-		return account;
-	}
-
-	public double increaseBalance(double amount, String userId) {
-
-		Account accountResponse = accountRepository.findByUserid(userId);
-
-		BigDecimal currentBalance = accountResponse.getBalance();
-
-		BigDecimal newBalance = currentBalance.add(new BigDecimal(amount));
-
-		if(amount > 0.0){
-			logger.debug("AccountController.increaseBalance: new balance='" + newBalance + "'.");
-			accountResponse.setBalance(newBalance);
-			saveAccount(accountResponse);
-		}
-
-		return accountResponse.getBalance().doubleValue();
-
-	}
-
-	public double decreaseBalance(double amount, String accountId) {
-
-		Account accountResponse = accountRepository.findByUserid(accountId);
-
-		BigDecimal currentBalance = accountResponse.getBalance();
-
-		if(currentBalance.doubleValue() >= amount){
-            BigDecimal newBalance = currentBalance.subtract(new BigDecimal(amount));
-			logger.debug("AccountController.decreaseBalance: new balance='" + newBalance + "'.");
-			accountResponse.setBalance(newBalance);
-			saveAccount(accountResponse);
-		}
-
-		return accountResponse.getBalance().doubleValue();
-
-	}
-}
-----
-
-. Create the package `io.pivotal.springtrader.accounts.config` and in that package create the class `WebConfig`. Into that file you can paste the following source code:
-+
-----
-@Configuration
-@ComponentScan(basePackages = { "io.pivotal.springtrader.accounts" })
-public class WebConfig extends WebMvcConfigurationSupport {
-
-	/**
-	 * configure the message converters with the date formatter.
-	 */
-	@Override
-	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-
-		MappingJackson2HttpMessageConverter mappingJacksonHttpMessageConverter = new MappingJackson2HttpMessageConverter();
-		mappingJacksonHttpMessageConverter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON));
-
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
-		mappingJacksonHttpMessageConverter.getObjectMapper().setDateFormat(format);
-
-		converters.add(mappingJacksonHttpMessageConverter);
-	}
-
-}
-----
-
-. Add the `@EnableJpaRepositories` annotation to `io.springtrader.accounts.AccountsApplication`:
-+
-----
-@SpringBootApplication
-@@EnableJpaRepositories// <--- Add this!
-public class AccountsApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(AccountsApplication.class, args);
-    }
-}
-----
-
-. Add the following to `application.properties` -- we'll eventually want to run multiple apps locally, so we need to change the port:
+. Add the following to `application.properties` -- we'll eventually want to run multiple apps locally, so we are using a port that is different from 8080:
 +
 ----
 server.port=8082
@@ -588,43 +45,28 @@ security.basic.enabled=false
  </dependency>
 ----
 
-. Build the JAR:
+. Open `src/main/resources/import.sql`. As a naming convention, Spring Boot automatically loads this file at startup time. You will therefore have 2 accounts created by default at application startup time.
+
+. Run the application and open the url http://localhost:8082/account/1 into your web browser. You should see the following:
 +
+[source,json]
 ----
-$ mvn clean package
-----
-
-. Run the application:
-+
-----
-$ java -jar target/accounts-1.0.0-SNAPSHOT.jar
-----
-
-. Access the application using `curl` to make sure everything is working properly:
-+
-----
-$ curl -i ${ROUTE}/account -X POST -d '{"address":"45 Test Dr.","passwd":"123","userid":"johndoe3","email":"anon@springsource.com","creditcard":"999999999","fullname":"John Doe","openbalance":1200.50, "logincount": 0, "logoutcount":0}' -H "Content-Type: application/json"
-HTTP/1.1 201 Created
-Server: Apache-Coyote/1.1
-X-Application-Context: accounts:local:8082
-Location: http://localhost:8082/account/4
-Content-Length: 0
-Date: Sat, 05 Dec 2015 13:45:25 GMT
-
-
-$ curl -i http://localhost:8082/account/4
-HTTP/1.1 200 OK
-Server: Apache-Coyote/1.1
-X-Application-Context: accounts:local:8082
-Cache-Control: no-cache
-Content-Type: application/json;charset=UTF-8
-Transfer-Encoding: chunked
-Date: Sat, 05 Dec 2015 13:46:34 GMT
-
-{"id":4,"address":"45 Test Dr.","passwd":"123","userid":"johndoe3",
-"email":"anon@springsource.com","creditcard":"999999999","fullname":"John Doe",
-"authtoken":null,"creationdate":null,"openbalance":1200.50,"logoutcount":0,"balance":null,"lastlogin":null,"logincount":0}
-
+{
+   "id":1,
+   "address":"45 Test Dr.",
+   "passwd":"123",
+   "userid":"johnsmith3",
+   "email":"john@pivotal.io",
+   "creditcard":"999999999",
+   "fullname":"John Smith",
+   "authtoken":null,
+   "creationdate":null,
+   "openbalance":1200.50,
+   "logoutcount":0,
+   "balance":null,
+   "lastlogin":null,
+   "logincount":0
+}
 ----
 
 == Preparing for Cloud Foundry
@@ -634,6 +76,7 @@ Date: Sat, 05 Dec 2015 13:46:34 GMT
 ----
 $ cf cs p-mysql 100mb-dev springtrader-accounts-db
 ----
+NOTE: if you are using Pivotal Web Service, the above service is not available in the command line. You just need to create it using the Web console at https://console.run.pivotal.io . You can select a MySql database service and name it `springtrader-accounts-db`.
 +
 . Rebuild the JAR:
 +
@@ -657,7 +100,7 @@ env:
 applications:
 - name: accounts
   random-route: true
-  path: target/accounts-1.0.0-SNAPSHOT.jar
+  path: target/lab12-accounts-1.0.0-SNAPSHOT.jar
   services: [ springtrader-accounts-db ]
 ----
 
@@ -683,23 +126,24 @@ buildpack: java-buildpack=v3.3.1-offline-https://github.com/cloudfoundry/java-bu
 #0   running   2015-12-07 06:02:51 PM   0.9%   456.4M of 512M   163.4M of 1G
 ----
 
-.  Use what you've learned so far to insert a couple accounts into the MySQL instance through the REST service you just deployed (hint:  inspect the controller)
-
-. Access the application using `curl` to make sure everything is working properly:
+. Access the application at the random route provided by CF (such as `http://quotes-undespising-lenition.cfapps.pez.pivotal.io/accounts/1`). The output should be the same as when run locally:
 +
+[source,json]
 ----
-$ curl -i http://accounts-recompensatory-assassinator.cfapps.pez.pivotal.io/account/1
-HTTP/1.1 200 OK
-Cache-Control: no-cache
-Content-Type: application/json;charset=UTF-8
-Date: Mon, 07 Dec 2015 21:33:09 GMT
-Server: Apache-Coyote/1.1
-X-Application-Context: accounts:cloud:0
-X-Cf-Requestid: 61792646-ccda-4538-4243-2f4e7e65b5bf
-Content-Length: 284
-Connection: close
-
-{"id":1,"address":"45 Test Dr.","passwd":"123","userid":"johndoe",
-"email":"anon@springsource.com","creditcard":"999999999","fullname":"John Doe",
-"authtoken":null,"creationdate":"2015-12-07 21:32:00","openbalance":1200.50,"logoutcount":0,"balance":null,"lastlogin":null,"logincount":0}
+{
+   "id":1,
+   "address":"45 Test Dr.",
+   "passwd":"123",
+   "userid":"johnsmith3",
+   "email":"john@pivotal.io",
+   "creditcard":"999999999",
+   "fullname":"John Smith",
+   "authtoken":null,
+   "creationdate":null,
+   "openbalance":1200.50,
+   "logoutcount":0,
+   "balance":null,
+   "lastlogin":null,
+   "logincount":0
+}
 ----
