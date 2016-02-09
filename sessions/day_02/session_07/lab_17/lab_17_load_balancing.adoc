@@ -35,7 +35,7 @@ $ mvn clean package
 $ java -jar target/springtrader-eureka-0.0.1-SNAPSHOT.jar
 ----
 
-. A completed `springbox-producer` project has been placed in `$COURSE_HOME/day_02/session_06/lab_17/initial/springbox-producer` for your convenience.
+. A completed `springtrader-producer` project has been placed in `$COURSE_HOME/day_02/session_06/lab_17/initial/springbox-producer` for your convenience.
 In two separate terminal windows, change to that directory, rebuild, and run the application (on different ports):
 +
 ----
@@ -97,7 +97,7 @@ $ java -jar target/springtrader-consumer-0.0.1-SNAPSHOT.jar
 Also, watch the producers and observe that Ribbon is performing round robin load balancing across the two producers:
 +
 ----
-$ curl -i localhost:8081
+$ curl -i localhost:8091
 HTTP/1.1 200 OK
 Content-Length: 11
 Content-Type: application/json;charset=UTF-8
