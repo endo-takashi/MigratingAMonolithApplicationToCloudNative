@@ -212,7 +212,7 @@ public class GreetingController {
 }
 ----
 
-. In `src/main/resourses` create a `bootstrap.properties` file and set the client's application name:
+. In `src/main/resources` create a `bootstrap.properties` file and set the client's application name:
 +
 [source,java]
 ----
