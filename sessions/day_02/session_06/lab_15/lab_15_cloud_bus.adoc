@@ -7,6 +7,8 @@ We'll use it, combined with a Spring bean scope called `@RefreshScope`, to broad
 The bus will be backed by a running instance of http://www.rabbitmq.com/[RabbitMQ].
 --
 
+You must have `curl` installed to complete this lab.
+
 == Adding the Cloud Bus to the Test Config Client
 
 . Change to the lab directory:
