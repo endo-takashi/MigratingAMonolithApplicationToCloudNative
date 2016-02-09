@@ -35,7 +35,7 @@ In this lab, we'll do the following:
 . Change to the lab directory:
 +
 ----
-$ cd $COURSE_HOME/day_02/session_06/lab_16/initial/
+cd $COURSE_HOME/day_02/session_06/lab_16/initial/
 ----
 +
 and import all 4 projects into your IDE. For the first part of this lab, we will work on `springtrader-eureka`
@@ -440,7 +440,9 @@ eureka:
 . Stage, commit, and push your changes:
 +
 ----
-git add . && git commit -m "adds eureka setup" && git push origin master
+git add .
+git commit -m "adds eureka setup"
+git push origin master
 ----
 
 Each of the three microservice projects has been copied into `$COURSE_HOME/day_02/session_06/lab_16/initial`, and are in the state we left them at the end of link:../lab_15/lab_15.adoc[Lab 15].
@@ -451,7 +453,7 @@ For each project, perform the following steps (we'll do these once for the `spri
 . Change to the lab directory:
 +
 ----
-$ cd $COURSE_HOME/day_02/session_06/lab_16/initial/springtrader-quotes
+cd $COURSE_HOME/day_02/session_06/lab_16/initial/springtrader-quotes
 ----
 +
 and import the project (via `pom.xml`) into your IDE of choice.
@@ -482,7 +484,7 @@ public class QuotesApplication {
 . Build the application:
 +
 ----
-$ mvn clean package
+mvn clean package
 ----
 
 . In `manifest.yml`, add a binding to `springtrader-service-registry`:
@@ -508,8 +510,7 @@ applications:
 . Push the application:
 +
 ----
-$ cf push
-
+cf push
 ...
 
 Showing health and status for app springtrader-quotes in org pivot-cqueiroz / space development as cqueiroz@pivotal.io...
