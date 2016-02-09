@@ -127,7 +127,7 @@ env:
 applications:
 - name: portfolio
   random-route: true
-  path: target/portfolio-1.0.0-SNAPSHOT.jar
+  path: target/lab13-portfolio-1.0.0-SNAPSHOT.jar
   services: [ springtrader-portfolio-db ]
 ----
 . Before push to Cloud Foundry adjuste the application.yml (cloud profile) file with the URLs for the Accounts and Quotes services. Something like:
