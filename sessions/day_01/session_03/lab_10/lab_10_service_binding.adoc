@@ -102,6 +102,7 @@ With this code, Spring Cloud will detect a bound service that is compatible with
 [source,java]
 ----
 spring.jpa.hibernate.ddl-auto=create
+spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
 ----
 
 . Build the application:
