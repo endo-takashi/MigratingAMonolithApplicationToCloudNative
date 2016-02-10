@@ -325,8 +325,11 @@ applications:
 ----
 mvn package
 cf push
+----
 
-...
+. Once it has uploaded and run the buildpack, you should see output like this ...
+[source,bash]
+----
 
 1 of 1 instances running
 
