@@ -328,6 +328,7 @@ cf push
 ----
 
 . Once it has uploaded and run the buildpack, you should see output like this ...
++
 [source,bash]
 ----
 
@@ -353,8 +354,8 @@ buildpack: java-buildpack=v3.3.1-offline-https://github.com/cloudfoundry/java-bu
      state     since                    cpu    memory           disk           details
 #0   running   2015-11-26 07:03:09 PM   0.0%   442.3M of 512M   151.1M of 1G
 ----
-+
-Access the application at the random route provided by CF - your URL will be different, look in the App Manager console to see what it is:
+
+. Access the application at the random route provided by CF - your URL will be different, look in the App Manager console to see what it is:
 +
 [source,bash]
 ----
