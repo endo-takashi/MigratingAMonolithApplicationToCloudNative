@@ -131,7 +131,9 @@ Several labs use `curl` to send requests that return JSON data.  If you prefer t
 
 === Internet Explorer
 
-. Create a file on your desktop called "json.reg".  Right click and select edit.  Copy and paste the following:
+. Create a file on your desktop called `json.reg`.
+. Right click and select edit.
+. Copy and paste the following:
 +
 ```
 Windows Registry Editor Version 5.00;
@@ -142,7 +144,6 @@ Windows Registry Editor Version 5.00;
 "CLSID"="{25336920-03F9-11cf-8FD0-00AA00686F13}"
 "Encoding"=hex:08,00,00,00
 ```
-
 . Save and close.
 . Double click on the `json.reg` to run it.  You will get a warning, click `Yes` to continue.
 . Now try this JSON test page: http://jsonplaceholder.typicode.com/posts/1
