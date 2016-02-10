@@ -302,7 +302,6 @@ Note that we now have new search endpoints for each of the finders that we added
 http://localhost:8080/companies/search/exchange?q=NASDAQ
 http://localhost:8080/companies/search/name?q=Amerco
 http://localhost:8080/companies/search/nameContains?q=Apple&size=5
-+
 
 == Pushing to Cloud Foundry
 
@@ -320,11 +319,12 @@ applications:
   timeout: 180 # to give time for the data to import
 ----
 
-. Push to Cloud Foundry:
+. Build the JAR and push it to Cloud Foundry (you need to leave the IDE to do this):
 +
 [source,bash]
 ----
-$ cf push
+mvn package
+cf push
 
 ...
 
