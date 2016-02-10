@@ -335,7 +335,6 @@ cf push
 
 App started
 
-
 OK
 
 App companies was started using this command `CALCULATED_MEMORY=$($PWD/.java-buildpack/open_jdk_jre/bin/java-buildpack-memory-calculator-2.0.0_RELEASE -memorySizes=metaspace:64m.. -memoryWeights=heap:75,metaspace:10,native:10,stack:5 -memoryInitials=heap:100%,metaspace:100% -totMemory=$MEMORY_LIMIT) && SERVER_PORT=$PORT $PWD/.java-buildpack/open_jdk_jre/bin/java -cp $PWD/.:$PWD/.java-buildpack/spring_auto_reconfiguration/spring_auto_reconfiguration-1.10.0_RELEASE.jar -Djava.io.tmpdir=$TMPDIR -XX:OnOutOfMemoryError=$PWD/.java-buildpack/open_jdk_jre/bin/killjava.sh $CALCULATED_MEMORY org.springframework.boot.loader.JarLauncher`
@@ -354,8 +353,8 @@ buildpack: java-buildpack=v3.3.1-offline-https://github.com/cloudfoundry/java-bu
      state     since                    cpu    memory           disk           details
 #0   running   2015-11-26 07:03:09 PM   0.0%   442.3M of 512M   151.1M of 1G
 ----
-
-. Access the application at the random route provided by CF:
++
+Access the application at the random route provided by CF - your URL will be different, look in the App Manager console to see what it is:
 +
 [source,bash]
 ----
