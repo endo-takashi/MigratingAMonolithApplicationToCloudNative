@@ -8,7 +8,7 @@ The following software is required to complete this course:
   * Git command line: `git`
   * Cloud Foundry CLI `cf`
   * Curl (Windows users only)
-  * Optional: Browser plugin to view Asciidoc (Chrome or Firefox only)
+  * Optional: Browser plugins to view Asciidoc and JSON Data (Chrome or Firefox only)
  
 Ideally this setup should be completed _before_ you attend the course.
 
@@ -104,9 +104,9 @@ https://github.com/S2EDU/PCFImmersionStudentFiles/raw/master/curl.zip.
 Once downloaded, unpack it somewhere convenient and add to your path - the same procedure as for
 Maven.
 
-== Lab Notes 
+== Optional Add-on 1 - Lab Notes 
 
-The easiest way to view the lab intructions is online.  However, if you wish to view them on your machine you need a plugin - Firefox or Chrome only.
+The easiest way to view the lab intructions is online.  However, if you wish to view them on your machine you need a plugin (Firefox or Chrome only).
 
   * *Firefox:*
   ** Do an Internet search for `Asciidoctor Live Preview` and select "Asciidoctor.js Live Preview :: Add-ons for Firefox"
@@ -118,6 +118,34 @@ The easiest way to view the lab intructions is online.  However, if you wish to 
   ** Check `Allow access to file URLs` in chrome://extensions
 
 Now you can drag Asciidoctor files (`.adoc`) files onto the browser to view them.
+
+== Optional Add-on 2 - View JSON Data
+
+Several labs use `curl` to send requests that return JSON data.  If you prefer to do this in your browser ...
+
+=== Firefox or Chrome
+
+. Do an Internet search for the "JSONView" add-on.
+. Install as directed
+. Once installed, try this JSON test page: http://jsonplaceholder.typicode.com/posts/1
+
+=== Internet Explorer
+
+. Create a file on your desktop called "json.reg".  Right click and select edit.  Copy and paste the following:
++
+```
+Windows Registry Editor Version 5.00;
+; Tell IE 7,8,9,10,11 to open JSON documents in the browser on Windows XP and later.
+; 25336920-03F9-11cf-8FD0-00AA00686F13 is the CLSID for the "Browse in place" .
+;
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\application/json]
+"CLSID"="{25336920-03F9-11cf-8FD0-00AA00686F13}"
+"Encoding"=hex:08,00,00,00
+```
+
+. Save and close.  Double click on the `json.reg` to run it.  You will get a warning, click `Yes` to continue.
+
+. Now try this JSON test page: http://jsonplaceholder.typicode.com/posts/1
 
 
 == Testing Your Setup
