@@ -154,7 +154,7 @@ You should be able to see your properties displayed similar to this:
 {"name":"default",
  "label":"",
  "propertySources":[{"name":"https: //github.com/<yourUserName>/springtrader-config-repo.git/demo.yml",
- "source":{"greeting":"Hi there"}}]}
+ "source":{"greeting":"Hello"}}]}
 ----
 +
 If you can't see `greeting` in the output your server is not working.
@@ -228,6 +228,7 @@ Hello World!
 . Also, take a look at the Spring Environment to see how the `greeting` property is being resolved. You can connect to http://localhost:8080/env
 The information you need is on the first line.
 +
+[source,json]
 ----
 {
     "applicationConfig: [classpath:/bootstrap.properties]": {
@@ -402,18 +403,10 @@ buildpack: java-buildpack=v3.1.1-offline-https://github.com/cloudfoundry/java-bu
 #0   running   2016-01-06 01:18:51 PM   0.0%   406.3M of 512M   140M of 1G
 ----
 
-. Access the application using `curl` to make sure the new `configserver` property exists:
+. Access the application on `http://springtrader-quotes-<yourpath>.cfapps.io/`. You should be able to see the new `configserver` property:
 +
+[source,json]
 ----
-$ curl -i springtrader-quotes-untrafficked-iodism.cfapps.pez.pivotal.io/env
-HTTP/1.1 200 OK
-Content-Type: application/json;charset=UTF-8
-Date: Wed, 06 Jan 2016 06:21:56 GMT
-Server: Apache-Coyote/1.1
-X-Application-Context: springtrader-quotes:cloud:0
-X-Cf-Requestid: 8ff3b8d5-0032-49e6-61a9-8f8b5fe27559
-Connection: close
-Transfer-Encoding: chunked
 {
 
 ...
