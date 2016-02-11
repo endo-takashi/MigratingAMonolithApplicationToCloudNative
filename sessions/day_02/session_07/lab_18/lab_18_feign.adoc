@@ -32,7 +32,7 @@ $ mvn package
 $ java -jar target/springtrader-eureka-0.0.1-SNAPSHOT.jar
 ----
 
-. A completed `springbox-producer` project has been placed in `$COURSE_HOME/day_02/session_07/lab_18/initial/springtrader-producer` for your convenience.
+. A completed `springtrader-producer` project has been placed in `$COURSE_HOME/day_02/session_07/lab_18/initial/springtrader-producer` for your convenience.
 In two separate terminal windows, change to that directory, rebuild, and run the application (on different ports):
 +
 ----
@@ -65,7 +65,7 @@ and import the project (via `pom.xml`) into your IDE of choice.
 </dependency>
 ----
 
-. Add a `@EnableFeignClients` annotation to the class `io.springtrader.consumer.SpringboxConsumerApplication`.
+. Add a `@EnableFeignClients` annotation to the class `io.springtrader.consumer.SpringtraderConsumerApplication`.
 
 . Create the interface `io.springtrader.consumer.ProducerClient` and into it paste the following code:
 +

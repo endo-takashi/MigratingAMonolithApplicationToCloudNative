@@ -68,7 +68,7 @@ and import the project (via `pom.xml`) into your IDE of choice.
 </dependency>
 ----
 
-. Add a `@EnableCircuitBreaker` annotation to the class `io.springtrader.consumer.SpringboxConsumerApplication`.
+. Add a `@EnableCircuitBreaker` annotation to the class `io.springtrader.consumer.SpringtraderConsumerApplication`.
 
 . Add two constructors to the class `io.springtrader.consumer.ProducerResponse`:
 +
