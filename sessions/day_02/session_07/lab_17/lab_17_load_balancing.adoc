@@ -17,13 +17,13 @@ In this lab, we'll do the following:
 
 == Setup
 
-. A completed `springtrader-config-server` project has been placed in `$COURSE_HOME/day_02/session_07/lab_17/initial/springtrader-config-server` for your convenience.
+. A completed `springtrader-config-server` project has been placed in `$COURSE_HOME/day_02/session_07/lab_17/initial/lab17-springtrader-config-server` for your convenience.
 In a terminal window, change to that directory, rebuild, and run the application:
 +
 ----
 $ cd $COURSE_HOME/day_02/session_07/lab_17/initial/springtrader-config-server
 $ mvn clean package
-$ java -jar target/springtrader-config-server-0.0.1-SNAPSHOT.jar
+$ java -jar target/lab17-springtrader-config-server-0.0.1-SNAPSHOT.jar
 ----
 
 . A completed `springtrader-eureka` project has been placed in `$COURSE_HOME/day_02/session_07/lab_17/initial/springtrader-eureka` for your convenience.
@@ -32,7 +32,7 @@ In a separate terminal window, change to that directory, rebuild, and run the ap
 ----
 $ cd $COURSE_HOME/day_02/session_07/lab_17/initial/springtrader-eureka
 $ mvn clean package
-$ java -jar target/springtrader-eureka-0.0.1-SNAPSHOT.jar
+$ java -jar target/lab17-springtrader-eureka-0.0.1-SNAPSHOT.jar
 ----
 
 . A completed `springtrader-producer` project has been placed in `$COURSE_HOME/day_02/session_06/lab_17/initial/springbox-producer` for your convenience.  Rebuild manually:
@@ -53,14 +53,14 @@ Windows:
 > java -jar target/lab17-springtrader-producer-0.0.1-SNAPSHOT.jar
 ----
 
-. In the second window
+. In the second window we need to use a different port and give the producer a different instance id:
 ----
 Linux:
-$ SERVER_PORT=8082 java -jar target/lab17-springtrader-producer-0.0.1-SNAPSHOT.jar
+$ SERVER_PORT=8082 java -Deureka.instance.metadataMap.instanceId=p8082 -jar target/lab17-springtrader-producer-0.0.1-SNAPSHOT.jar
 
 Windows:
 > set SERVER_PORT=8082
-> java -jar target/lab17-springtrader-producer-0.0.1-SNAPSHOT.jar
+> java -Deureka.instance.metadataMap.instanceId=p8082-jar target/lab17-springtrader-producer-0.0.1-SNAPSHOT.jar
 ----
 
 . Ensure you have two instances of the producer service registered in Eureka:
@@ -161,7 +161,7 @@ $ java -jar target/springtrader-consumer-0.0.1-SNAPSHOT.jar
 Also, watch the producers and observe that Ribbon is resolving the logical name on behalf of the `RestTemplate` and then still performing round robin load balancing across the two producers:
 +
 ----
-$ curl -i localhost:8081
+$ curl -i localhost:8091
 HTTP/1.1 200 OK
 Content-Length: 11
 Content-Type: application/json;charset=UTF-8
