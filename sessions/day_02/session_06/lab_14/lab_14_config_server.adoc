@@ -276,6 +276,7 @@ applications:
 
 . Push to Cloud Foundry:
 +
+[source,bash]
 ----
 $ cf push
 
@@ -329,6 +330,7 @@ We'll use the existence of this property in each of our microservices' environme
 
 . Stage, commit, and push your changes:
 +
+[source,bash]
 ----
 git add .
 git commit -m "add default application config"
@@ -353,6 +355,7 @@ For each project, perform the following steps (we'll do these once for the `spri
 
 . Open `pom.xml`, Add a dependency on `spring-cloud-starter-config`:
 +
+[source,xml]
 ----
  <dependency>
      <groupId>org.springframework.cloud</groupId>
@@ -363,6 +366,7 @@ For each project, perform the following steps (we'll do these once for the `spri
 
 . Create the file `src/main/resources/bootstrap.yml` and into that file paste the following (provide the matching application name!):
 +
+[source,yml]
 ----
 spring:
   application:
@@ -374,6 +378,7 @@ spring:
 
 . Add the `springtrader-config-service` service to the `manifest.yml` (at the root of the `springtrader-quotes` project):
 +
+[source,yml]
 ----
 ---
 timeout: 180
