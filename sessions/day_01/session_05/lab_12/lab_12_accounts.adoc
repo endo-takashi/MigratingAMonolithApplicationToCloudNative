@@ -130,7 +130,7 @@ buildpack: java-buildpack=v3.3.1-offline-https://github.com/cloudfoundry/java-bu
 #0   running   2015-12-07 06:02:51 PM   0.9%   456.4M of 512M   163.4M of 1G
 ----
 
-. Access the application at the random route provided by CF (such as `http://quotes-undespising-lenition.cfapps.pez.pivotal.io/accounts/1`). The output should be the same as when run locally:
+. Access the application at the random route provided by CF (such as `http://quotes-undespising-lenition.cfapps.io/accounts/1`). The output should be the same as when run locally:
 +
 [source,json]
 ----
