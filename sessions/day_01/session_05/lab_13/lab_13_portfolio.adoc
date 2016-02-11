@@ -35,6 +35,8 @@ spring:
   application:
      name: portfolio
 
+spring.jpa.hibernate.ddl-auto: create
+
 ---
 spring:
   profiles: local
@@ -51,11 +53,14 @@ accounts:
 ---
 spring:
   profiles: cloud
+
+spring.jpa.database-platform: org.hibernate.dialect.MySQL5Dialect
+
 quotes:
-  url: http://quotes-undespising-lenition.cfapps.pez.pivotal.io
+  url: http://quotes-nonliteral-nautilus.cfapps.io
 
 accounts:
-  url: http://accounts-recompensatory-assassinator.cfapps.pez.pivotal.io
+  url: http://accounts-dormant-dewlap.cfapps.io
 ----
 
 . Open `src/main/resources/import.sql`. As seen before, Spring Boot automatically loads this file at startup time. You will therefore have one order created at application startup time.
