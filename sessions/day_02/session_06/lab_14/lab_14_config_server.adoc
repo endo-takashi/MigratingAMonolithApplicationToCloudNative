@@ -257,7 +257,7 @@ The information you need is on the first line.
 }
 ----
 
-== (Optional) Deploy the Config Server to Cloud Foundry
+== Deploy the Config Server to Cloud Foundry
 
 . We are now going to move your Config Server to the cloud. As a first step, stop the instance of `springtrader-config-server` that was running on localhost:8888.
 
@@ -271,7 +271,7 @@ applications:
   host: springtrader-config-server-${random-word}
   memory: 512M
   instances: 1
-  path: target/springtrader-config-server-0.0.1-SNAPSHOT.jar
+  path: target/lab14-springtrader-config-server-0.0.1-SNAPSHOT.jar
 ----
 
 . Push to Cloud Foundry:
@@ -318,7 +318,7 @@ buildpack: java-buildpack=v3.1.1-offline-https://github.com/cloudfoundry/java-bu
 }
 ----
 
-== (Optional) Update the Microservices to Use the Config Server
+== Update the Microservices to Use the Config Server
 
 . In your config repo, add the file `application.yml` and into that file paste the following:
 +

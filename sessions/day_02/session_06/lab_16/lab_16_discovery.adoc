@@ -410,7 +410,7 @@ image::../../../Common/images/eureka_1.png[]
 . Create a user-provided service representing the Eureka server (be sure to use the route assigned to your Eureka server!):
 +
 ----
-$ cf cups springtrader-service-registry -p '{"uri":"http://springtrader-eureka-nonpatterned-insurgency.cfapps.pez.pivotal.io"}'
+$ cf cups springtrader-service-registry -p '{"uri":"http://springtrader-eureka-nonpatterned-insurgency.cfapps.io"}'
 Creating user provided service springtrader-service-registry in org pivot-cqueiroz / space development as cqueiroz@pivotal.io...
 OK
 ----
