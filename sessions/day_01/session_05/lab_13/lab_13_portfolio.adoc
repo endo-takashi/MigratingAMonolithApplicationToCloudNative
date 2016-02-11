@@ -169,10 +169,10 @@ spring:
         ddl-auto: update
 
 quotes:
-  url: http://quotes-undespising-lenition.cfapps.pez.pivotal.io
+  url: http://quotes-undespising-lenition.cfapps.io
 
 accounts:
-  url: http://accounts-recompensatory-assassinator.cfapps.pez.pivotal.io
+  url: http://accounts-recompensatory-assassinator.cfapps.io
 ----
 
 . Push to Cloud Foundry:
