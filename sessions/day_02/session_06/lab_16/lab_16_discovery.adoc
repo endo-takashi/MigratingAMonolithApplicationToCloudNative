@@ -293,7 +293,7 @@ public class ProducerResponse {
 }
 ----
 
-. Also in the package `io.springtrader.consumer`, create the class `ConsumerController`, and into that class paste the following code:
+. Also in the package `io.springtrader.consumer.controller`, create the class `ConsumerController`, and into that class paste the following code:
 +
 [source,java]
 ----
@@ -316,7 +316,7 @@ public class ConsumerController {
 }
 ----
 
-. Now open `io.springtrader.producer.SpringtraderConsumerrApplication` and add the `@EnableDiscoveryClient` annotation:
+. Now open `io.springtrader.producer.SpringtraderConsumerApplication` and add the `@EnableDiscoveryClient` annotation:
 +
 [source,java]
 ----
@@ -369,7 +369,7 @@ image::../../../Common/images/eureka_3.png[]
 
 == (optional) Deploy the Eureka Server to Cloud Foundry
 
-. Create an application manifest in `manifest.yml`:
+. Open `lab16-springtrader-eureka` and create a file `manifest.yml`:
 +
 [source,yml]
 ----
@@ -379,7 +379,7 @@ applications:
   host: springtrader-eureka-${random-word}
   memory: 512M
   instances: 1
-  path: target/springtrader-eureka-0.0.1-SNAPSHOT.jar
+  path: target/lab16-springtrader-eureka-0.0.1-SNAPSHOT.jar
 ----
 
 . (optional) Push to Cloud Foundry:
