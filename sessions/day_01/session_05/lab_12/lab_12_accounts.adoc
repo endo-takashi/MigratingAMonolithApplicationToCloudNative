@@ -39,6 +39,7 @@ spring.jpa.hibernate.ddl-auto=create
 ----
 
 . To run the application locally you have to add H2 dependency to your `pom.xml` file.
++
 [source,xml]
 ----
 <dependency>
