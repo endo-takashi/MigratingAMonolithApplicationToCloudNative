@@ -17,6 +17,17 @@ In this lab, we'll do the following:
 
 NOTE: before starting this lab, you can stop all the applications you had started in the previous labs. You will not need them anymore.
 
+This lab uses 4 different `yml` files. You can refer to the table below in case you would get confused.
+
+[options="header"]
+|=======
+|File name |location |Purpose
+|demo.yml | Config repository on github | configuration file for application `demo`
+|bootstrap.yml | springtrader-config-client | information sent to config server before application starts
+|manifest.yml |all projects deployed to Cloud Foundry | deployment information
+|application.yml|all Spring Boot projects |Spring Boot configuration
+|=======
+
 == Create a GitHub repository to Store Configuration
 
 . Change to the lab directory:
@@ -38,13 +49,14 @@ cd config-repo
 $ git init
 ----
 
-. In the repo, create the file `demo.yml`, and into that file paste the following:
+. In the repo, we are going to host the configuration file for a sample application called `demo`. It will be hosted into a file conveniently called `demo.yml`. Create `demo.yml` and paste the following into it:
 +
+[source,yml]
 ----
 greeting: Hello
 ----
 
-. Stage your changes and commit them:
+. Commit your changes as follows:
 +
 ----
 git add .
@@ -285,8 +297,8 @@ buildpack: java-buildpack=v3.1.1-offline-https://github.com/cloudfoundry/java-bu
 . Access the application on `http://springtrader-config-server-<yourAppSuffix>.cfapps.io/demo/default` to make sure everything is working properly:
 
 +
+[source,json]
 ----
-
 {
 	"name":"default",
 	"label":"",
