@@ -41,8 +41,8 @@ In two separate terminal windows, change to that directory, rebuild, and run the
 ----
 $ cd $COURSE_HOME/day_02/session_07/lab_17/initial/springtrader-producer
 $ mvn clean package
-$ SERVER_PORT=8080 java -jar target/lab17-springtrader-producer-0.0.1-SNAPSHOT.jar
-$ SERVER_PORT=8082 java -jar target/lab17-springtrader-producer-0.0.1-SNAPSHOT.jar
+$ SERVER_PORT=8080 java -jar  -Deureka.instance.metadataMap.instanceId=p8080 target/lab17-springtrader-producer-0.0.1-SNAPSHOT.jar
+$ SERVER_PORT=8082 java -jar  -Deureka.instance.metadataMap.instanceId=p8082 target/lab17-springtrader-producer-0.0.1-SNAPSHOT.jar
 ----
 
 . Ensure you have two instances of the producer service registered in Eureka on http://localhost:8761 :
