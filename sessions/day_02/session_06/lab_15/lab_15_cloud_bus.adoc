@@ -98,31 +98,6 @@ Run the `springtrader-config-server` application
 Hello World!
 ----
 
-. In a _new_ terminal/command window, run another copy of the client on a different port to create a system of apps connected by the bus:
-+
-----
-Linux, MacOS:
-$ SERVER_PORT=8081 java -jar target/springtrader-config-client-0.0.1-SNAPSHOT.jar
-
-Windows
-> set SERVER_PORT=8081
-> java -jar target/springtrader-config-client-0.0.1-SNAPSHOT.jar
-----
-
-. Use `curl` (or a browser) to access the second instance running on port `8081`:
-+
-----
-$ curl -i localhost:8081
-HTTP/1.1 200 OK
-Server: Apache-Coyote/1.1
-X-Application-Context: demo:8081
-Content-Type: text/plain;charset=UTF-8
-Content-Length: 12
-Date: Wed, 06 Jan 2016 08:12:02 GMT
-
-Hello World!
-----
-
 . Now, open `demo.yml` from your config-repo and change the greeting:
 +
 ----
@@ -137,17 +112,10 @@ git commit -m "swap greeting"
 git push origin master
 ----
 
-. Using `curl` (or a browser), test and see that the config server has updated with your new greeting:
+. In your web browser, connect to the config server on localhost:8888/demo/default. The updated value for `greeting` should show as below:
 +
+[source,json]
 ----
-$ curl -i localhost:8888/demo/default
-HTTP/1.1 200 OK
-Server: Apache-Coyote/1.1
-X-Application-Context: bootstrap:8888
-Content-Type: application/json;charset=UTF-8
-Transfer-Encoding: chunked
-Date: Wed, 06 Jan 2016 08:13:00 GMT
-
 {
 	"name":"default",
 	"label":"",
@@ -156,9 +124,7 @@ Date: Wed, 06 Jan 2016 08:13:00 GMT
 		{"name":"https://github.com/caxqueiroz/springtrader-config-repo.git/demo.yml",
 		"source":{"greeting":"Ohai"}
 	},
-		{"name":"https://github.com/caxqueiroz/springtrader-config-repo.git/application.yml",
-		"source":{"configserver":true}
-	}
+	...
 	]
 }
 ----
@@ -176,15 +142,6 @@ Date: Wed, 06 Jan 2016 08:14:27 GMT
 
 Hello World!
 
-$ curl -i localhost:8081
-HTTP/1.1 200 OK
-Server: Apache-Coyote/1.1
-X-Application-Context: demo:8081
-Content-Type: text/plain;charset=UTF-8
-Content-Length: 12
-Date: Wed, 06 Jan 2016 08:14:52 GMT
-
-Hello World!
 ----
 
 . Now, `POST` a request to the `/bus/refresh` endpoint to trigger a configuration refresh event. You can only do this easily with `curl`:
@@ -198,28 +155,10 @@ Content-Length: 0
 Date: Wed, 06 Jan 2016 08:15:58 GMT
 ----
 
-. Using `curl` (or a browser), show that the greeting *has* now refreshed in the client applications:
-+
+. In your web browser, connect to the config client on localhost:8080. The updated value for `greeting` should show as below:+
 ----
-$ curl -i localhost:8080
-HTTP/1.1 200 OK
-Server: Apache-Coyote/1.1
-X-Application-Context: demo
-Content-Type: text/plain;charset=UTF-8
-Content-Length: 11
-Date: Wed, 06 Jan 2016 08:16:19 GMT
-
 Ohai World!
 
-$ curl -i localhost:8081
-HTTP/1.1 200 OK
-Server: Apache-Coyote/1.1
-X-Application-Context: demo:8081
-Content-Type: text/plain;charset=UTF-8
-Content-Length: 11
-Date: Wed, 06 Jan 2016 08:16:32 GMT
-
-Ohai World!
 ----
 
 == Update the Microservices to Use the Cloud Bus
