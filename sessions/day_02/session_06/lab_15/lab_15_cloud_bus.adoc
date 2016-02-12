@@ -34,6 +34,7 @@ and import the project (via `pom.xml`) into your IDE of choice.
 
 . In `pom.xml`, add a dependency on `spring-cloud-starter-bus-amqp`:
 +
+[source,xml]
 ----
 <dependency>
   <groupId>org.springframework.cloud</groupId>
@@ -74,6 +75,12 @@ public class GreetingController {
     }
 
 }
+----
+
+. Add the below code inside `src/main/resources/application.properties`:
+
+----
+spring.application.name=demo
 ----
 
 . To run the application now, you'll need a local install of RabbitMQ. You can obtain one for your platform http://www.rabbitmq.com/download.html[here].
