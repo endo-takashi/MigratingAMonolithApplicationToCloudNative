@@ -166,7 +166,7 @@ OK
 ----
 +
 
-. In your config repo, update the file `application.yml`, adding a new property:
+. In your git  config repo , update the file `application.yml`, adding a new property:
 +
 ----
 configserver: true
