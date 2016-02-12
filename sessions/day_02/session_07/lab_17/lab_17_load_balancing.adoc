@@ -35,14 +35,26 @@ $ mvn clean package
 $ java -jar target/springtrader-eureka-0.0.1-SNAPSHOT.jar
 ----
 
-. A completed `springtrader-producer` project has been placed in `$COURSE_HOME/day_02/session_06/lab_17/initial/springbox-producer` for your convenience.
-In two separate terminal windows, change to that directory, rebuild, and run the application (on different ports):
+. A completed `springtrader-producer` project has been placed in `$COURSE_HOME/day_02/session_06/lab_17/initial/springtrader-producer` for your convenience.
+Change to that directory and build
 +
 ----
-$ cd $COURSE_HOME/day_02/session_07/lab_17/initial/springtrader-producer
-$ mvn clean package
+cd $COURSE_HOME/day_02/session_07/lab_17/initial/springtrader-producer
+mvn clean package
+-----
+
+. Now run the producer twice (on different ports), each in a different terminal/command window:
++
+----
+Linux, MacOS:
 $ SERVER_PORT=8080 java -jar target/lab17-springtrader-producer-0.0.1-SNAPSHOT.jar
-$ SERVER_PORT=8082 java -jar target/lab17-springtrader-producer-0.0.1-SNAPSHOT.jar
+$ SERVER_PORT=8082 java -Deureka.instance.metadataMap.instanceId=p8082 -jar target/lab17-springtrader-producer-0.0.1-SNAPSHOT.jar
+
+Windows:
+> set SERVER_PORT=8080
+> java -jar target/lab17-springtrader-producer-0.0.1-SNAPSHOT.jar
+> set SERVER_PORT=8082
+> java -Deureka.instance.metadataMap.instanceId=p8082 -jar target/lab17-springtrader-producer-0.0.1-SNAPSHOT.jar
 ----
 
 . Ensure you have two instances of the producer service registered in Eureka on http://localhost:8761 :
