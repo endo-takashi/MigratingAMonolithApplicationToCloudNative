@@ -121,7 +121,7 @@ OK
 requested state: started
 instances: 1/1
 usage: 512M x 1 instances
-urls: accounts-unexploited-boneset.cfapps.pez.pivotal.io
+urls: accounts-unexploited-boneset.cfapps.io
 last uploaded: Mon Dec 7 21:01:55 UTC 2015
 stack: cflinuxfs2
 buildpack: java-buildpack=v3.3.1-offline-https://github.com/cloudfoundry/java-buildpack.git#063836b java-main java-opts open-jdk-like-jre=1.8.0_65 open-jdk-like-memory-calculator=2.0.0_RELEASE spring-auto-reconfiguration=1.10.0_RELEASE
@@ -130,7 +130,7 @@ buildpack: java-buildpack=v3.3.1-offline-https://github.com/cloudfoundry/java-bu
 #0   running   2015-12-07 06:02:51 PM   0.9%   456.4M of 512M   163.4M of 1G
 ----
 
-. Access the application at the random route provided by CF (such as `http://quotes-undespising-lenition.cfapps.pez.pivotal.io/accounts/1`). The output should be the same as when run locally:
+. Access the application at the random route provided by CF (such as `http://quotes-undespising-lenition.cfapps.io/accounts/1`). The output should be the same as when run locally:
 +
 [source,json]
 ----

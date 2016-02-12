@@ -20,7 +20,7 @@ In a terminal window, change to that directory, rebuild, and run the application
 ----
 $ cd $COURSE_HOME/day_02/session_07/lab_18/initial/springtrader-config-server
 $ mvn package
-$ java -jar target/springtrader-config-server-0.0.1-SNAPSHOT.jar
+$ java -jar target/lab18-springtrader-config-server-0.0.1-SNAPSHOT.jar
 ----
 
 . A completed `springtrader-eureka` project has been placed in `$COURSE_HOME/day_02/session_07/lab_18/initial/springtrader-eureka` for your convenience.
@@ -29,7 +29,7 @@ In a separate terminal window, change to that directory, rebuild, and run the ap
 ----
 $ cd $COURSE_HOME/day_02/session_07/lab_18/initial/springtrader-eureka
 $ mvn package
-$ java -jar target/springtrader-eureka-0.0.1-SNAPSHOT.jar
+$ java -jar target/lab18-springtrader-eureka-0.0.1-SNAPSHOT.jar
 ----
 
 . A completed `springtrader-producer` project has been placed in `$COURSE_HOME/day_02/session_07/lab_18/initial/springtrader-producer` for your convenience.
@@ -38,11 +38,20 @@ In two separate terminal windows, change to that directory, rebuild, and run the
 ----
 $ cd $COURSE_HOME/day_02/session_07/lab_18/initial/springtrader-producer
 $ mvn package
-$ SERVER_PORT=8080 java -jar target/springtrader-producer-0.0.1-SNAPSHOT.jar
-$ SERVER_PORT=8082 java -jar target/springtrader-producer-0.0.1-SNAPSHOT.jar
+$ SERVER_PORT=8080 java -jar target/lab18-springtrader-producer-0.0.1-SNAPSHOT.jar
+$ SERVER_PORT=8082 java -jar target/lab18-springtrader-producer-0.0.1-SNAPSHOT.jar
 ----
 
-. Ensure you have two instances of the producer service registered in Eureka:
+In case of WINDOWS, run following
++
+----
+$ cd $COURSE_HOME/day_02/session_07/lab_18/initial/springtrader-producer
+$ mvn package
+$ set SERVER_PORT=8080 java -jar target/lab18-springtrader-producer-0.0.1-SNAPSHOT.jar
+$ set SERVER_PORT=8082 java -jar target/lab18-springtrader-producer-0.0.1-SNAPSHOT.jar
+----
+
+. Ensure you have two instances of the producer service registered in Eureka (http://locahost:8761):
 +
 image::../../../Common/images/ribbon_1.png[]
 
@@ -100,20 +109,18 @@ $ mvn package
 . Run the application:
 +
 ----
-$ java -jar target/springtrader-consumer-0.0.1-SNAPSHOT.jar
+$ java -jar target/lab18-springtrader-consumer-0.0.1-SNAPSHOT.jar
 ----
 
-. Using `curl`, test the consumer application and show that it is still receiving values from the producers.
+. Test the consumer application and show that it is still receiving values from the producers.
 Also, watch the producers and observe that Ribbon is performing round robin load balancing across the two producers:
 +
 ----
-$ curl -i localhost:8081
-HTTP/1.1 200 OK
-Content-Length: 11
-Content-Type: application/json;charset=UTF-8
-Date: Tue, 24 Feb 2015 05:47:33 GMTServer: Apache-Coyote/1.1X-Application-Context: consumer:8081
+http://localhost:8081
 
 {
-  "value": 5
+  "value": 0
 }
 ----
+
+Keep refreshing your webpage and the value should increment.
