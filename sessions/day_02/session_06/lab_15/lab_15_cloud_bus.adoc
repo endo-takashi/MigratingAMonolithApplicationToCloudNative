@@ -129,20 +129,14 @@ git push origin master
 }
 ----
 
-. Using `curl` (or a browser), show that the greeting *has not* refreshed in the client applications:
+. Connect to the `config client` on localhost:8080 and see that the greeting *has not* been refreshed in the client applications:
 +
 ----
-$ curl -i localhost:8080
-HTTP/1.1 200 OK
-Server: Apache-Coyote/1.1
-X-Application-Context: demo
-Content-Type: text/plain;charset=UTF-8
-Content-Length: 12
-Date: Wed, 06 Jan 2016 08:14:27 GMT
-
 Hello World!
 
 ----
+
+NOTE: for Windows users: the below step requires to use curl. In case you are using Windows, a nice way to get access to `curl` is to launch the `git batch` console that should have been installed together with `git for windows`
 
 . Now, `POST` a request to the `/bus/refresh` endpoint to trigger a configuration refresh event. You can only do this easily with `curl`:
 +
@@ -161,7 +155,7 @@ Ohai World!
 
 ----
 
-== Update the Microservices to Use the Cloud Bus
+== (optional) Update the Microservices to Use the Cloud Bus
 
 . Create a Pivotal RabbitMQ service to back the Cloud Bus:
 +
