@@ -43,6 +43,7 @@ and import the project (via `pom.xml`) into your IDE of choice.
 
 . In the package `io.springtrader.configclient`, create the class `Greeter` and paste in the following source code:
 +
+[source,java]
 ----
 @Component
 @RefreshScope
@@ -59,6 +60,7 @@ public class Greeter {
 
 . Inside `io.springtrader.configclient` Create the class `GreetingController` as shown below:
 +
+[source,java]
 ----
 @RestController
 public class GreetingController {
