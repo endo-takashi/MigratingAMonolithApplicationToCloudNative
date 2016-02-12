@@ -192,7 +192,7 @@ $ cf push
 . Access the application using `curl` to make sure everything is working properly:
 +
 ----
-$ curl -i portfolio.cfapps.pez.pivotal.io/portfolio/johndoe
+$ curl -i portfolio.cfapps.pez.pivotal.io/portfolio/johnsmith
 HTTP/1.1 200 OK
 Server: Apache-Coyote/1.1
 Cache-Control: no-cache
