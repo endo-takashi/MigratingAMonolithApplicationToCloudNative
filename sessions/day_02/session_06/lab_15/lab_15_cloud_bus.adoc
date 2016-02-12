@@ -86,37 +86,15 @@ spring.application.name=demo
 . To run the application now, you'll need a local install of RabbitMQ. You can obtain one for your platform http://www.rabbitmq.com/download.html[here].
 
 . A completed `springtrader-config-server` project has been placed in `$COURSE_HOME/day_02/session_06/lab_15/initial/springtrader-config-server` for your convenience.
-In a different terminal window, change to that directory, rebuild, and run the application:
++
+Run the `springtrader-config-server` application
++
+
+. Now that the config server application is running, you should also start the client application. Run `springtrader-config-client` from your IDE.
+
+. Inside your web browser, connect to `spring-trader-client` on http://localhost:8080. You should see the below
 +
 ----
-$ cd $COURSE_HOME/day_02/session_06/lab_15/initial/springtrader-config-server
-$ mvn clean package
-$ java -jar target/lab15-springtrader-config-server-0.0.1-SNAPSHOT.jar
-----
-
-. Build your new `springtrader-config-client`:
-+
-----
-$ mvn clean package
-----
-
-. Run the application:
-+
-----
-$ java -jar target/lab15-springtrader-config-client-0.0.1-SNAPSHOT.jar
-----
-
-. Use `curl` (or a browser) to access the application and make sure that everything is still working as before:
-+
-----
-$ curl -i localhost:8080
-HTTP/1.1 200 OK
-Server: Apache-Coyote/1.1
-X-Application-Context: demo
-Content-Type: text/plain;charset=UTF-8
-Content-Length: 12
-Date: Wed, 06 Jan 2016 08:10:17 GMT
-
 Hello World!
 ----
 
