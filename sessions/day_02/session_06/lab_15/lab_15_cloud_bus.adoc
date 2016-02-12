@@ -84,7 +84,7 @@ In a different terminal window, change to that directory, rebuild, and run the a
 ----
 $ cd $COURSE_HOME/day_02/session_06/lab_15/initial/springtrader-config-server
 $ mvn clean package
-$ java -jar target/springtrader-config-server-0.0.1-SNAPSHOT.jar
+$ java -jar target/lab15-springtrader-config-server-0.0.1-SNAPSHOT.jar
 ----
 
 . Build your new `springtrader-config-client`:
@@ -96,7 +96,7 @@ $ mvn clean package
 . Run the application:
 +
 ----
-$ java -jar target/springtrader-config-client-0.0.1-SNAPSHOT.jar
+$ java -jar target/lab15-springtrader-config-client-0.0.1-SNAPSHOT.jar
 ----
 
 . Use `curl` (or a browser) to access the application and make sure that everything is still working as before:
