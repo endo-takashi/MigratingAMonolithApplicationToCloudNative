@@ -19,6 +19,19 @@ $ cd $COURSE_HOME/day_02/session_06/lab_15/initial/springtrader-config-client
 +
 and import the project (via `pom.xml`) into your IDE of choice.
 
+. In `pom.xml`, replace the parent-pom declaration with the one below:
++
+[source,xml]
+---
+<parent>
+     <groupId>org.springframework.cloud</groupId>
+     <artifactId>spring-cloud-starter-parent</artifactId>
+     <version>1.0.0.RELEASE</version>
+     <relativePath/>
+     <!-- lookup parent from repository -->
+ </parent>
+---
+
 . In `pom.xml`, add a dependency on `spring-cloud-starter-bus-amqp`:
 +
 ----
@@ -44,9 +57,7 @@ public class Greeter {
 }
 ----
 
-. Edit `GreetingController`, replacing the injected value for `greeting` with an injected instance of `Greeter`.
-Use that instance to obtain the greeting for the `greeter` request method.
-You can paste the following code to accomplish this:
+. Inside `io.springtrader.configclient` Create the class `GreetingController` as shown below:
 +
 ----
 @RestController
