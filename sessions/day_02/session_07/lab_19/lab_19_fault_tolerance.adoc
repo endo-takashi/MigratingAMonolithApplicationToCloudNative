@@ -23,7 +23,7 @@ In a terminal window, change to that directory, rebuild, and run the application
 ----
 $ cd $COURSE_HOME/day_02/session_07/lab_19/initial/springtrader-config-server
 $ mvn clean package
-$ java -jar target/springtrader-config-server-0.0.1-SNAPSHOT.jar
+$ java -jar target/lab19-springtrader-config-server-0.0.1-SNAPSHOT.jar
 ----
 
 . A completed `springtrader-eureka` project has been placed in `$COURSE_HOME/day_02/session_07/lab_19/initial/springtrader-eureka` for your convenience.
@@ -32,7 +32,7 @@ In a separate terminal window, change to that directory, rebuild, and run the ap
 ----
 $ cd $COURSE_HOME/day_02/session_07/lab_19/initial/springtrader-eureka
 $ mvn clean package
-$ java -jar target/springtrader-eureka-0.0.1-SNAPSHOT.jar
+$ java -jar target/lab19-springtrader-eureka-0.0.1-SNAPSHOT.jar
 ----
 
 . A completed `springtrader-producer` project has been placed in `$COURSE_HOME/day_02/session_07/lab_19/initial/springtrader-producer` for your convenience.
@@ -41,9 +41,19 @@ In two separate terminal windows, change to that directory, rebuild, and run the
 ----
 $ cd $COURSE_HOME/day_02/session_07/lab_19/initial/springtrader-producer
 $ mvn package
-$ SERVER_PORT=8080 java -jar target/springtrader-producer-0.0.1-SNAPSHOT.jar
-$ SERVER_PORT=8082 java -jar target/springtrader-producer-0.0.1-SNAPSHOT.jar
+$ SERVER_PORT=8080 java -jar target/lab19-springtrader-producer-0.0.1-SNAPSHOT.jar
+$ SERVER_PORT=8082 java -jar target/lab19-springtrader-producer-0.0.1-SNAPSHOT.jar
 ----
+
+if you are working on WINDOWS prompt, then run following 
++
+----
+$ cd $COURSE_HOME/day_02/session_07/lab_19/initial/springtrader-producer
+$ mvn package
+$ set SERVER_PORT=8080 && java -jar target/lab19-springtrader-producer-0.0.1-SNAPSHOT.jar
+$ set SERVER_PORT=8082 && java -jar target/lab19-springtrader-producer-0.0.1-SNAPSHOT.jar
+----
+
 
 . Ensure you have two instances of the producer service registered in Eureka:
 +
@@ -68,7 +78,7 @@ and import the project (via `pom.xml`) into your IDE of choice.
 </dependency>
 ----
 
-. Add a `@EnableCircuitBreaker` annotation to the class `io.springtrader.consumer.SpringboxConsumerApplication`.
+. Add a `@EnableCircuitBreaker` annotation to the class `io.springtrader.consumer.SpringtraderConsumerApplication`.
 
 . Add two constructors to the class `io.springtrader.consumer.ProducerResponse`:
 +
@@ -130,29 +140,23 @@ $ mvn clean package
 . Run the application:
 +
 ----
-$ java -jar target/springtrader-consumer-0.0.1-SNAPSHOT.jar
+$ java -jar target/lab19-springtrader-consumer-0.0.1-SNAPSHOT.jar
 ----
 
-. Using `curl`, test the consumer application and show that it is still receiving values from the producers.
+. Test the consumer application and show that it is still receiving values from the producers.
 Also, watch the producers and observe that Ribbon is performing round robin load balancing across the two producers:
 +
 ----
-$ curl -i localhost:8081
-HTTP/1.1 200 OK
-Content-Length: 11
-Content-Type: application/json;charset=UTF-8
-Date: Tue, 24 Feb 2015 05:47:33 GMTServer: Apache-Coyote/1.1X-Application-Context: consumer:8081
+http://localhost:8081
 
-{
-  "value": 5
-}
+Goto and check both producer windows. You should be getting a value counter starting from 0. Refresh your page and then see the counter increases.
 ----
 
 == Failover
 
 . Shut down one of the two producer processes.
 
-. Using `curl`, test the consumer application and show that it is still receiving values from one of the producers.
+. reload url, test the consumer application and show that it is still receiving values from one of the producers.
 +
 You may get the fallback value of `42` a few times due to the lag in removing the failed instance from the Ribbon cache. Eventually it will converge to hitting the only remaining healthy instance.
 
@@ -160,13 +164,13 @@ You may get the fallback value of `42` a few times due to the lag in removing th
 
 . Shut down the remaining producer process.
 
-. Using `curl`, test the consumer application and show that it is only emitting the fallback value of `42`.
+. Reload url, test the consumer application and show that it is only emitting the fallback value of `42`.
 
 == Recovery
 
 . Restart one of the producer processes. Wait for it to register with Eureka.
 
-. Using `curl`, test the consumer application and show that eventually recovers and starts hitting the new producer process. This can take several seconds as the Eureka and Ribbon caches repopulate.
+. Reload url, test the consumer application and show that eventually recovers and starts hitting the new producer process. This can take several seconds as the Eureka and Ribbon caches repopulate.
 
 == Next Steps
 
