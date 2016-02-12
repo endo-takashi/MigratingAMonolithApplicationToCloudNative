@@ -274,6 +274,12 @@ applications:
   path: target/lab14-springtrader-config-server-0.0.1-SNAPSHOT.jar
 ----
 
+. Build the application:
++
+----
+$ mvn clean package
+----
+
 . Push to Cloud Foundry:
 +
 [source,bash]
