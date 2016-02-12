@@ -316,7 +316,7 @@ public class ConsumerController {
 }
 ----
 
-. Now open `io.springtrader.producer.SpringtraderConsumerApplication` and add the `@EnableDiscoveryClient` annotation:
+. Now open `io.springtrader.consumer.SpringtraderConsumerApplication` and add the `@EnableDiscoveryClient` annotation:
 +
 [source,java]
 ----
