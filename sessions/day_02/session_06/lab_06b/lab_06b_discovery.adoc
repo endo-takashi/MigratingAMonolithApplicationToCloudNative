@@ -1,7 +1,7 @@
 :compat-mode:
-= Lab 16 - Leveraging Eureka for Service Discovery via Spring Cloud Netflix
+= Lab 06b - Leveraging Eureka for Service Discovery via Spring Cloud Netflix
 
-Estimated time to complete: 45 minutes
+Estimated time to complete: 30 minutes
 [abstract]
 --
 Let's continue learning the components found in Spring Cloud to implement patterns for distributed systems.
@@ -35,7 +35,7 @@ In this lab, we'll do the following:
 . Change to the lab directory:
 +
 ----
-cd $COURSE_HOME/day_02/session_06/lab_16/initial/
+cd $COURSE_HOME/day_02/session_06/lab_06b/initial/
 ----
 +
 and import all 4 projects into your IDE. For the first part of this lab, we will work on `springtrader-eureka`
@@ -152,7 +152,7 @@ git commit -m "adds eureka config client"
 git push origin master
 ----
 
-. `lab16-springtrader-config-server` has been placed in your `lab_16/initial` folder.
+. `lab_06b-springtrader-config-server` has been placed in your `lab_06b/initial` folder.
 +
 Import it in your IDE if you have not done so already.
 . Open `src/main/resources/application.properties` and make sure the path to your github repository is correct
@@ -164,7 +164,7 @@ Your Eureka properties should be displayed.
 
 == Create and Register the Producer Service
 
-. In your IDE, open the `lab16-springtrader-producer` project
+. In your IDE, open the `lab_06b-springtrader-producer` project
 
 . Open `pom.xml`, change the parent POM to the `spring-cloud-starter-parent`:
 +
@@ -251,7 +251,7 @@ image::../../../Common/images/eureka_2.png[]
 
 == Create and Register the Consumer Service
 
-. In your IDE, open `lab16-springtrader-consumer`
+. In your IDE, open `lab_06b-springtrader-consumer`
 
 . Open its `pom.xml` file and change the parent POM to `spring-cloud-starter-parent`:
 +
@@ -366,189 +366,3 @@ image::../../../Common/images/eureka_3.png[]
 	"value":0
 }
 ----
-
-== (optional) Deploy the Eureka Server to Cloud Foundry
-
-. Open `lab16-springtrader-eureka` and create a file `manifest.yml`:
-+
-[source,yml]
-----
----
-applications:
-- name: springtrader-eureka
-  host: springtrader-eureka-${random-word}
-  memory: 512M
-  instances: 1
-  path: target/lab16-springtrader-eureka-0.0.1-SNAPSHOT.jar
-----
-
-. (optional) Push to Cloud Foundry:
-+
-----
-cf push
-...
-
-Showing health and status for app springtrader-eureka in org pivot-cqueiroz / space development as cqueiroz@pivotal.io...
-OK
-
-requested state: started
-instances: 1/1
-usage: 512M x 1 instances
-urls: springtrader-eureka-nonpatterned-insurgency.cfapps.pez.pivotal.io
-last uploaded: Tue Jan 12 09:35:33 UTC 2016
-stack: cflinuxfs2
-buildpack: java-buildpack=v3.3.1-offline-https://github.com/cloudfoundry/java-buildpack.git#063836b java-main open-jdk-like-jre=1.8.0_65 open-jdk-like-memory-calculator=2.0.0_RELEASE spring-auto-reconfiguration=1.10.0_RELEASE
-
-     state     since                    cpu    memory           disk           details
-#0   running   2016-01-12 05:36:49 PM   0.0%   320.1M of 512M   183.9M of 1G
-----
-
-. In a browser, visit the route assigned to your Eureka server and verify that everything is working properly:
-+
-image::../../../Common/images/eureka_1.png[]
-
-. Create a user-provided service representing the Eureka server (be sure to use the route assigned to your Eureka server!):
-+
-----
-$ cf cups springtrader-service-registry -p '{"uri":"http://springtrader-eureka-nonpatterned-insurgency.cfapps.io"}'
-Creating user provided service springtrader-service-registry in org pivot-cqueiroz / space development as cqueiroz@pivotal.io...
-OK
-----
-
-== Update the Microservices to Use Eureka
-
-. In the config repo, update the eureka section of application.yml:
-+
-[source,yml]
-----
-eureka:
-  instance:
-    leaseRenewalIntervalInSeconds: 10
-    metadataMap:
-      instanceId: ${vcap.application.instance_id:${spring.application.name}:${server.port:8080}}
-  client:    # <--- ADD THE CLIENT SECTION!!!
-    serviceUrl:
-      defaultZone: ${vcap.services.springtrader-service-registry.credentials.uri:http://127.0.0.1:8761}/eureka/
-----
-
-. Also add a second YAML document to `application.yml`:
-+
-[source,yml]
-----
----
-spring:
-  profiles: cloud
-eureka:
-  instance:
-    hostname: ${vcap.application.uris[0]}
-    nonSecurePort: 80
-----
-
-. Stage, commit, and push your changes:
-+
-----
-git add .
-git commit -m "adds eureka setup"
-git push origin master
-----
-
-Each of the three microservice projects has been copied into `$COURSE_HOME/day_02/session_06/lab_16/initial`, and are in the state we left them at the end of link:../lab_15/lab_15.adoc[Lab 15].
-You can either continue your existing projects or pickup from these copies.
-
-For each project, perform the following steps (we'll do these once for the `springbox-catalog` project in this guide):
-
-. Change to the lab directory:
-+
-----
-cd $COURSE_HOME/day_02/session_06/lab_16/initial/springtrader-quotes
-----
-+
-and import the project (via `pom.xml`) into your IDE of choice.
-
-. In `pom.xml`, add a dependency on `spring-cloud-starter-eureka`:
-+
-[source,xml]
-----
-<dependency>
-  <groupId>org.springframework.cloud</groupId>
-  <artifactId>spring-cloud-starter-eureka-server</artifactId>
-  <version>1.0.3.RELEASE</version>
-</dependency>
-----
-
-. Now open `io.pivotal.springtrader.quotes.QuotesApplication` and add the `@EnableDiscoveryClient` annotation:
-+
-[source,java]
-----
-@SpringBootApplication
-@EnableDiscoveryClient  // <--- ADD THIS!!!
-public class QuotesApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(QuotesApplication.class, args);
-    }
-}
-----
-
-. Build the application:
-+
-----
-mvn clean package
-----
-
-. In `manifest.yml`, add a binding to `springtrader-service-registry`:
-+
-[source,yml]
-----
----
-applications:
-- name: springtrader-quotes
-  host: springtrader-quotes-${random-word}
-  memory: 1G
-  instances: 1
-  timeout: 90
-  path: target/springtrader-quotes-0.0.1-SNAPSHOT.jar
-  env:
-    SPRING_PROFILES_ACTIVE: cloud
-  services:
-    - springtrader-catalog-db
-    - springtrader-config-service
-    - springtrader-cloud-bus-amqp
-    - springtrader-service-registry
-----
-
-. Push the application:
-+
-----
-cf push
-...
-
-Showing health and status for app springtrader-quotes in org pivot-cqueiroz / space development as cqueiroz@pivotal.io...
-OK
-
-requested state: started
-instances: 1/1
-usage: 1G x 1 instances
-urls: springtrader-quotes-autophytic-concord.cfapps.pez.pivotal.io
-last uploaded: Tue Jan 12 10:36:19 UTC 2016
-stack: cflinuxfs2
-buildpack: java-buildpack=v3.3.1-offline-https://github.com/cloudfoundry/java-buildpack.git#063836b java-main java-opts open-jdk-like-jre=1.8.0_65 open-jdk-like-memory-calculator=2.0.0_RELEASE spring-auto-reconfiguration=1.10.0_RELEASE
-
-     state     since                    cpu    memory         disk           details
-#0   running   2016-01-12 06:37:54 PM   0.0%   502.5M of 1G   196.4M of 1G
-----
-
-. Ten seconds after the catalog application finishes startup, you should see it log its registration with Eureka:
-+
-----
-2016-01-12T18:38:34.52+0800 [APP/0]      OUT 2016-01-12 10:38:34.522  INFO 26 --- [scoveryClient-2] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_SPRINGTRADER-QUOTES/9nfl86h1p48:18af4e6e-040c-4786-54ff-74a12e61f882 - retransmit instance info with status UP
-2016-01-12T18:38:34.52+0800 [APP/0]      OUT 2016-01-12 10:38:34.522  INFO 26 --- [scoveryClient-2] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_SPRINGTRADER-QUOTES/9nfl86h1p48:18af4e6e-040c-4786-54ff-74a12e61f882: registering service...
-2016-01-12T18:38:34.54+0800 [APP/0]      OUT 2016-01-12 10:38:34.537  INFO 26 --- [scoveryClient-2] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_SPRINGTRADER-QUOTES/9nfl86h1p48:18af4e6e-040c-4786-54ff-74a12e61f882 - registration status: 204
-2016-01-12T18:38:34.66+0800 [APP/0]      OUT 2016-01-12 10:38:34.665  INFO 26 --- [pool-8-thread-1] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_SPRINGTRADER-QUOTES/9nfl86h1p48:18af4e6e-040c-4786-54ff-74a12e61f882 - Re-registering apps/SPRINGTRADER-QUOTES
-2016-01-12T18:38:34.66+0800 [APP/0]      OUT 2016-01-12 10:38:34.665  INFO 26 --- [pool-8-thread-1] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_SPRINGTRADER-QUOTES/9nfl86h1p48:18af4e6e-040c-4786-54ff-74a12e61f882: registering service...
-2016-01-12T18:38:34.68+0800 [APP/0]      OUT 2016-01-12 10:38:34.681  INFO 26 --- [pool-8-thread-1] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_SPRINGTRADER-QUOTES/9nfl86h1p48:18af4e6e-040c-4786-54ff-74a12e61f882 - registration status: 204
-----
-+
-You should also be able to refresh the route of your PWS deployed Eureka in the browser and see the Quotes App registered:
-+
-image::../../../Common/images/eureka_4.png[]

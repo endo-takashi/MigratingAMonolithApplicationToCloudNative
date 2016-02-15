@@ -2,12 +2,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>io.springtrader</groupId>
-	<artifactId>lab16-springtrader-consumer</artifactId>
+	<artifactId>lab_06b-springtrader-consumer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>lab16-springtrader-consumer</name>
-	<description>Lab 16 - SpringTrader Service Registry Test Consumer</description>
+	<description>Lab 06b - SpringTrader Service Registry Test Consumer</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

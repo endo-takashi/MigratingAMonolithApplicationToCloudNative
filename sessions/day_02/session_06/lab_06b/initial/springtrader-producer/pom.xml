@@ -2,12 +2,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>io.springtrader</groupId>
-	<artifactId>lab16-springtrader-producer</artifactId>
+	<artifactId>lab_06b-springtrader-producer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>lab16-springtrader-producer</name>
-	<description>Lab 16 - SpringTrader Service Registry Test Producer</description>
+	<description>Lab 06b - SpringTrader Service Registry Test Producer</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
