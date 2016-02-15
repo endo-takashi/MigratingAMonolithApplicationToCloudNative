@@ -1,5 +1,5 @@
 :compat-mode:
-= Lab 3a - Build a Hypermedia-Driven RESTful Web Service with Spring Data REST
+= Lab 03a - Build a Hypermedia-Driven RESTful Web Service with Spring Data REST
 
 Estimated time to complete: 30 minutes
 
