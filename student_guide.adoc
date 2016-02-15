@@ -93,7 +93,7 @@ We accept that this is not typical but it makes the lab instructions simpler.
 * Session 4 (link:sessions/day_01/session_04/session_04.pdf[Slides])
 ** link:sessions/day_01/session_04/lab_04a/lab_04a_bounded_contexts.adoc[Lab 04a - Decomposition into microservices]
 * Session 5 (link:sessions/day_01/session_05/session_05.pdf[Slides])
-** link:sessions/day_01/session_05/lab_05a/lab_05a_quotes.adoc[Lab 11 - Build Quotes Service with MongoDB]
+** link:sessions/day_01/session_05/lab_05a/lab_05a_quotes.adoc[Lab 05a - Build Quotes Service with MongoDB]
 ** link:sessions/day_01/session_05/lab_12/lab_12_accounts.adoc[Lab 12 - Build Account Service using MySQL]
 ** link:sessions/day_01/session_05/lab_13/lab_13_portfolio.adoc[Lab 13 - Build Portfolio Service with MySQL]
 
