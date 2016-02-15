@@ -1,14 +1,10 @@
 spring:
   profiles:
     active: local
-  rabbitmq:
-      addresses: ${vcap.services.springtrader-cloud-bus-amqp.credentials.uri:amqp://${RABBITMQ_HOST:localhost}:${RABBITMQ_PORT:5672}}
 
 security:
   basic:
     enabled: false
-
-
 
 expiration:
   time: -1 # enable offline mode. no expiration.

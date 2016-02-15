@@ -1,18 +1,18 @@
 package io.springtrader.configclient;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class GreetingController {
 
-    @Autowired
-    Greeter greeter;
+    @Value("${greeting}")
+    String greeting;
 
     @RequestMapping("/")
     public String greeter() {
-        return greeter.getGreeting() + " World!";
+        return greeting + " World!";
     }
 
 }

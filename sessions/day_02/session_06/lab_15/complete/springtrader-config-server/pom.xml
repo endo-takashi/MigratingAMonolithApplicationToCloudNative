@@ -2,17 +2,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.springtrader</groupId>
-    <artifactId>lab15-springtrader-config-server-solution</artifactId>
+    <artifactId>lab14-springtrader-config-server-solution</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>lab15-springtrader-config-server-solution</name>
-    <description>Lab 15 - Solution: SpringTrader Config Server</description>
+    <name>lab14-springtrader-config-server-solution</name>
+    <description>Lab 14 - Solution: SpringBox Config Server</description>
 
     <parent>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-parent</artifactId>
-        <version>1.0.0.RELEASE</version>
+        <version>Angel.SR5</version>
         <relativePath/>
         <!-- lookup parent from repository -->
     </parent>

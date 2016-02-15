@@ -2,17 +2,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.pivotal.springtrader</groupId>
-    <artifactId>lab15-quotes</artifactId>
+    <artifactId>lab14-quotes</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>lab15-quotes</name>
-    <description>Lab 15 - Quotes microservices for SpringTrader App</description>
+    <name>lab14-quotes</name>
+    <description>Lab 14 - Quotes microservices for SpringTrader App</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.3.0.RELEASE</version>
+		<version>1.3.2.RELEASE</version>
     </parent>
 
     <properties>
@@ -34,11 +34,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-config</artifactId>
-            <version>1.0.3.RELEASE</version>
-        </dependency>
+
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
