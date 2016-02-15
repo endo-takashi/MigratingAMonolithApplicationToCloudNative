@@ -100,9 +100,9 @@ We accept that this is not typical but it makes the lab instructions simpler.
 ==== Day Two
 
 * Session 6 (link:sessions/day_02/session_06/session_06.pdf[Slides])
-** link:sessions/day_02/session_06/lab_14/lab_14_config_server.adoc[Lab 14 - Deploying and Using Spring Cloud Config Server]
-** link:sessions/day_02/session_06/lab_15/lab_15_cloud_bus.adoc[Lab 15 - Refreshing Configuration with Spring Cloud Bus]
-** link:sessions/day_02/session_06/lab_16/lab_16_discovery.adoc[Lab 16 - Leveraging Eureka for Service Discovery via Spring Cloud Netflix]
+** link:sessions/day_02/session_06/lab_06a/lab_06a_config_server.adoc[Lab 06a - Deploying and Using Spring Cloud Config Server]
+** link:sessions/day_02/session_06/lab_06b/lab_06b_cloud_bus.adoc[Lab 06b - Refreshing Configuration with Spring Cloud Bus]
+** link:sessions/day_02/session_06/lab_06c/lab_06c_discovery.adoc[Lab 06c - Leveraging Eureka for Service Discovery via Spring Cloud Netflix]
 
 * Session 7 (link:sessions/day_02/session_07/session_07.pdf[Slides])
 ** link:sessions/day_02/session_07/lab_17/lab_17_load_balancing.adoc[Lab 17 - Client-Side Load Balancing with Ribbon]
