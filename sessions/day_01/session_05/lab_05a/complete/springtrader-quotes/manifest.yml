@@ -8,6 +8,6 @@ env:
 applications:
 - name: quotes
   random-route: true
-  path: target/lab11-quotes-solution-1.0.0-SNAPSHOT.jar
+  path: target/lab_05a-quotes-solution-1.0.0-SNAPSHOT.jar
   services: [ springtrader-quotes-db ]
 
