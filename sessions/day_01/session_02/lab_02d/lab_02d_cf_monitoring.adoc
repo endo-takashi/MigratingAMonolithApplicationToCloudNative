@@ -201,8 +201,7 @@ Creating user provided service cf-scale-boot-logs in org oreilly-class / space i
 OK
 ----
 
-. We bind that service instance like those we created in
-<<../lab_02c/lab_02c_cf_scaling.adoc,Lab 2c>>:
+. We bind that service instance like those we created in Lab 2c:
 +
 ----
 $ cf bs cf-scale-boot cf-scale-boot-logs
