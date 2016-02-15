@@ -1,5 +1,5 @@
 :compat-mode:
-= Lab 8 - Monitoring Applications
+= Lab 2d - Monitoring Applications
 
 Cloud Foundry provides several built-in mechanisms that allow us to monitor our applications' state changes and behavior.
 Additionally, Cloud Foundry actively monitors the health of our application processes and will restart them should they crash.
@@ -201,7 +201,7 @@ Creating user provided service cf-scale-boot-logs in org oreilly-class / space i
 OK
 ----
 
-. We bind that service instance like those we created in link:../lab_06/lab_06.html[Lab 6]:
+. We bind that service instance like those we created in link:../lab_02c/lab_02c.html[Lab 6]:
 +
 ----
 $ cf bs cf-scale-boot cf-scale-boot-logs

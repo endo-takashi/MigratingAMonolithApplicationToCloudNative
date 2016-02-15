@@ -1,4 +1,4 @@
-= Lab 5 - From Zero to Pushing Your First Application
+= Lab 2a - From Zero to Pushing Your First Application
 
 == Setup
 
@@ -23,7 +23,7 @@ $ cf target -s YOURNAME
 . Change to the _Spring Music_ sample application directory:
 +
 ----
-$ cd $COURSE_HOME/day_01/session_02/lab_05/spring-music
+$ cd $COURSE_HOME/day_01/session_02/lab_02a/spring-music
 ----
 
 . Using the Gradle Wrapper, build and package the application:
@@ -45,7 +45,7 @@ You should see output similar to the following listing. Take a look at the listi
 +
 ====
 ----
-Using manifest file .../day_01/session_02/lab_05/spring-music/manifest.yml <1>
+Using manifest file .../day_01/session_02/lab_02a/spring-music/manifest.yml <1>
 
 Creating app spring-music in org oreilly-class / space instructor as mstine@pivotal.io...
 OK <2>
@@ -57,7 +57,7 @@ Binding spring-music-hippest-shaman.cfapps.io to spring-music...
 OK <4>
 
 Uploading spring-music... <5>
-Uploading app files from: .../day_01/session_02/lab_05/spring-music/build/libs/spring-music.war
+Uploading app files from: .../day_01/session_02/lab_02a/spring-music/build/libs/spring-music.war
 Uploading 569.7K, 90 files
 Done uploading
 OK
