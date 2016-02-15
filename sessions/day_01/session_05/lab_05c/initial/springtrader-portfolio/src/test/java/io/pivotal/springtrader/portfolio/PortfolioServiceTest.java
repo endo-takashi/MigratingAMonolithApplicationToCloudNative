@@ -1,11 +1,9 @@
 package io.pivotal.springtrader.portfolio;
 
 
-import io.pivotal.springtrader.portfolio.domain.Order;
-import io.pivotal.springtrader.portfolio.domain.Portfolio;
-import io.pivotal.springtrader.portfolio.domain.Quote;
-import io.pivotal.springtrader.portfolio.repositories.OrderRepository;
-import io.pivotal.springtrader.portfolio.services.PortfolioService;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -19,8 +17,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.RestTemplate;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
+import io.pivotal.springtrader.portfolio.domain.Order;
+import io.pivotal.springtrader.portfolio.domain.Quote;
+import io.pivotal.springtrader.portfolio.repositories.OrderRepository;
+import io.pivotal.springtrader.portfolio.services.PortfolioService;
 
 public class PortfolioServiceTest {
 	MockMvc mockMvc;
@@ -54,7 +54,7 @@ public class PortfolioServiceTest {
 		when(repo.findByAccountId(ServiceTestConfiguration.ACCOUNT_ID)).thenReturn(ServiceTestConfiguration.orders());
 		//when(quoteService.getUri()).thenReturn(uri);
 		when(restTemplate.getForObject(quotesUrl + "/quote/{symbol}", Quote.class, ServiceTestConfiguration.quote().getSymbol())).thenReturn(ServiceTestConfiguration.quote());
-		Portfolio folio = service.getPortfolio(ServiceTestConfiguration.ACCOUNT_ID);
+		service.getPortfolio(ServiceTestConfiguration.ACCOUNT_ID);
 	}
 	@Test
 	public void doSaveOrder() {
