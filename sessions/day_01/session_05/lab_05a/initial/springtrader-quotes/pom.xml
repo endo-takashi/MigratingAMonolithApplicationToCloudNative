@@ -4,12 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>io.pivotal.springtrader</groupId>
-	<artifactId>lab11-quotes-solution</artifactId>
+	<artifactId>lab_05a-quotes</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>lab11-quotes-solution</name>
-	<description>Lab 11: Quotes Microservice for SpringTrader App</description>
+	<description>Lab 05a: Quotes Microservice for SpringTrader App</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -37,12 +36,8 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
-
-		<dependency>
-		<groupId>joda-time</groupId>
-		<artifactId>joda-time</artifactId>
-		</dependency>
-
+		
+		
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-spring-service-connector</artifactId>
@@ -51,6 +46,11 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-cloudfoundry-connector</artifactId>
+		</dependency>
+
+		<dependency>
+		<groupId>joda-time</groupId>
+		<artifactId>joda-time</artifactId>
 		</dependency>
 
 		<dependency>
