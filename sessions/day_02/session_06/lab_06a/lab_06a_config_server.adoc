@@ -11,8 +11,6 @@ In this lab, we'll do the following:
 
 . Create a GitHub repository to store our configuration
 . Create a Spring Cloud Config Server and test it with a basic sample application
-. (Optional) Only if you have time, deploy the Config Server to Pivotal Cloud Foundry
-. (Optional) Update our previously developed microservices to source their configuration from the Config Server
 --
 
 NOTE: before starting this lab, you can stop all the applications you had started in the previous labs. You will not need them anymore.
