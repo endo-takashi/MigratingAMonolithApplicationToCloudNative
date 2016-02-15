@@ -2,12 +2,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.pivotal.springcloud</groupId>
-    <artifactId>lab20-hystrix-dashboard-solution</artifactId>
+    <artifactId>lab_07d-hystrix-dashboard-solution</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>lab20-hystrix-dashboard-solution</name>
-    <description>Lab 20 - Solution: Hystrix Dashboard</description>
+    <description>Lab 07d - Solution: Hystrix Dashboard</description>
 
     <parent>
         <groupId>org.springframework.cloud</groupId>
