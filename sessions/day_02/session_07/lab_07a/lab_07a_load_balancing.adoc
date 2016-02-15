@@ -8,7 +8,7 @@ We'll again use Spring Cloud Netflix to implement client-side load balancing wit
 
 In this lab, we'll do the following:
 
-. Change the consumer application from link:../../session_06/lab_16/lab_16.adoc[Lab 16] to:
+. Change the consumer application from link:../../session_06/lab_06b/lab_06b_discovery.adoc[Lab 06b] to:
 .. Use a `LoadBalancerClient`
 .. Use a `RestTemplate` configured to resolve service names from Ribbon
 . Test the new consumer versions against our local pool of producers
@@ -17,13 +17,13 @@ In this lab, we'll do the following:
 
 == Setup
 
-. A completed `springtrader-config-server` project has been placed in `$COURSE_HOME/day_02/session_07/lab_17/initial/springtrader-config-server` for your convenience.
+. A completed `springtrader-config-server` project has been placed in `$COURSE_HOME/day_02/session_07/lab_07a/initial/springtrader-config-server` for your convenience.
 In a terminal window, change to that directory, rebuild, and run the application:
 +
 ----
-$ cd $COURSE_HOME/day_02/session_07/lab_17/initial/springtrader-config-server
+$ cd $COURSE_HOME/day_02/session_07/lab_07a/initial/springtrader-config-server
 $ mvn clean package
-$ java -jar target/springtrader-config-server-0.0.1-SNAPSHOT.jar
+$ java -jar target/lab_07a-springtrader-config-server-0.0.1-SNAPSHOT.jar
 ----
 
 . A completed `springtrader-eureka` project has been placed in `$COURSE_HOME/day_02/session_07/lab_17/initial/springtrader-eureka` for your convenience.

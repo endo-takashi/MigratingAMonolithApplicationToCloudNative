@@ -2,12 +2,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>io.springtrader</groupId>
-	<artifactId>lab17-springtrader-consumer</artifactId>
+	<artifactId>lab_07a-springtrader-consumer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>lab17-springtrader-consumer</name>
-	<description>Lab 17 - SpringTrader Service Registry Test Consumer</description>
+	<name>lab_07a-springtrader-consumer</name>
+	<description>Lab 07a - SpringTrader Service Registry Test Consumer</description>
 
 	<parent>
 		<groupId>org.springframework.cloud</groupId>

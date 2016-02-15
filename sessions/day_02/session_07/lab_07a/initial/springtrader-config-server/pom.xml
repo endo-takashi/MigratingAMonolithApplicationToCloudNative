@@ -2,12 +2,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.springtrader</groupId>
-    <artifactId>lab17-springtrader-config-server</artifactId>
+    <artifactId>lab_07a-springtrader-config-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>lab17-springtrader-config-server</name>
-    <description>Lab 17 - SpringTrader Config Server</description>
+    <description>Lab 07a - SpringTrader Config Server</description>
 
     <parent>
         <groupId>org.springframework.cloud</groupId>

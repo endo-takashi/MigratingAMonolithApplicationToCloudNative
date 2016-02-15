@@ -2,12 +2,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>io.springtrader</groupId>
-	<artifactId>lab17-springtrader-eureka</artifactId>
+	<artifactId>lab_07a-springtrader-eureka</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>lab17-springtrader-eureka</name>
-	<description>Lab 17 - SpringTrader Eureka Server</description>
+	<description>Lab 07a - SpringTrader Eureka Server</description>
 
 	<parent>
 		<groupId>org.springframework.cloud</groupId>
