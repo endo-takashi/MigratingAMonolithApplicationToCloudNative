@@ -2,12 +2,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>io.springtrader</groupId>
-	<artifactId>lab19-springtrader-consumer</artifactId>
+	<artifactId>lab_07c-springtrader-consumer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>lab19-springtrader-consumer</name>
-	<description>Lab 19 - SpringTrader Service Registry Test Consumer</description>
+	<description>Lab 07c - SpringTrader Service Registry Test Consumer</description>
 
 	<parent>
 		<groupId>org.springframework.cloud</groupId>
@@ -55,16 +54,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<repositories>
-		<repository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/libs-milestone/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
 
 </project>
