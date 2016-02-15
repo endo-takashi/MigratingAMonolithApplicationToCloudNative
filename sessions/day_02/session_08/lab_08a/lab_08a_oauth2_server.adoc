@@ -1,4 +1,4 @@
-= Lab 21 - Creating an OAuth2 Authorization Server
+= Lab 08a - Creating an OAuth2 Authorization Server
 [abstract]
 
 --
@@ -10,6 +10,7 @@ We will now create an oAuth 2.0 authorization server. Using spring cloud securit
 == Configuring the dependencies
 . Add the following dependencies to your pom.xml file
 +
+[source,xml]
 ----
 <dependency>
 	<groupId>org.springframework.boot</groupId>
@@ -104,7 +105,7 @@ mvn package
 
 . Run the application:
 ----
-java -jar target/springbox-auth-server-0.0.1-SNAPSHOT.jar
+java -jar target/lab_08a-springbox-auth-server-0.0.1-SNAPSHOT.jar
 ----
 
 
@@ -113,11 +114,11 @@ java -jar target/springbox-auth-server-0.0.1-SNAPSHOT.jar
 i) Authorization : Basic + a base64 encoded string of the clientId:clientSecret, on this example it will be acme:acmesecret
 ii) Content-Type : application/x-www-form-urlencoded
 iii) Payload: grant_type=password&username=<username>&password=<password>
-  
+
 ----
 curl -XPOST -H "Content-Type: application/x-www-form-urlencoded" \
             -H "Authorization: Basic YWNtZTphY21lc2VjcmV0" \
-             http://localhost:9999/uaa/oauth/token \ 
+             http://localhost:9999/uaa/oauth/token \
              -d "grant_type=password&username=mstine&password=secret"
 ----
 
