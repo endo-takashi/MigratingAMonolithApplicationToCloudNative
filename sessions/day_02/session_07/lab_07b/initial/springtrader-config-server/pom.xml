@@ -2,12 +2,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.springtrader</groupId>
-    <artifactId>lab18-springtrader-config-server</artifactId>
+    <artifactId>lab_07b-springtrader-config-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>lab18-springtrader-config-server</name>
-    <description>Lab 18 - SpringTrader Config Server</description>
+    <description>Lab 07b - SpringTrader Config Server</description>
 
     <parent>
         <groupId>org.springframework.cloud</groupId>
@@ -47,16 +46,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/libs-milestone/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
 </project>
