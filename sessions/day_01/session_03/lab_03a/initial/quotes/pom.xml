@@ -2,12 +2,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>io.pivotal.demo</groupId>
-	<artifactId>lab09-quotes</artifactId>
+	<artifactId>lab_03a-quotes</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
-	<name>lab09-quotes</name>
-	<description>Lab 09 - Demo project for Spring Boot</description>
+	<description>Lab 03a - Demo project for Spring Boot</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
