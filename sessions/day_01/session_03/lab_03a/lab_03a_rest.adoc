@@ -19,7 +19,7 @@ $ cd $COURSE_HOME/day_01/session_03/lab_03a/initial/quotes
 
 . Add a runtime dependency on the H2 in-memory database to +pom.xml+:
 +
-[source,maven]
+[source,java]
 ----
 <dependencies>
     // ...
@@ -315,7 +315,7 @@ applications:
   host: companies-${random-word}
   memory: 512M
   instances: 1
-  path: target/lab09-quotes-1.0.0.jar
+  path: target/lab_03a-quotes-1.0.0.jar
   timeout: 180 # to give time for the data to import
 ----
 
@@ -359,5 +359,5 @@ buildpack: java-buildpack=v3.3.1-offline-https://github.com/cloudfoundry/java-bu
 +
 [source,bash]
 ----
-http://companies-getable-section.cfapps.pez.pivotal.io/companies
+http://companies-getable-section.cfapps.io/companies
 ----
