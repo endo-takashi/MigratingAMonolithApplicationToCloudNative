@@ -104,10 +104,10 @@ We accept that this is not typical but it makes the lab instructions simpler.
 ** link:sessions/day_02/session_06/lab_06b/lab_06b_discovery.adoc[Lab 06b - Leveraging Eureka for Service Discovery via Spring Cloud Netflix]
 
 * Session 7 (link:sessions/day_02/session_07/session_07.pdf[Slides])
-** link:sessions/day_02/session_07/lab_17/lab_17_load_balancing.adoc[Lab 17 - Client-Side Load Balancing with Ribbon]
-** link:sessions/day_02/session_07/lab_18/lab_18_feign.adoc[Lab 18 - Declarative REST Clients with Feign]
-** link:sessions/day_02/session_07/lab_19/lab_19_fault_tolerance.adoc[Lab 19 - Fault-Tolerance with Hystrix]
-** link:sessions/day_02/session_07/lab_20/lab_20_hystrix_dashboard.adoc[Lab 20 - Monitoring Circuit Breakers with Hystrix Dashboard]
+** link:sessions/day_02/session_07/lab_07a/lab_07a_load_balancing.adoc[Lab 07a - Client-Side Load Balancing with Ribbon]
+** link:sessions/day_02/session_07/lab_07b/lab_07b_feign.adoc[Lab 07b - Declarative REST Clients with Feign]
+** link:sessions/day_02/session_07/lab_07c/lab_07c_fault_tolerance.adoc[Lab 07c - Fault-Tolerance with Hystrix]
+** link:sessions/day_02/session_07/lab_07d/lab_07d_hystrix_dashboard.adoc[Lab 07d - Monitoring Circuit Breakers with Hystrix Dashboard]
 
 * Session 8 (link:sessions/day_02/session_08/session_08.pdf[Slides])
 ** link:sessions/day_02/session_08/lab_21/lab_21_oauth2_server.adoc[Lab 21 - Creating an OAuth2 Authorization Server]

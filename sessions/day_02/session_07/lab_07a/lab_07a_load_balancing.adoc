@@ -1,5 +1,5 @@
 :compat-mode:
-= Lab 17 - Client-Side Load Balancing with Ribbon
+= Lab 07a - Client-Side Load Balancing with Ribbon
 
 [abstract]
 --
