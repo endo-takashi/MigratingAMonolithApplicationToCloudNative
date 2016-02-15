@@ -2,12 +2,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>io.pivotal.springtrader</groupId>
-	<artifactId>lab12-accounts-solution</artifactId>
+	<artifactId>lab_05b-accounts-solution</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>lab12-accounts-solution</name>
-	<description>Lab 12 - Solution: Accounts project</description>
+	<description>Lab 05b - Solution: Accounts project</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
