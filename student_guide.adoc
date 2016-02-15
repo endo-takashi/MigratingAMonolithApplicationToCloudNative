@@ -110,5 +110,5 @@ We accept that this is not typical but it makes the lab instructions simpler.
 ** link:sessions/day_02/session_07/lab_07d/lab_07d_hystrix_dashboard.adoc[Lab 07d - Monitoring Circuit Breakers with Hystrix Dashboard]
 
 * Session 8 (link:sessions/day_02/session_08/session_08.pdf[Slides])
-** link:sessions/day_02/session_08/lab_21/lab_21_oauth2_server.adoc[Lab 21 - Creating an OAuth2 Authorization Server]
-** link:sessions/day_02/session_08/lab_22/lab_22_secure.adoc[Lab 22 - Securing a Resource Server with Spring Cloud Security]
+** link:sessions/day_02/session_08/lab_08a/lab_08a_oauth2_server.adoc[Lab 08a - Creating an OAuth2 Authorization Server]
+** link:sessions/day_02/session_08/lab_08b/lab_08b_secure.adoc[Lab 08b - Securing a Resource Server with Spring Cloud Security]
