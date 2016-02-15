@@ -121,6 +121,7 @@ Also, watch the producers and observe that Ribbon is performing round robin load
 
 . In `io.springtrader.consumer.ConsumerController`, replace the autowired `LoadBalancerClient` with an autowired `RestTemplate`:
 +
+[source,java]
 ----
 @Autowired
 RestTemplate restTemplate;
@@ -128,6 +129,7 @@ RestTemplate restTemplate;
 
 . Next, update `consume()` to use the `RestTemplate`. We'll tell it to access the producer service by it's logical name:
 +
+[source,java]
 ----
 @RequestMapping(value = "/", produces = "application/json")
 String consume() {
@@ -148,16 +150,10 @@ $ mvn package
 $ java -jar target/lab_07a-springtrader-consumer-0.0.1-SNAPSHOT.jar
 ----
 
-. Using `curl`, test the consumer application and show that it is receiving values from the producers.
+. Connect to http://localhost:8081 in order to test the consumer application. It should receive values from the producers.
 Also, watch the producers and observe that Ribbon is resolving the logical name on behalf of the `RestTemplate` and then still performing round robin load balancing across the two producers:
 +
 ----
-$ curl -i localhost:8081
-HTTP/1.1 200 OK
-Content-Length: 11
-Content-Type: application/json;charset=UTF-8
-Date: Tue, 24 Feb 2015 05:47:33 GMTServer: Apache-Coyote/1.1X-Application-Context: consumer:8081
-
 {
   "value": 5
 }
@@ -169,6 +165,7 @@ In this section we will swap the default ``round robin'' load balancing rule for
 
 . In the package `io.springtrader.consumer`, create the class `ProducerConfiguration`, and into that class paste the following code:
 +
+[source,java]
 ----
 @Configuration
 public class ProducerConfiguration {
@@ -191,6 +188,7 @@ public class ProducerConfiguration {
 
 . Add the `@RibbonClient` annotation to `io.springtrader.consumer.SpringtraderConsumerApplication`:
 +
+[source,java]
 ----
 @SpringBootApplication
 @EnableDiscoveryClient
@@ -218,7 +216,7 @@ $ java -jar target/lab_07a-springtrader-consumer-0.0.1-SNAPSHOT.jar
 . Now, let's introduce artificial latency into the producer application to cause the load balancer to prefer one instance over the other (on the average).
 Modify `io.springtrader.producer.ProducerController` by pasting in the following source code:
 +
-====
+[source,java]
 ----
 @RestController
 public class ProducerController {
@@ -246,7 +244,7 @@ public class ProducerController {
 
 }
 ----
-<1> The expression `${latency:0}` will inject the value of the `latency` propery from the environment.
+<1> The expression `${latency:0}` will inject the value of the `latency` property from the environment.
 If that property is not present, it will inject `0`.
 ====
 
@@ -263,7 +261,7 @@ $ LATENCY=250 SERVER_PORT=8080 java -jar target/springtrader-producer-0.0.1-SNAP
 $ LATENCY=1000 SERVER_PORT=8082 java -jar target/springtrader-producer-0.0.1-SNAPSHOT.jar
 ----
 
-. Issue a `curl localhost:8081`.
+. Connect to http://localhost:8081 .
 You should see log messages in the consumer indicating that the load balancer has started calculating weights:
 +
 ----
