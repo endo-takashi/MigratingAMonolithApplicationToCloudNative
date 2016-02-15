@@ -7,7 +7,7 @@ Now we'll monitor what's happening in our Circuit Breakers by using Netflix Hyst
 
 In this lab, we'll do the following:
 
-. Run everything that we created in  link:../../session_07/lab_07c/lab_07c.adoc[Lab 07c].
+. Run everything that we created in  link:../../session_07/lab_07c/lab_07c_fault_tolerance.adoc[Lab 07c].
 . Create a Hystrix Dashboard
 . Kill both of the producers and watch the circuit open in the Dashboard.
 . Restart a producer and watch the circuit close in the Dashboard.
@@ -15,7 +15,7 @@ In this lab, we'll do the following:
 
 == Setup
 
-. Make sure you've completed link:../../session_07/lab_07c/lab_07c.adoc[Lab 07c] and have everything still running.
+. Make sure you've completed link:../../session_07/lab_07c/lab_07c_fault_tolerance.adoc[Lab 07c] and have everything still running.
 
 == Building the Hystrix Dashboard
 
