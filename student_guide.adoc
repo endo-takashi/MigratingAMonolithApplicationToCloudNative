@@ -21,13 +21,14 @@ $ git clone https://github.com/caxqueiroz/springtrader-microservices.git
 
 ----
 
+////
 For convenience, at this link:https://personal.filesanywhere.com/fs/v.aspx?v=8d6c6788586072ac73a3[link] you can find:
 
   . A PDF of these lab instructions
   . A zip file of the lab-instructions in HTML format - simply download, unpack and open `index.html`
   . A PDF of the slides - these are more detailed than the individual PDFs linked to each session (below) and are intended
     for reference after the course
-
+////
 === Schedule
 
 The lectures for this class are intentionally very light and are only intended to set the stage for the hands-on labs.
