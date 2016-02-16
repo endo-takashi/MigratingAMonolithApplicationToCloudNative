@@ -27,6 +27,7 @@ We will now create an oAuth 2.0 authorization server. Using spring cloud securit
 == Enabling the auth server
 
 . Modify your `/src/main/java/io/pivotal/springbox/authserver/SpringboxAuthServerApplication` class
++
 [source, java]
 ----
 @SpringBootApplication
