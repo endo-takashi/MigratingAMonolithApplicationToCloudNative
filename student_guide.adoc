@@ -13,14 +13,11 @@ Make sure you have installed the necessary software for this course - see link:s
 The code we need is on github, so (in a Terminal/Cmd window) download it as follows:
 
 ----
-$ git clone https://github.com/S2EDU/MigratingAMonolithApplicationToCloudNative
-$ git fetch --all
+$ git clone https://github.com/S2EDU/MigratingAMonolithApplicationToCloudNative.git
 
 $ git clone https://github.com/caxqueiroz/springtrader-monolith.git
-$ git fetch --all
 
 $ git clone https://github.com/caxqueiroz/springtrader-microservices.git
-$ git fetch --all
 
 ----
 
