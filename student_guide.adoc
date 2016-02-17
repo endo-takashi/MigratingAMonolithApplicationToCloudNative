@@ -110,3 +110,7 @@ We accept that this is not typical but it makes the lab instructions simpler.
 * Session 8 (link:sessions/day_02/session_08/session_08.pdf[Slides])
 ** link:sessions/day_02/session_08/lab_08a/lab_08a_oauth2_server.adoc[Lab 08a - Creating an OAuth2 Authorization Server]
 ** link:sessions/day_02/session_08/lab_08b/lab_08b_secure.adoc[Lab 08b - Securing a Resource Server with Spring Cloud Security]
+
+
+* Session 9 (link:sessions/day_02/session_09/session_09.pdf[Slides])
+** link:sessions/day_02/session_09/lab_09a/lab_09a_deploy_microservices_app.adoc[Lab 09a - Deploy Spring Trader Microservices App]
