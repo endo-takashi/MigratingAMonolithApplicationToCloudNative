@@ -151,8 +151,11 @@ You should be able to see your properties displayed similar to this:
 }
 ----
 +
-If you can't see `greeting` in the output your server is not working.
+As shown above, you should be able to see the `greeting` value that you have entered inside `demo.yml` on your git repository.
 +
+NOTE: `http://localhost:8888/<myApp>/default` displays properties for all managed applications. You already have properties for an application called `demo` and we will add more applications to the config server later in this lab.
+
+
 Leave the Config Server running, the client will need it.
 
 
