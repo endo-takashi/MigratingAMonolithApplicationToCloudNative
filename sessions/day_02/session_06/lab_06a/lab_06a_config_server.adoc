@@ -168,20 +168,7 @@ $ cd $COURSE_HOME/day_02/session_06/lab_06a/initial/springtrader-config-client
 +
 and import the project (via `pom.xml`) into your IDE of choice.
 
-. Open `pom.xml`, change the parent POM to the `spring-cloud-starter-parent`:
-+
-[source,xml]
-----
-<parent>
-  <groupId>org.springframework.cloud</groupId>
-  <artifactId>spring-cloud-starter-parent</artifactId>
-  <version>1.0.2.RELEASE</version>
-  <relativePath/>
-  <!-- lookup parent from repository -->
-</parent>
-----
-
-. Add a dependency:
+. Open `pom.xml` and add the following dependency:
 +
 [source,xml]
 ----
