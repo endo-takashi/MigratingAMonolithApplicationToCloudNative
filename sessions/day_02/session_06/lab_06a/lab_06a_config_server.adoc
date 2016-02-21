@@ -137,10 +137,18 @@ You should be able to see your properties displayed similar to this:
 +
 [source,json]
 ----
-{"name":"default",
- "label":"",
- "propertySources":[{"name":"https: //github.com/<yourUserName>/springtrader-config-repo.git/demo.yml",
- "source":{"greeting":"Hello"}}]}
+{
+   "name":"default",
+   "label":"",
+   "propertySources":[
+      {
+         "name":"https: //github.com/<yourUserName>/springtrader-config-repo.git/demo.yml",
+         "source":{
+            "greeting":"Hello"
+         }
+      }
+   ]
+}
 ----
 +
 If you can't see `greeting` in the output your server is not working.
