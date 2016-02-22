@@ -18,43 +18,31 @@ cp -R $COURSE_HOME/day_01/session_05/lab_05b/complete/springtrader-account .
 cp -R $COURSE_HOME/day_01/session_05/lab_05c/complete/springtrader-portfolio .
 ----
 
+== Starting Spring Cloud Services on Pivotal Cloud Foundry
 
-== Deploy the Eureka Server to Cloud Foundry
-
-. Create an application manifest in manifest.yml:
+. Create Eureka service (service-registry):
 +
 ----
----
-applications:
-- name: springtrader-eureka
-  host: springtrader-eureka-${random-word}
-  memory: 512M
-  instances: 1
-  path: target/springtrader-eureka-0.0.1-SNAPSHOT.jar
-
+$ cf create-service p-service-registry standard service-registry
 ----
-. Push to Cloud Foundry:
+
+. Initialise Eureka service by clicking on the service Manage link. 
+
+. Create Hysterix Dashboard service (circuit-breaker-dashboard):
 +
 ----
-cf push
+$ cf create-service p-circuit-breaker-dashboard standard circuit-breaker-dashboard
 ----
-. Make sure service is working. In a browser, visit the route assigned to your Eureka server and verify that everything is working properly:
 
-. Create a user-provided service representing the Eureka server (be sure to use the route assigned to your Eureka server!):
-+
------
-$ cf cups service-registry -p '{"uri":"http://springtrader-eureka-nonpatterned-insurgency.cfapps.pez.pivotal.io"}'
-Creating user provided service service-registry in org pivot-cqueiroz / space development as cqueiroz@pivotal.io...
-OK
------
-
-== Deploy SpringTrader 
+. Initialise Hysterix dashboard by clicking on the service Manage link. 
 
 . Make sure all manifest.yml files define the app memory with 1G. 
 +
 ----
 memory: 1G
 ----
+
+== Deploying the Application
 
 . Create deploy.sh(bat) file. 
 +
@@ -66,9 +54,6 @@ cf push -f web/manifest.yml
 ----
 
 .. If you are using Unix add *#!/bin/sh* at the first file line. 
-
-
-== Testing it out
 
 . Run the deploy command. 
 +
@@ -99,6 +84,8 @@ buildpack: java_buildpack_offline
      state     since                    cpu    memory       disk          details
 #0   running   2016-02-22 01:34:38 PM   0.0%   700K of 1G   27.8M of 1G
 ----
+
+== Testing it out
 
 . Check if all services are registered with Eureka server. Click on Manage service. 
 +
