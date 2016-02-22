@@ -99,31 +99,7 @@ $ cd $COURSE_HOME/day_02/session_06/lab_06a/initial/springtrader-config-server
 +
 and import the project (via `pom.xml`) into your IDE of choice.
 
-. Open `pom.xml`, change the parent POM to the `spring-cloud-starter-parent`:
-+
-[source,xml]
-----
-<parent>
-  <groupId>org.springframework.cloud</groupId>
-  <artifactId>spring-cloud-starter-parent</artifactId>
-  <version>1.0.0.RELEASE</version>
-  <relativePath/>
-  <!-- lookup parent from repository -->
-</parent>
-----
-
-. Change the dependency on `spring-boot-starter` to `spring-cloud-starter`:
-+
-[source,xml]
-----
-<dependency>
-  <groupId>org.springframework.cloud</groupId>
-  <artifactId>spring-cloud-starter</artifactId>
-</dependency>
-----
-
-
-. Add a dependency on `spring-cloud-config-server`:
+. Open `pom.xml`. As you can see, your project has been configured for Spring Cloud already. Add a dependency on `spring-cloud-config-server`:
 +
 [source,xml]
 ----
@@ -161,14 +137,25 @@ You should be able to see your properties displayed similar to this:
 +
 [source,json]
 ----
-{"name":"default",
- "label":"",
- "propertySources":[{"name":"https: //github.com/<yourUserName>/springtrader-config-repo.git/demo.yml",
- "source":{"greeting":"Hello"}}]}
+{
+   "name":"default",
+   "label":"",
+   "propertySources":[
+      {
+         "name":"https: //github.com/<yourUserName>/springtrader-config-repo.git/demo.yml",
+         "source":{
+            "greeting":"Hello"
+         }
+      }
+   ]
+}
 ----
 +
-If you can't see `greeting` in the output your server is not working.
+As shown above, you should be able to see the `greeting` value that you have entered inside `demo.yml` on your git repository.
 +
+NOTE: `http://localhost:8888/<myApp>/default` displays properties for all managed applications. You already have properties for an application called `demo` and we will add more applications to the config server later in this lab.
+
+
 Leave the Config Server running, the client will need it.
 
 
@@ -181,20 +168,7 @@ $ cd $COURSE_HOME/day_02/session_06/lab_06a/initial/springtrader-config-client
 +
 and import the project (via `pom.xml`) into your IDE of choice.
 
-. Open `pom.xml`, change the parent POM to the `spring-cloud-starter-parent`:
-+
-[source,xml]
-----
-<parent>
-  <groupId>org.springframework.cloud</groupId>
-  <artifactId>spring-cloud-starter-parent</artifactId>
-  <version>1.0.2.RELEASE</version>
-  <relativePath/>
-  <!-- lookup parent from repository -->
-</parent>
-----
-
-. Add a dependency:
+. Open `pom.xml` and add the following dependency:
 +
 [source,xml]
 ----
@@ -252,72 +226,5 @@ The information you need is on the first line.
 
 ...
 
-}
-----
-
-== Deploy the Config Server to Cloud Foundry
-
-. We are now going to move your Config Server to the cloud. As a first step, stop the instance of `springtrader-config-server` that was running on localhost:8888.
-
-. You can get back to the project `springtrader-config-server`.
-At the root of the project, create an application manifest in `manifest.yml` as follows:
-+
-[source,yml]
-----
-applications:
-- name: springtrader-config-server
-  host: springtrader-config-server-${random-word}
-  memory: 512M
-  instances: 1
-  path: target/lab_06a-springtrader-config-server-0.0.1-SNAPSHOT.jar
-----
-
-. Build the application:
-+
-----
-$ mvn clean package
-----
-
-. Push to Cloud Foundry:
-+
-[source,bash]
-----
-$ cf push
-
-...
-
-Showing health and status for app springtrader-config-server in org pivot-cqueiroz / space development as cqueiroz@pivotal.io...
-OK
-
-requested state: started
-instances: 1/1
-usage: 512M x 1 instances
-urls: springtrader-config-server-conservational-soloist.cfapps.pez.pivotal.io
-last uploaded: Tue Jan 5 10:20:52 UTC 2016
-stack: cflinuxfs2
-buildpack: java-buildpack=v3.1.1-offline-https://github.com/cloudfoundry/java-buildpack#7a538fb java-main open-jdk-like-jre=1.8.0_51 open-jdk-like-memory-calculator=1.1.1_RELEASE spring-auto-reconfiguration=1.7.0_RELEASE
-
-     state     since                    cpu    memory           disk           details
-#0   running   2016-01-05 06:21:27 PM   0.0%   330.7M of 512M   147.5M of 1G
-----
-
-. Access the application on `http://springtrader-config-server-<yourAppSuffix>.cfapps.io/demo/default` to make sure everything is working properly:
-
-+
-[source,json]
-----
-{
-	"name":"default",
-	"label":"",
-	"propertySources":
-	[
-		{
-			"name":"https://github.com/caxqueiroz/springtrader-config-repo.git/demo.yml",
-			"source":
-			{
-				"greeting":"Hello"
-			}
-		}
-	]
 }
 ----
