@@ -50,7 +50,13 @@ OK
 
 == Deploy SpringTrader 
 
-. Create deploy.sh(bat) file. If you are using Unix add *#!/bin/sh* at the first file line. 
+. Make sure all manifest.yml files define the app memory with 1G. 
++
+----
+memory: 1G
+----
+
+. Create deploy.sh(bat) file. 
 +
 ----
 cf push -f quotes/manifest.yml
@@ -58,6 +64,9 @@ cf push -f accounts/manifest.yml
 cf push -f portfolio/manifest.yml
 cf push -f web/manifest.yml
 ----
+
+.. If you are using Unix add *#!/bin/sh* at the first file line. 
+
 
 == Testing it out
 
@@ -67,4 +76,42 @@ cf push -f web/manifest.yml
 ./deploy.sh (or deploy.bat)
 ----
 
-. In browser, go to the *webtrader* URL shown during cf push
++
+----
+App started
+
+
+OK
+
+App webtrader was started using this command `CALCULATED_MEMORY=$($PWD/.java-buildpack/open_jdk_jre/bin/java-buildpack-memory-calculator-2.0.1_RELEASE -memorySizes=metaspace:64m.. -memoryWeights=heap:75,metaspace:10,native:10,stack:5 -memoryInitials=heap:100%,metaspace:100% -totMemory=$MEMORY_LIMIT) && JAVA_OPTS="-Djava.io.tmpdir=$TMPDIR -XX:OnOutOfMemoryError=$PWD/.java-buildpack/open_jdk_jre/bin/killjava.sh $CALCULATED_MEMORY -Djava.security.egd=file:///dev/urandom" && SERVER_PORT=$PORT eval exec $PWD/.java-buildpack/open_jdk_jre/bin/java $JAVA_OPTS -cp $PWD/.:$PWD/.java-buildpack/spring_auto_reconfiguration/spring_auto_reconfiguration-1.10.0_RELEASE.jar org.springframework.boot.loader.JarLauncher`
+
+Showing health and status for app webtrader in org instructor / space development as instructor...
+OK
+
+requested state: started
+instances: 1/1
+usage: 1G x 1 instances
+urls: webtrader-nonbiological-bluebonnet.pcf12.cloud.fe.pivotal.io
+last uploaded: Mon Feb 22 04:33:06 UTC 2016
+stack: cflinuxfs2
+buildpack: java_buildpack_offline
+
+     state     since                    cpu    memory       disk          details
+#0   running   2016-02-22 01:34:38 PM   0.0%   700K of 1G   27.8M of 1G
+----
+
+. Check if all services are registered with Eureka server. Click on Manage service. 
++
+image::../../../Common/images/service_registry_1.png[]
+
+. See all four services registered with Eureka.  
++
+image::../../../Common/images/service_registry_2.png[]
+
+. In browser, go to the *webtrader* URL shown during cf push 
++
+image::../../../Common/images/springtrader.png[]
+
+. Finally, you can check if Hysterix is working. Checking its dashboard. 
++
+image::../../../Common/images/hysterix_1.png[]
