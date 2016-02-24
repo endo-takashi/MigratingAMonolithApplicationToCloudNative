@@ -34,7 +34,7 @@ This lab uses 4 different `yml` files. You can refer to the table below in case 
 $ cd $COURSE_HOME/day_02/session_06/lab_06a/initial
 ----
 
-. Create a directory for the configuration repo:
+. Create a directory for the configuration repo (*make sure it is outside $COURSE_HOME*):
 +
 ----
 mkdir config-repo
