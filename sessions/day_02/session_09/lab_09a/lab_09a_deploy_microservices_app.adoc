@@ -11,7 +11,7 @@ We will now deploy the SpringTrader application you have been developing. We wil
 . Copy the 3 services: Account, Quotes and Portfolio into *initial* folder.
 +
 ----
-cd $COURSE_HOME/day_02/session_05/lab_06b/initial/
+cd $COURSE_HOME/day_02/session_09/lab_09a/initial/
 
 cp -R $COURSE_HOME/day_01/session_05/lab_05a/complete/springtrader-quotes .
 cp -R $COURSE_HOME/day_01/session_05/lab_05b/complete/springtrader-account .
