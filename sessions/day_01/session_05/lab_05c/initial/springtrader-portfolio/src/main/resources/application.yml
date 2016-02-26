@@ -1,0 +1,31 @@
+spring:
+  profiles.active: local
+  application:
+     name: portfolio
+
+spring.jpa.hibernate.ddl-auto: create
+
+---
+spring:
+  profiles: local
+
+server:
+  port: 8088
+
+quotes:
+  url: http://localhost:8086
+
+accounts:
+  url: http://localhost:8082
+
+---
+spring:
+  profiles: cloud
+
+spring.jpa.database-platform: org.hibernate.dialect.MySQL5Dialect
+
+quotes:
+  url: http://quotes-nonliteral-nautilus.cfapps.io
+
+accounts:
+  url: http://accounts-dormant-dewlap.cfapps.io

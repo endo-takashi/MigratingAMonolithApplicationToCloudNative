@@ -1,0 +1,12 @@
+---
+applications:
+- name: companies
+  host: companies-${random-word}
+  memory: 512M
+  instances: 1
+  path: target/lab_03a-quotes-1.0.0.jar
+  timeout: 180 # to give time for the data to import
+  services:                        # Add
+  - quotes-db                      # these
+  env:                             # four
+    SPRING_PROFILES_ACTIVE: cloud  # lines  

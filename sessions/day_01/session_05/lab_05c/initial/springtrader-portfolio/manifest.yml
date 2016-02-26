@@ -1,0 +1,23 @@
+timeout: 180
+instances: 1
+memory: 512M
+env:
+    SPRING_PROFILES_ACTIVE: cloud
+    JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
+applications:
+- name: portfolio
+  random-route: true
+  path: target/lab_05c-portfolio-1.0.0-SNAPSHOT.jar
+  services: [ springtrader-portfolio-db ]
+
+spring:
+  profiles: cloud
+  jpa:
+     hibernate:
+        ddl-auto: create
+
+quotes:
+  url: http://quotes-partakable-tetrahydrate.pcf12.cloud.fe.pivotal.io
+
+accounts:
+  url: http://accounts-congenial-retrospection.pcf12.cloud.fe.pivotal.io

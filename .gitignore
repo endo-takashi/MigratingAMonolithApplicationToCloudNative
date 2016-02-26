@@ -11,3 +11,4 @@ workspace/
 .classpath
 .project
 .idea
+/sessions/day_01/session_02/lab_02a/spring-music/.nb-gradle/

@@ -8,13 +8,21 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 public class ConsumerController {
 
-    @Autowired
-    RestTemplate restTemplate;
+//    @Autowired
+//    RestTemplate restTemplate;
+//
+//    @RequestMapping(value = "/", produces = "application/json")
+//    String consume() {
+//        ProducerResponse response = restTemplate.getForObject("http://producer", ProducerResponse.class);
+//        return String.format("{\"value\":%d}", response.getValue());
+//    }
 
+    @Autowired
+    ProducerClient client;
+    
     @RequestMapping(value = "/", produces = "application/json")
     String consume() {
-        ProducerResponse response = restTemplate.getForObject("http://producer", ProducerResponse.class);
+        ProducerResponse response = client.getValue();
         return String.format("{\"value\":%d}", response.getValue());
     }
-
 }
